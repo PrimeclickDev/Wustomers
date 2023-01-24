@@ -9,7 +9,7 @@
 		"preview": "vite preview",
 		"prepare": "husky install",
 		"lint-staged": "lint-staged",
-		"netlify-deploy": "pnpm build && netlify deploy"
+		"netlify-deploy": "pnpm build && netlify deploy --prod --dir=dist"
 	},
 	"lint-staged": {
 		"*.{js,ts,tsx,jsx}": [
