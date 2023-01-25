@@ -10,11 +10,11 @@ const Pricing = () => {
 	]
 
 	return (
-		<main className='py-20 text-center'>
+		<main className='pt-20 pb-44 text-center'>
 			<div className='mx-auto max-w-screen-xl px-2'>
 				<h2 className='text-6xl font-bold'>Pricing</h2>
 
-				<section className='mt-8 flex flex-col items-center bg-[#E6EAF9] py-14 px-10'>
+				<section className='mt-8 flex flex-col items-center bg-wustomers-primary-light py-14 px-10'>
 					<p className='w-max border border-[#1E96FC] py-2 px-14 text-lg text-[#1E96FC]'>
 						This is a commission based plan
 					</p>
@@ -28,7 +28,7 @@ const Pricing = () => {
 
 					<Button type='button' variant='fill' text='Get started' />
 
-					<div className='mt-8 flex w-full border-t border-t-wustomers-border-color-two'>
+					<div className='mt-8 flex w-full border-t border-t-wustomers-border-color'>
 						<ul className='mx-auto flex flex-col gap-4 pt-10'>
 							{features?.map(feature => (
 								<li className='flex items-center gap-2' key={feature}>

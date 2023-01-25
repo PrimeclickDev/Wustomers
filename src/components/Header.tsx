@@ -18,7 +18,7 @@ export const Header = () => {
 		},
 	]
 	return (
-		<div className='border-b border-b-wustomers-border-color'>
+		<div className='border-b border-b-wustomers-primary-light'>
 			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-2 py-4'>
 				<nav className='flex items-center gap-20'>
 					<Link
