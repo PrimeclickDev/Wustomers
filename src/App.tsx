@@ -1,12 +1,16 @@
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
+import Dashboard from 'pages/dashboard/Dashboard'
+import NotFound from 'pages/NotFound'
+import Contact from 'pages/website/Contact'
 import Home from 'pages/website/Home'
-import { lazy, Suspense } from 'react'
+import Pricing from 'pages/website/Pricing'
+import { Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-const Contact = lazy(() => import('./pages/website/Contact'))
-const Pricing = lazy(() => import('./pages/website/Pricing'))
-const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+// const Contact = lazy(() => import('./pages/website/Contact'))
+// const Pricing = lazy(() => import('./pages/website/Pricing'))
+// const Dashboard = lazy(() => import('./pages/dashboard/Dashboard'))
+// const NotFound = lazy(() => import('./pages/NotFound'))
 
 const App = () => {
 	return (
