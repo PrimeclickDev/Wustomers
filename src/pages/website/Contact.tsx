@@ -12,7 +12,7 @@ const Contact = () => {
 				<h2 className='text-6xl font-bold'>Contact</h2>
 
 				<section className='mt-16 grid grid-cols-2 gap-32'>
-					<div className='rounded-wu bg-wustomers-primary-light p-6 text-left'>
+					<div className='rounded-sx bg-wustomers-primary-light p-6 text-left'>
 						<form className='flex flex-col'>
 							<h3 className='max-w-sm text-xl text-black'>
 								Feel free to let us what you have to tell us and how we
@@ -28,7 +28,7 @@ const Contact = () => {
 										type='text'
 										name='name'
 										id='name'
-										className='rounded-wu px-4 py-3'
+										className='rounded-sx px-4 py-3'
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -39,7 +39,7 @@ const Contact = () => {
 										type='email'
 										name='email'
 										id='email'
-										className='rounded-wu px-4 py-3'
+										className='rounded-sx px-4 py-3'
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -49,7 +49,7 @@ const Contact = () => {
 									<textarea
 										name='message'
 										id='message'
-										className='h-40 resize-none rounded-wu px-4 py-3'
+										className='h-40 resize-none rounded-sx px-4 py-3'
 									></textarea>
 								</div>
 							</div>

@@ -17,7 +17,7 @@ module.exports = {
 				'wustomers-border-color': '#9CAAE9',
 			},
 			borderRadius: {
-				wu: '3px',
+				sx: '3px',
 			},
 		},
 	},

@@ -1,3 +1,4 @@
+import ScrollToTop from 'helpers/ScrollToTop'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<QueryWrapper>
+				<ScrollToTop />
 				<App />
 			</QueryWrapper>
 			<ToastContainer />

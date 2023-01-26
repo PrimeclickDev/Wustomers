@@ -60,9 +60,9 @@ export const Footer = () => {
 	]
 	return (
 		<footer className='mt-auto bg-wustomers-blue'>
-			<div className='mx-auto max-w-screen-xl px-2 pt-12'>
+			<div className='mx-auto max-w-screen-xl px-2 pt-16'>
 				<div className='flex items-center justify-between border-b border-b-[#9CAAE9] pb-12'>
-					<h3 className='max-w-3xl text-4xl font-bold text-white'>
+					<h3 className='max-w-[30ch] text-4xl font-bold text-white'>
 						Look forward to our amazing mobile app that would be used to
 						serve you better.
 					</h3>
@@ -72,14 +72,14 @@ export const Footer = () => {
 							<img
 								src={AppleStore}
 								alt='download app from app store badge'
-								className='w-36'
+								className='w-40'
 							/>
 						</button>
 						<button type='button'>
 							<img
 								src={GooglePlay}
 								alt='download app from google play store badge'
-								className='w-36'
+								className='w-40'
 							/>
 						</button>
 					</div>
@@ -101,7 +101,7 @@ export const Footer = () => {
 
 					<ul className='flex items-center gap-8'>
 						{navs?.map(nav => (
-							<li key={nav.name} className='capitalize'>
+							<li key={nav.name} className='link-hover capitalize'>
 								<Link to={nav.link}>{nav.name}</Link>
 							</li>
 						))}
@@ -129,7 +129,9 @@ export const Footer = () => {
 								>
 									{contact.icon}
 									{contact.link ? (
-										<a href={contact.link}>{contact.text}</a>
+										<a href={contact.link} className='link-hover'>
+											{contact.text}
+										</a>
 									) : (
 										<span className='max-w-[20ch]'>
 											{contact.text}
@@ -142,7 +144,7 @@ export const Footer = () => {
 				</div>
 			</div>
 
-			<div className='border-t border-t-wustomers-border-color-two py-5 px-2'>
+			<div className='border-t-wustomers-border-color-two border-t py-5 px-2'>
 				<p className='text-center text-white'>
 					&copy; Wustomers {new Date().getFullYear()}
 				</p>

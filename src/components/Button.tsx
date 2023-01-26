@@ -3,8 +3,15 @@ type ButtonProps = {
 	onClick?: () => void
 	type: 'button' | 'submit' | 'reset' | undefined
 	variant: 'fill' | 'outline'
+	className?: string
 }
-export const Button = ({ onClick, text, type, variant }: ButtonProps) => {
+export const Button = ({
+	onClick,
+	text,
+	type,
+	variant,
+	className,
+}: ButtonProps) => {
 	return (
 		<>
 			<button
@@ -16,7 +23,7 @@ export const Button = ({ onClick, text, type, variant }: ButtonProps) => {
 						: variant === 'outline'
 						? 'border-2 border-wustomers-blue py-[6px] text-wustomers-blue hover:bg-wustomers-blue/5'
 						: ''
-				}`}
+				} ${className}`}
 			>
 				{text}
 			</button>
