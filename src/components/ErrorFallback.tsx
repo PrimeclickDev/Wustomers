@@ -25,13 +25,13 @@ export const ErrorFallback = ({
 			<div className='mt-10 flex items-center gap-10'>
 				<button
 					onClick={resetErrorBoundary}
-					className='rounded border border-red-600 bg-red-300/30 py-3 px-8 text-sm text-red-600 transition-all hover:opacity-80 active:scale-95'
+					className='rounded border border-red-600 bg-red-300/30 py-3 px-8 text-sm text-red-600 transition hover:opacity-80 active:scale-95'
 				>
 					Try again
 				</button>
 				<button
 					onClick={resetErrorBoundary}
-					className='rounded bg-red-600 py-3 px-8 text-sm text-white transition-all hover:opacity-80 active:scale-95'
+					className='rounded bg-red-600 py-3 px-8 text-sm text-white transition hover:opacity-80 active:scale-95'
 				>
 					Go back home
 				</button>

@@ -5,10 +5,10 @@ import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Linkedln } from 'assets/icons/linkedln.svg'
 import { ReactComponent as Location } from 'assets/icons/location.svg'
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
-import { WustomersLogo } from 'assets/icons/WustomersLogo'
 import AppleStore from 'assets/images/app-store.png'
 import GooglePlay from 'assets/images/google-play.png'
 import { Link } from 'react-router-dom'
+import { WustomersLogo } from './WustomersLogo'
 
 export const Footer = () => {
 	const navs = [
@@ -60,14 +60,14 @@ export const Footer = () => {
 	]
 	return (
 		<footer className='mt-auto bg-wustomers-blue'>
-			<div className='mx-auto max-w-screen-xl px-2 pt-16'>
-				<div className='flex items-center justify-between border-b border-b-[#9CAAE9] pb-12'>
-					<h3 className='max-w-[30ch] text-4xl font-bold text-white'>
+			<div className='mx-auto max-w-screen-xl px-2 pt-10 lg:pt-16'>
+				<div className='items-center justify-between border-b border-b-[#9CAAE9] pb-12 md:flex'>
+					<h3 className='text-center text-2xl font-bold text-white lg:max-w-[30ch] lg:text-left lg:text-4xl'>
 						Look forward to our amazing mobile app that would be used to
 						serve you better.
 					</h3>
 
-					<div className='flex items-center gap-5'>
+					<div className='flex items-center justify-center gap-5 pt-5 lg:justify-start lg:pt-0'>
 						<button type='button'>
 							<img
 								src={AppleStore}
@@ -85,21 +85,15 @@ export const Footer = () => {
 					</div>
 				</div>
 
-				<div className='flex items-start justify-between py-10 text-white'>
+				<div className='flex flex-col items-center  py-10 text-center text-white md:justify-between lg:flex-row lg:items-start lg:text-left'>
 					<div>
-						<Link
-							to='/'
-							className='flex items-center gap-2 text-2xl font-bold text-white'
-						>
-							<WustomersLogo fill='#fff' />
-							<p>Wustomers</p>
-						</Link>
+						<WustomersLogo className='text-white' />
 						<p className='w-52 py-4 text-sm'>
 							Broaden your marketing beyond borders with little budget
 						</p>
 					</div>
 
-					<ul className='flex items-center gap-8'>
+					<ul className='mt-5 flex items-center gap-8 lg:mt-0'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='link-hover capitalize'>
 								<Link to={nav.link}>{nav.name}</Link>
@@ -108,12 +102,12 @@ export const Footer = () => {
 					</ul>
 
 					<div className='w-72'>
-						<ul className='flex items-center gap-6'>
+						<ul className='mt-8 flex items-center justify-center gap-6 lg:mt-0 lg:justify-start'>
 							{socials?.map((social, index) => (
 								<li key={index}>
 									<a
 										href='#'
-										className='flex h-10 w-10 items-center justify-center rounded-full bg-[#8394E3]'
+										className='flex h-10 w-10 items-center justify-center rounded-full bg-[#8394E3] transition hover:bg-white hover:text-wustomers-blue'
 									>
 										{social.icon}
 									</a>
@@ -121,7 +115,7 @@ export const Footer = () => {
 							))}
 						</ul>
 
-						<ul className='mt-7 flex flex-col gap-5'>
+						<ul className='mt-10 flex flex-col items-center gap-5 lg:mt-7 lg:items-start'>
 							{contacts?.map(contact => (
 								<li
 									key={contact.text}

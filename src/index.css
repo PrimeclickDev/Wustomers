@@ -43,6 +43,6 @@ body {
 	@apply focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wustomers-blue;
 }
 
-.link-hover {
-	@apply relative overflow-x-hidden after:absolute after:bottom-0 after:right-0 after:h-[2px] after:w-full after:origin-bottom-left after:-translate-x-full after:bg-white after:transition-all after:hover:origin-bottom-right after:hover:translate-x-0;
-}
+/* .link-hover {
+	@apply relative overflow-x-hidden after:absolute after:bottom-0 after:right-0 after:h-[1px] after:w-full after:origin-bottom-left after:-translate-x-full after:bg-white after:transition after:hover:origin-bottom-right after:hover:translate-x-0;
+} */

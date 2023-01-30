@@ -1,6 +1,6 @@
-import { WustomersLogo } from 'assets/icons/WustomersLogo'
-import { Link, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Button } from './Button'
+import { WustomersLogo } from './WustomersLogo'
 
 export const Header = () => {
 	const navs = [
@@ -19,17 +19,11 @@ export const Header = () => {
 	]
 	return (
 		<div className='border-b border-b-wustomers-primary-light'>
-			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-2 py-4'>
+			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-4 py-3'>
 				<nav className='flex items-center gap-20'>
-					<Link
-						to='/'
-						className='flex items-center gap-2 text-2xl font-bold text-wustomers-blue'
-					>
-						<WustomersLogo />
-						<h1>Wustomers</h1>
-					</Link>
+					<WustomersLogo className='text-wustomers-blue' />
 
-					<ul className='flex items-center gap-11'>
+					<ul className='hidden items-center gap-11 md:flex'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='capitalize'>
 								<NavLink
@@ -47,9 +41,19 @@ export const Header = () => {
 					</ul>
 				</nav>
 
-				<div className='flex items-center gap-5'>
-					<Button text='Login' type='button' variant='outline' />
-					<Button text='Sign up' type='button' variant='fill' />
+				<div className='hidden items-center gap-5 md:flex'>
+					<Button
+						text='Login'
+						type='button'
+						variant='outline'
+						href='/login'
+					/>
+					<Button
+						text='Sign up'
+						type='button'
+						variant='fill'
+						href='/signup'
+					/>
 				</div>
 			</header>
 		</div>

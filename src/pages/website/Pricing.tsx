@@ -12,21 +12,26 @@ const Pricing = () => {
 	return (
 		<main className='pt-20 pb-44 text-center'>
 			<div className='mx-auto max-w-screen-xl px-2'>
-				<h2 className='text-6xl font-bold'>Pricing</h2>
+				<h2 className='text-4xl font-bold lg:text-6xl'>Pricing</h2>
 
-				<section className='mt-8 flex flex-col items-center bg-wustomers-primary-light py-14 px-10'>
-					<p className='w-max border border-[#1E96FC] py-2 px-14 text-lg text-[#1E96FC]'>
+				<section className='mt-8 flex flex-col items-center bg-wustomers-primary-light py-14 px-3 lg:px-10'>
+					<p className='w-max rounded-sx border border-[#1E96FC] py-2 px-6 text-base text-[#1E96FC] lg:px-14 lg:text-lg'>
 						This is a commission based plan
 					</p>
-					<p className='pt-7 text-xl text-black'>
+					<p className='pt-7 text-base text-black lg:text-xl'>
 						Enjoy the usage of our platform for free, for as long as you
 						like. However;
 					</p>
-					<p className='pt-6 pb-7 text-4xl font-bold text-black'>
+					<p className='pt-6 pb-7 text-3xl font-bold text-black lg:text-4xl'>
 						10% Commission per ads campaign
 					</p>
 
-					<Button type='button' variant='fill' text='Get started' />
+					<Button
+						type='button'
+						variant='fill'
+						text='Get started'
+						href='/signup'
+					/>
 
 					<div className='mt-8 flex w-full border-t border-t-wustomers-border-color'>
 						<ul className='mx-auto flex flex-col gap-4 pt-10'>

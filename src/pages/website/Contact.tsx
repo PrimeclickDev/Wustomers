@@ -9,12 +9,12 @@ const Contact = () => {
 	return (
 		<main className='pt-14 pb-44 text-center'>
 			<div className='mx-auto max-w-screen-xl px-2'>
-				<h2 className='text-6xl font-bold'>Contact</h2>
+				<h2 className='text-4xl font-bold lg:text-6xl'>Contact</h2>
 
-				<section className='mt-16 grid grid-cols-2 gap-32'>
-					<div className='rounded-sx bg-wustomers-primary-light p-6 text-left'>
+				<section className='mt-10 lg:mt-16 lg:grid lg:grid-cols-2 lg:gap-32'>
+					<div className='rounded-sx bg-wustomers-primary-light p-6 px-3 text-left lg:px-6'>
 						<form className='flex flex-col'>
-							<h3 className='max-w-sm text-xl text-black'>
+							<h3 className='max-w-sm text-base text-black lg:text-xl'>
 								Feel free to let us what you have to tell us and how we
 								can be of help:
 							</h3>
@@ -60,7 +60,9 @@ const Contact = () => {
 						</form>
 
 						<div className='mt-7 border-t border-t-wustomers-border-color pt-7'>
-							<p className='text-lg'>Contact us directly on:</p>
+							<p className='text-base lg:text-lg'>
+								Contact us directly on:
+							</p>
 							<ul className='flex items-center gap-6 pt-5 text-red-500'>
 								<li>
 									<a href='#'>
