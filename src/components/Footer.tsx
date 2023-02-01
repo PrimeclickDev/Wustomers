@@ -62,7 +62,7 @@ export const Footer = () => {
 		<footer className='mt-auto bg-wustomers-blue'>
 			<div className='mx-auto max-w-screen-xl px-2 pt-10 lg:pt-16'>
 				<div className='items-center justify-between border-b border-b-[#9CAAE9] pb-12 md:flex'>
-					<h3 className='text-center text-2xl font-bold text-white lg:max-w-[30ch] lg:text-left lg:text-4xl'>
+					<h3 className='text-center text-2xl font-bold text-white md:text-left lg:max-w-[30ch] lg:text-4xl'>
 						Look forward to our amazing mobile app that would be used to
 						serve you better.
 					</h3>
@@ -85,7 +85,7 @@ export const Footer = () => {
 					</div>
 				</div>
 
-				<div className='flex flex-col items-center  py-10 text-center text-white md:justify-between lg:flex-row lg:items-start lg:text-left'>
+				<div className='flex flex-col items-center py-10 text-center text-white md:justify-between md:gap-5 lg:flex-row lg:items-start lg:gap-0 lg:text-left'>
 					<div>
 						<WustomersLogo className='text-white' />
 						<p className='w-52 py-4 text-sm'>

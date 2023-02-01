@@ -7,7 +7,7 @@ export const ResetPassword = () => {
 	return (
 		<AuthLayout
 			imgSrc={forgotPasswordIllustration}
-			imgWidth={580}
+			imgWidth={550}
 			text='Keep track of your campaigns with little or no effort'
 		>
 			<section>

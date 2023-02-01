@@ -19,11 +19,11 @@ export const Header = () => {
 	]
 	return (
 		<div className='border-b border-b-wustomers-primary-light'>
-			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-4 py-3'>
+			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-3 py-3 lg:px-2'>
 				<nav className='flex items-center gap-20'>
 					<WustomersLogo className='text-wustomers-blue' />
 
-					<ul className='hidden items-center gap-11 md:flex'>
+					<ul className='hidden items-center gap-11 lg:flex'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='capitalize'>
 								<NavLink
@@ -41,7 +41,7 @@ export const Header = () => {
 					</ul>
 				</nav>
 
-				<div className='hidden items-center gap-5 md:flex'>
+				<div className='hidden items-center gap-5 lg:flex'>
 					<Button
 						text='Login'
 						type='button'

@@ -1,7 +1,10 @@
-import apiConnection from 'assets/images/api-connection.png'
-import campaignTracking from 'assets/images/campaign-tracking.png'
-import productMovement from 'assets/images/product-movement.png'
+import apiConnection from 'assets/images/api-connection.png?format=webp;png'
+import campaignTracking from 'assets/images/campaign-tracking.png?format=webp;png'
+import productMovement from 'assets/images/product-movement.png?format=webp;png'
 import { Button } from './Button'
+import { ImgWithFallback } from './ImgWithFallback'
+
+console.log(productMovement)
 
 export const HomeSection = () => {
 	const sections = [
@@ -32,11 +35,12 @@ export const HomeSection = () => {
 			img: campaignTracking,
 		},
 	]
+
 	return (
 		<>
 			{sections.map(info => (
 				<section key={info.id}>
-					<div className='mx-auto flex max-w-screen-xl flex-col items-center gap-10 px-3 pt-28 lg:flex-row lg:gap-20 lg:px-1'>
+					<div className='mx-auto flex max-w-screen-xl flex-col items-center gap-10 px-3 pt-28 md:px-10 lg:flex-row lg:gap-20 lg:px-3 xl:px-0'>
 						<div
 							className={`${
 								info.heading.includes('Link your products')
@@ -44,22 +48,27 @@ export const HomeSection = () => {
 									: ''
 							}`}
 						>
-							<img src={info.img} alt={`${info.heading} illustration`} />
+							<ImgWithFallback
+								type='image/png'
+								fallback={info.img[1]}
+								src={info.img[0]}
+								alt={`${info.heading} illustration`}
+							/>
 						</div>
 						<div
-							className={`${
+							className={` md:text-center lg:text-left ${
 								info.heading.includes('Link your products')
 									? 'order-2 lg:order-1'
 									: ''
 							}`}
 						>
-							<p className='text-sm font-medium uppercase tracking-wider text-wustomers-blue lg:text-lg'>
+							<p className='text-sm font-medium uppercase tracking-wider text-wustomers-blue md:text-lg'>
 								{info.subheading}
 							</p>
-							<h3 className='max-w-[50ch] pt-1 text-2xl font-bold lg:text-4xl lg:leading-[43px]'>
+							<h3 className='max-w-[50ch] pt-1 text-2xl font-bold md:text-4xl md:leading-[43px]'>
 								{info.heading}
 							</h3>
-							<p className='max-w-[50ch] pt-7 text-base lg:text-lg lg:leading-8'>
+							<p className='pt-7 text-base md:text-lg md:leading-8 lg:max-w-[50ch]'>
 								{info.body}
 							</p>
 
@@ -69,7 +78,7 @@ export const HomeSection = () => {
 									type='submit'
 									variant='outline'
 									href='/signup'
-									className='mt-10'
+									className='mt-10 md:mx-auto lg:mx-0'
 								/>
 							) : null}
 						</div>

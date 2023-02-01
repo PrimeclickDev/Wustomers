@@ -12,7 +12,7 @@ export const WustomersLogo = ({ className }: WustomersLogoProps) => {
 			className={`flex items-center gap-2 text-2xl font-bold ${className}`}
 		>
 			<Logo width={36} height={32} />
-			<h1 className='hidden md:block'>Wustomers</h1>
+			<h1 className=''>Wustomers</h1>
 		</Link>
 	)
 }

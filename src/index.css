@@ -44,5 +44,5 @@ body {
 }
 
 /* .link-hover {
-	@apply relative overflow-x-hidden after:absolute after:bottom-0 after:right-0 after:h-[1px] after:w-full after:origin-bottom-left after:-translate-x-full after:bg-white after:transition after:hover:origin-bottom-right after:hover:translate-x-0;
+	@apply relative overflow-x-hidden after:absolute after:bottom-0 after:right-0 after:h-[1px] after:w-full after:origin-bottom-left after:-translate-x-full after:bg-white after:transition-all after:hover:origin-bottom-right after:hover:translate-x-0;
 } */

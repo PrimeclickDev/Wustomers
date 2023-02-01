@@ -7,11 +7,11 @@ import { Button } from 'components/Button'
 
 const Contact = () => {
 	return (
-		<main className='pt-14 pb-44 text-center'>
-			<div className='mx-auto max-w-screen-xl px-2'>
+		<main className='pt-14 pb-20 text-center lg:pb-44'>
+			<div className='mx-auto max-w-screen-xl px-3 xl:px-0'>
 				<h2 className='text-4xl font-bold lg:text-6xl'>Contact</h2>
 
-				<section className='mt-10 lg:mt-16 lg:grid lg:grid-cols-2 lg:gap-32'>
+				<section className='mt-10 flex flex-col lg:mt-16 lg:grid lg:grid-cols-2 lg:gap-0 lg:overflow-hidden xl:gap-32'>
 					<div className='rounded-sx bg-wustomers-primary-light p-6 px-3 text-left lg:px-6'>
 						<form className='flex flex-col'>
 							<h3 className='max-w-sm text-base text-black lg:text-xl'>
@@ -63,32 +63,32 @@ const Contact = () => {
 							<p className='text-base lg:text-lg'>
 								Contact us directly on:
 							</p>
-							<ul className='flex items-center gap-6 pt-5 text-red-500'>
+							<ul className='flex items-center gap-6 pt-5'>
 								<li>
 									<a href='#'>
-										<Facebook className='invert' />
+										<Facebook />
 									</a>
 								</li>
 								<li>
 									<a href='#'>
-										<Linkedln className='invert' />
+										<Linkedln />
 									</a>
 								</li>
 								<li>
 									<a href='#'>
-										<Twitter className='invert' />
+										<Twitter />
 									</a>
 								</li>
 								<li>
 									<a href='#'>
-										<Instagram className='invert' />
+										<Instagram />
 									</a>
 								</li>
 							</ul>
 						</div>
 					</div>
 
-					<div className='h-[586px] w-[586px] rounded-full bg-gray-200'>
+					<div className='hidden lg:block'>
 						<ContactIllustration />
 					</div>
 				</section>

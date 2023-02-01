@@ -1,5 +1,5 @@
 import { Disclosure, Transition } from '@headlessui/react'
-import { ReactComponent as Arrow } from 'assets/icons/arrow-left.svg'
+import { ReactComponent as Arrow } from 'assets/icons/chevron-left.svg'
 
 export const Accordion = () => {
 	const faqs = [

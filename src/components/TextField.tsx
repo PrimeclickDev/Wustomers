@@ -6,9 +6,11 @@ type TextFieldProps = {
 	label: string
 	type: string
 	name: string
+	className?: string
+	// register: UseFormRegister<T extends string>
 }
 
-export const TextField = ({ label, name, type }: TextFieldProps) => {
+export const TextField = ({ label, name, type, className }: TextFieldProps) => {
 	const [togglePassword, setTogglePassword] = useState(false)
 
 	return (
@@ -23,7 +25,7 @@ export const TextField = ({ label, name, type }: TextFieldProps) => {
 					id={name}
 					className={`w-full rounded-sm border border-wustomers-primary-light bg-wustomers-primary px-4 py-2.5 ${
 						type === 'password' ? 'pr-14' : ''
-					}`}
+					} ${className}`}
 				/>
 				{type === 'password' ? (
 					<button
@@ -36,6 +38,13 @@ export const TextField = ({ label, name, type }: TextFieldProps) => {
 					</button>
 				) : null}
 			</div>
+			{/* <div
+				role='alert'
+				className='flex items-center gap-2 text-sm font-medium text-red-600'
+			>
+				<Error />
+				<span>You have an error!</span>
+			</div> */}
 		</div>
 	)
 }

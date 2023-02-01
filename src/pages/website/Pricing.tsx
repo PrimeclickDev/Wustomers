@@ -10,8 +10,8 @@ const Pricing = () => {
 	]
 
 	return (
-		<main className='pt-20 pb-44 text-center'>
-			<div className='mx-auto max-w-screen-xl px-2'>
+		<main className='pt-10 pb-20 text-center lg:pb-44 lg:pt-20'>
+			<div className='mx-auto max-w-screen-xl px-3 lg:px-0'>
 				<h2 className='text-4xl font-bold lg:text-6xl'>Pricing</h2>
 
 				<section className='mt-8 flex flex-col items-center bg-wustomers-primary-light py-14 px-3 lg:px-10'>
@@ -34,7 +34,7 @@ const Pricing = () => {
 					/>
 
 					<div className='mt-8 flex w-full border-t border-t-wustomers-border-color'>
-						<ul className='mx-auto flex flex-col gap-4 pt-10'>
+						<ul className='mx-auto flex flex-col items-center gap-4 pt-10 lg:items-start'>
 							{features?.map(feature => (
 								<li className='flex items-center gap-2' key={feature}>
 									<Checkmark />
