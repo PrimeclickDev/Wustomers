@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 const Signup = () => {
 	return (
 		<AuthLayout
-			imgWidth={560}
+			imgWidth={500}
 			text='Keep track of your campaigns with little or no effort'
 			imgSrc={signUpIllustration}
 		>

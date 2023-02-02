@@ -24,7 +24,7 @@ export const AuthLayout = ({
 					alt='illustration'
 					width={imgWidth}
 					// height={448}
-					className='mt-12'
+					className='mt-20'
 				/>
 
 				<p className='pt-8 text-center text-lg font-medium text-white lg:w-96 lg:text-left lg:text-2xl'>

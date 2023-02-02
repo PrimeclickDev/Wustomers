@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 const Login = () => {
 	return (
 		<AuthLayout
-			imgWidth={660}
+			imgWidth={550}
 			text='Keep track of your campaigns with little or no effort'
 			imgSrc={loginIllustration}
 		>
