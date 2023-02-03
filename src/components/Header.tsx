@@ -91,7 +91,7 @@ export const Header = () => {
 				</div>
 
 				{/* mobile menu */}
-				<button onClick={() => setIsOpen(true)}>
+				<button className='lg:hidden' onClick={() => setIsOpen(true)}>
 					<Menu />
 					<span className='sr-only'>menu</span>
 				</button>
