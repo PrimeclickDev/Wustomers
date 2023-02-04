@@ -12,6 +12,40 @@ export default defineConfig({
 		tsconfigPaths(),
 		svgr(),
 		imagetools(),
-		VitePWA({ registerType: 'autoUpdate', injectRegister: 'auto' }),
+		VitePWA({
+			registerType: 'autoUpdate',
+			injectRegister: 'auto',
+			includeAssets: [
+				'favicon.ico',
+				'apple-touch-icon.png',
+				'masked-icon.svg',
+			],
+			manifest: {
+				name: 'Wustomers',
+				short_name: 'wustomers',
+				description: '',
+				icons: [
+					{
+						src: 'android-chrome-192x192.png',
+						sizes: '192x192',
+						type: 'image/png',
+					},
+					{
+						src: 'android-chrome-512x512.png',
+						sizes: '512x512',
+						type: 'image/png',
+					},
+					{
+						src: 'android-chrome-512x512.png',
+						sizes: '512x512',
+						type: 'image/png',
+						purpose: 'any maskable',
+					},
+				],
+				theme_color: '#ffffff',
+				background_color: '#ffffff',
+				display: 'standalone',
+			},
+		}),
 	],
 })

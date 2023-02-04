@@ -1,12 +1,41 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import loginIllustration from 'assets/images/login-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
 import { AuthLayout } from 'layouts/AuthLayout'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { z } from 'zod'
+
+const schema = z.object({
+	email: z
+		.string()
+		.min(1, { message: 'Email address is required' })
+		.email({ message: 'Please enter a valid email address' })
+		.trim(),
+	password: z
+		.string()
+		.min(8, { message: 'Password must be at least 8 characters long' })
+		.trim(),
+})
+
+type LoginSchema = z.infer<typeof schema>
 
 const Login = () => {
+	const { register, handleSubmit, control } = useForm<LoginSchema>({
+		defaultValues: {
+			email: '',
+			password: '',
+		},
+		resolver: zodResolver(schema),
+	})
+
+	const loginUser: SubmitHandler<LoginSchema> = data => {
+		console.log('data: ', data)
+	}
+
 	return (
 		<AuthLayout
 			imgWidth={550}
@@ -15,9 +44,21 @@ const Login = () => {
 		>
 			<h2 className='text-4xl font-bold'>Log in</h2>
 
-			<form className='mt-8'>
-				<TextField label='email' name='email' type='email' />
-				<TextField label='password' name='password' type='password' />
+			<form className='mt-8' onSubmit={handleSubmit(loginUser)}>
+				<TextField
+					register={register}
+					label='email'
+					name='email'
+					type='email'
+					control={control}
+				/>
+				<TextField
+					register={register}
+					label='password'
+					name='password'
+					type='password'
+					control={control}
+				/>
 
 				<Link
 					to='/forgot-password'

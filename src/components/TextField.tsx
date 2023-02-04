@@ -1,17 +1,39 @@
+import { ReactComponent as Error } from 'assets/icons/danger.svg'
 import { ReactComponent as Eye } from 'assets/icons/eye.svg'
 import { ReactComponent as EyeSlash } from 'assets/icons/eyeslash.svg'
 import { useState } from 'react'
+import {
+	Control,
+	FieldValues,
+	Path,
+	useController,
+	UseFormRegister,
+} from 'react-hook-form'
 
-type TextFieldProps = {
+type TextFieldProps<T extends FieldValues> = {
 	label: string
 	type: string
-	name: string
+	name: Path<T>
 	className?: string
-	// register: UseFormRegister<T extends string>
+	register: UseFormRegister<T>
+	control: Control<T>
 }
 
-export const TextField = ({ label, name, type, className }: TextFieldProps) => {
+export const TextField = <T extends FieldValues>({
+	label,
+	name,
+	type,
+	className,
+	register,
+	control,
+}: TextFieldProps<T>) => {
 	const [togglePassword, setTogglePassword] = useState(false)
+	const {
+		fieldState: { error },
+	} = useController({
+		name,
+		control,
+	})
 
 	return (
 		<div className='mt-6 flex flex-col gap-1'>
@@ -21,11 +43,14 @@ export const TextField = ({ label, name, type, className }: TextFieldProps) => {
 			<div className='relative'>
 				<input
 					type={togglePassword ? 'text' : type}
+					{...register(name)}
 					name={name}
 					id={name}
-					className={`w-full rounded-sm border border-wustomers-primary-light bg-wustomers-primary px-4 py-2.5 ${
+					className={`w-full rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ${
 						type === 'password' ? 'pr-14' : ''
-					} ${className}`}
+					} ${className} ${
+						error ? 'ring-red-600' : 'ring-wustomers-primary-light'
+					}`}
 				/>
 				{type === 'password' ? (
 					<button
@@ -38,13 +63,15 @@ export const TextField = ({ label, name, type, className }: TextFieldProps) => {
 					</button>
 				) : null}
 			</div>
-			{/* <div
-				role='alert'
-				className='flex items-center gap-2 text-sm font-medium text-red-600'
-			>
-				<Error />
-				<span>You have an error!</span>
-			</div> */}
+			{error ? (
+				<div
+					role='alert'
+					className='flex items-center gap-2 text-xs font-medium text-red-600'
+				>
+					<Error width={14} />
+					<span>{error?.message}</span>
+				</div>
+			) : null}
 		</div>
 	)
 }

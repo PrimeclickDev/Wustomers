@@ -1,12 +1,82 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ReactComponent as Error } from 'assets/icons/danger.svg'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import signUpIllustration from 'assets/images/signup-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
 import { AuthLayout } from 'layouts/AuthLayout'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { z } from 'zod'
+
+const schema = z
+	.object({
+		email: z
+			.string()
+			.min(1, { message: 'Email address is required' })
+			.email({ message: 'Please enter a valid email address' })
+			.trim(),
+		password: z
+			.string()
+			.min(1, { message: 'Password is required' })
+			.min(8, {
+				message: 'Password must be at least 8 characters long',
+			})
+			.regex(
+				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+				{
+					message:
+						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+				}
+			)
+			.trim(),
+		confirmPassword: z
+			.string()
+			.min(1, { message: 'Password confirmation is required' })
+			.min(8, {
+				message: 'Password confirmation must be at least 8 characters long',
+			})
+			.regex(
+				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+				{
+					message:
+						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+				}
+			)
+			.trim(),
+		acceptTerms: z.literal(true, {
+			errorMap: () => ({
+				message: 'You must accept the terms and conditions',
+			}),
+		}),
+	})
+	.refine(data => data.password === data.confirmPassword, {
+		path: ['confirmPassword'],
+		message: 'Passwords do not match',
+	})
+
+type SignupSchema = z.infer<typeof schema>
 
 const Signup = () => {
+	const {
+		register,
+		handleSubmit,
+		control,
+		formState: { errors },
+	} = useForm<SignupSchema>({
+		defaultValues: {
+			email: '',
+			password: '',
+			confirmPassword: '',
+			acceptTerms: undefined,
+		},
+		resolver: zodResolver(schema),
+	})
+
+	const registerUser: SubmitHandler<SignupSchema> = data => {
+		console.log('data: ', data)
+	}
 	return (
 		<AuthLayout
 			imgWidth={500}
@@ -24,17 +94,48 @@ const Signup = () => {
 				<h2 className='text-4xl font-bold'>Sign up</h2>
 			</header>
 
-			<form className='mt-8'>
-				<TextField label='email' name='email' type='email' />
-				<TextField label='password' name='password' type='password' />
+			<form className='mt-8' onSubmit={handleSubmit(registerUser)}>
+				<TextField
+					register={register}
+					control={control}
+					label='email'
+					name='email'
+					type='email'
+				/>
+				<div>
+					<TextField
+						register={register}
+						control={control}
+						label='password'
+						name='password'
+						type='password'
+					/>
+					<span className='text-xs text-gray-500'>
+						Password must contain a symbol, a number, an uppercase and
+						lowercase character
+					</span>
+				</div>
 
-				<div className='mt-3 flex items-center gap-2 font-[#979797]'>
+				<div>
+					<TextField
+						register={register}
+						control={control}
+						label='Confirm password'
+						name='confirmPassword'
+						type='password'
+					/>
+					<span className='text-xs text-gray-500'>
+						Password must contain a symbol, a number, an uppercase and
+						lowercase character
+					</span>
+				</div>
+
+				<div className='mt-5 flex items-center gap-2 font-[#979797]'>
 					<input
 						type='checkbox'
-						name='acceptTerms'
 						id='acceptTerms'
 						className='border-3 h-4 w-4 cursor-pointer rounded-sm accent-wustomers-blue transition-colors hover:bg-gray-300'
-						// className='peer sr-only'
+						{...register('acceptTerms')}
 					/>
 					{/* <div className='relative h-4 w-4 rounded-sm border-2 border-[#979797] after:absolute after:h-2 after:w-2 after:translate-x-1/2 after:bg-wustomers-blue' /> */}
 					<label htmlFor='acceptTerms' className='text-sm'>
@@ -48,6 +149,15 @@ const Signup = () => {
 						</a>
 					</label>
 				</div>
+				{errors.acceptTerms ? (
+					<div
+						role='alert'
+						className='flex items-center gap-2 text-xs font-medium text-red-600'
+					>
+						<Error width={14} />
+						<span>{errors.acceptTerms.message}</span>
+					</div>
+				) : null}
 
 				<Button
 					text='Sign up'

@@ -31,7 +31,7 @@ export const AuthLayout = ({
 					{text}
 				</p>
 			</section>
-			<section className='col-span-2 py-10 px-3 md:mt-20 md:px-10 lg:px-3 xl:px-0 xl:py-0 xl:pr-32'>
+			<section className='col-span-2 py-10 px-3 md:my-20 md:px-10 lg:px-3 xl:px-0 xl:py-0 xl:pr-32'>
 				{children}
 			</section>
 		</main>

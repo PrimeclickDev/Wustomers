@@ -4,8 +4,6 @@ import productMovement from 'assets/images/product-movement.png?format=webp;png'
 import { Button } from './Button'
 import { ImgWithFallback } from './ImgWithFallback'
 
-console.log(productMovement)
-
 export const HomeSection = () => {
 	const sections = [
 		{

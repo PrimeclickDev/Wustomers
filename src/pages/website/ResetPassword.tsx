@@ -1,9 +1,61 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import forgotPasswordIllustration from 'assets/images/forgot-password-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
 import { AuthLayout } from 'layouts/AuthLayout'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+const schema = z
+	.object({
+		newPassword: z
+			.string()
+			.min(1, { message: 'Password is required' })
+			.min(8, {
+				message: 'Password must be at least 8 characters long',
+			})
+			.regex(
+				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+				{
+					message:
+						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+				}
+			)
+			.trim(),
+		confirmNewPassword: z
+			.string()
+			.min(1, { message: 'Password confirmation is required' })
+			.min(8, {
+				message: 'Password confirmation must be at least 8 characters long',
+			})
+			.regex(
+				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+				{
+					message:
+						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+				}
+			)
+			.trim(),
+	})
+	.refine(data => data.newPassword === data.confirmNewPassword, {
+		path: ['confirmPassword'],
+		message: 'Passwords do not match',
+	})
+
+type ResetPasswordSchema = z.infer<typeof schema>
 
 export const ResetPassword = () => {
+	const { register, handleSubmit, control } = useForm<ResetPasswordSchema>({
+		defaultValues: {
+			newPassword: '',
+			confirmNewPassword: '',
+		},
+		resolver: zodResolver(schema),
+	})
+
+	const resetPassword: SubmitHandler<ResetPasswordSchema> = data => {
+		console.log('data: ', data)
+	}
 	return (
 		<AuthLayout
 			imgSrc={forgotPasswordIllustration}
@@ -26,17 +78,34 @@ export const ResetPassword = () => {
 					</p>
 				</header>
 
-				<form className='mt-10'>
-					<TextField
-						label='update password'
-						name='update-password'
-						type='password'
-					/>
-					<TextField
-						label='confirm new password'
-						name='confirm-password'
-						type='password'
-					/>
+				<form className='mt-10' onSubmit={handleSubmit(resetPassword)}>
+					<div>
+						<TextField
+							register={register}
+							control={control}
+							label='new password'
+							name='newPassword'
+							type='password'
+						/>
+						<span className='text-xs text-gray-500'>
+							Password must contain a symbol, a number, an uppercase and
+							lowercase character
+						</span>
+					</div>
+
+					<div>
+						<TextField
+							register={register}
+							control={control}
+							label='confirm new password'
+							name='confirmNewPassword'
+							type='password'
+						/>
+						<span className='text-xs text-gray-500'>
+							Password must contain a symbol, a number, an uppercase and
+							lowercase character
+						</span>
+					</div>
 					<Button
 						text='Reset Password'
 						variant='fill'
