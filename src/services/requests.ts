@@ -17,7 +17,7 @@ export const privateInstance = axios.create({
 	},
 })
 
-// intercepts requests and add token to header
+// intercepts private requests and add token to header
 privateInstance.interceptors.request.use(
 	async config => {
 		const token = cookies.get('wustomers')

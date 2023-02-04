@@ -27,7 +27,7 @@ const schema = z
 				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
 				{
 					message:
-						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+						'Password must contain a symbol, a number, an uppercase and lowercase character',
 				}
 			)
 			.trim(),
@@ -41,7 +41,7 @@ const schema = z
 				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
 				{
 					message:
-						'Password must contain an uppercase, lowercase letter, numeric value and special character.',
+						'Password must contain a symbol, a number, an uppercase and lowercase character',
 				}
 			)
 			.trim(),

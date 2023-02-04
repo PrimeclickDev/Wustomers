@@ -46,7 +46,7 @@ export const TextField = <T extends FieldValues>({
 					{...register(name)}
 					name={name}
 					id={name}
-					className={`w-full rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ${
+					className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ${
 						type === 'password' ? 'pr-14' : ''
 					} ${className} ${
 						error ? 'ring-red-600' : 'ring-wustomers-primary-light'
@@ -68,7 +68,9 @@ export const TextField = <T extends FieldValues>({
 					role='alert'
 					className='flex items-center gap-2 text-xs font-medium text-red-600'
 				>
-					<Error width={14} />
+					<div className='rounded-sx bg-red-200 px-2 py-1'>
+						<Error width={14} />
+					</div>
 					<span>{error?.message}</span>
 				</div>
 			) : null}

@@ -1,6 +1,4 @@
 import { ErrorFallback } from 'components/ErrorFallback'
-import { OnlineStatus } from 'components/OnlineStatus'
-import { useOnlineStatus } from 'hooks/useOnlineStatus'
 import { DashboardLayout } from 'layouts/DashboardLayout'
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
 import Dashboard from 'pages/dashboard/Dashboard'
@@ -16,11 +14,9 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
-	const { isOnline } = useOnlineStatus()
-
 	return (
 		<ErrorBoundary FallbackComponent={ErrorFallback}>
-			{!isOnline ? <OnlineStatus /> : null}
+			{/* {!isOnline ? <OnlineStatus /> : null} */}
 			<Routes>
 				<Route path='/' element={<WebsiteLayout />}>
 					<Route index element={<Home />} />
