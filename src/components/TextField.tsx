@@ -63,6 +63,12 @@ export const TextField = <T extends FieldValues>({
 					</button>
 				) : null}
 			</div>
+			{type === 'password' ? (
+				<span className='text-xs text-gray-500'>
+					Password must contain a symbol, a number, an uppercase and
+					lowercase character
+				</span>
+			) : null}
 			{error ? (
 				<div
 					role='alert'

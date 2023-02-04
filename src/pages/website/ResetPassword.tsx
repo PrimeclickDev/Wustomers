@@ -79,33 +79,21 @@ export const ResetPassword = () => {
 				</header>
 
 				<form className='mt-10' onSubmit={handleSubmit(resetPassword)}>
-					<div>
-						<TextField
-							register={register}
-							control={control}
-							label='new password'
-							name='newPassword'
-							type='password'
-						/>
-						<span className='text-xs text-gray-500'>
-							Password must contain a symbol, a number, an uppercase and
-							lowercase character
-						</span>
-					</div>
+					<TextField
+						register={register}
+						control={control}
+						label='new password'
+						name='newPassword'
+						type='password'
+					/>
 
-					<div>
-						<TextField
-							register={register}
-							control={control}
-							label='confirm new password'
-							name='confirmNewPassword'
-							type='password'
-						/>
-						<span className='text-xs text-gray-500'>
-							Password must contain a symbol, a number, an uppercase and
-							lowercase character
-						</span>
-					</div>
+					<TextField
+						register={register}
+						control={control}
+						label='confirm new password'
+						name='confirmNewPassword'
+						type='password'
+					/>
 					<Button
 						text='Reset Password'
 						variant='fill'

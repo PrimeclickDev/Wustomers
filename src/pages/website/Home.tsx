@@ -37,7 +37,7 @@ const Home = () => {
 		<main>
 			{/* hero */}
 			<section>
-				<div className='relative mx-auto flex max-w-screen-xl flex-col items-center px-2 pt-10 lg:flex-row lg:gap-5 lg:px-2 lg:pt-20'>
+				<div className='relative mx-auto flex max-w-screen-xl flex-col items-center px-2 pt-20 lg:flex-row lg:gap-5 lg:px-2 lg:pt-32'>
 					<div className='order-2 mt-6 flex max-w-[70ch] flex-col items-center text-center lg:order-none lg:mt-0 lg:items-start lg:text-left'>
 						<h2 className='text-3xl font-bold leading-tight md:text-5xl md:leading-tight lg:text-6xl lg:leading-[72px]'>
 							Launch lead generation Google ads campaigns fast with a

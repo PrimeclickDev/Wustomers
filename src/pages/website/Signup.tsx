@@ -102,34 +102,20 @@ const Signup = () => {
 					name='email'
 					type='email'
 				/>
-				<div>
-					<TextField
-						register={register}
-						control={control}
-						label='password'
-						name='password'
-						type='password'
-					/>
-					<span className='text-xs text-gray-500'>
-						Password must contain a symbol, a number, an uppercase and
-						lowercase character
-					</span>
-				</div>
-
-				<div>
-					<TextField
-						register={register}
-						control={control}
-						label='Confirm password'
-						name='confirmPassword'
-						type='password'
-					/>
-					<span className='text-xs text-gray-500'>
-						Password must contain a symbol, a number, an uppercase and
-						lowercase character
-					</span>
-				</div>
-
+				<TextField
+					register={register}
+					control={control}
+					label='password'
+					name='password'
+					type='password'
+				/>
+				<TextField
+					register={register}
+					control={control}
+					label='Confirm password'
+					name='confirmPassword'
+					type='password'
+				/>
 				<div className='mt-5 flex items-center gap-2 font-[#979797]'>
 					<input
 						type='checkbox'
@@ -158,7 +144,6 @@ const Signup = () => {
 						<span>{errors.acceptTerms.message}</span>
 					</div>
 				) : null}
-
 				<Button
 					text='Sign up'
 					variant='fill'

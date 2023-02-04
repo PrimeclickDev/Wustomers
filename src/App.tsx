@@ -2,6 +2,7 @@ import { ErrorFallback } from 'components/ErrorFallback'
 import { DashboardLayout } from 'layouts/DashboardLayout'
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
 import Dashboard from 'pages/dashboard/Dashboard'
+import NotFound from 'pages/NotFound'
 import Contact from 'pages/website/Contact'
 import { ForgotPassword } from 'pages/website/ForgotPassword'
 import Home from 'pages/website/Home'
@@ -34,6 +35,8 @@ const App = () => {
 				<Route path='forgot-password' element={<ForgotPassword />} />
 				<Route path='reset-password' element={<ResetPassword />} />
 				<Route path='verify-email' element={<VerifyEmail />} />
+
+				<Route path='*' element={<NotFound />} />
 			</Routes>
 		</ErrorBoundary>
 	)

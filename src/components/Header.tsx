@@ -6,7 +6,7 @@ import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as Money } from 'assets/icons/money-change.svg'
 import { ReactComponent as Register } from 'assets/icons/people.svg'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Button } from './Button'
 import { WustomersLogo } from './WustomersLogo'
@@ -32,28 +32,23 @@ export const Header = () => {
 		},
 	]
 
-	const handleScroll = () => {
-		const offset = window.scrollY
-		if (offset > 50) {
-			setScrolled(true)
-		} else {
-			setScrolled(false)
-		}
-	}
+	// const handleScroll = () => {
+	// 	const offset = window.scrollY
+	// 	if (offset > 50) {
+	// 		setScrolled(true)
+	// 	} else {
+	// 		setScrolled(false)
+	// 	}
+	// }
 
-	useEffect(() => {
-		window.addEventListener('scroll', handleScroll)
+	// useEffect(() => {
+	// 	window.addEventListener('scroll', handleScroll)
 
-		return () => window.removeEventListener('scroll', handleScroll)
-	}, [])
+	// 	return () => window.removeEventListener('scroll', handleScroll)
+	// }, [])
 
 	return (
-		<div
-			className={`${
-				scrolled &&
-				'fixed top-0 left-1/2 z-50 w-full -translate-x-1/2 border-b-2 bg-white'
-			} border-b border-b-wustomers-primary-light transition`}
-		>
+		<div className='fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-b-wustomers-primary-light bg-white'>
 			<header className='mx-auto flex max-w-screen-xl items-center justify-between px-3 py-3 lg:px-2'>
 				<nav className='flex items-center gap-20'>
 					<WustomersLogo className='text-wustomers-blue' />
@@ -106,7 +101,7 @@ export const Header = () => {
 				/>
 
 				<div
-					className={`absolute right-0 top-0 z-50 h-screen w-64 bg-wustomers-blue py-20 px-7 text-white transition lg:hidden ${
+					className={`absolute right-0 top-0 z-50 h-screen w-64 bg-wustomers-blue py-20 px-7 text-white shadow-2xl transition lg:hidden ${
 						isOpen ? 'translate-x-0' : 'translate-x-full'
 					}`}
 				>
