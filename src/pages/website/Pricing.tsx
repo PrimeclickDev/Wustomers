@@ -10,7 +10,7 @@ const Pricing = () => {
 	]
 
 	return (
-		<main className='pt-10 pb-20 text-center lg:pb-44 lg:pt-20'>
+		<main className='py-20 text-center lg:pb-44 lg:pt-20'>
 			<div className='mx-auto max-w-screen-xl px-3 lg:px-0'>
 				<h2 className='text-4xl font-bold lg:text-6xl'>Pricing</h2>
 
@@ -31,6 +31,7 @@ const Pricing = () => {
 						variant='fill'
 						text='Get started'
 						href='/signup'
+						className='py-2.5'
 					/>
 
 					<div className='mt-8 flex w-full border-t border-t-wustomers-border-color'>

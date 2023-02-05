@@ -7,7 +7,7 @@ import { Button } from 'components/Button'
 
 const Contact = () => {
 	return (
-		<main className='pt-14 pb-20 text-center lg:pb-44'>
+		<main className='py-20 text-center lg:pb-44'>
 			<div className='mx-auto max-w-screen-xl px-3 xl:px-0'>
 				<h2 className='text-4xl font-bold lg:text-6xl'>Contact</h2>
 

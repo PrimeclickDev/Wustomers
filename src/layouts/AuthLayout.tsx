@@ -16,18 +16,17 @@ export const AuthLayout = ({
 }: AuthLayoutProps) => {
 	return (
 		<main className='min-h-screen lg:grid lg:grid-cols-5 lg:gap-3 xl:gap-10'>
-			<section className='col-span-3 flex flex-col items-center bg-wustomers-blue-light px-5 py-10 lg:sticky lg:top-0 lg:right-0 lg:h-screen lg:items-start lg:self-start lg:px-20 lg:pt-16'>
+			<section className='col-span-3 flex flex-col bg-wustomers-blue-light px-5 py-10 lg:sticky lg:top-0 lg:right-0 lg:h-screen lg:self-start lg:px-20 lg:pt-16'>
 				<WustomersLogo className='text-white' />
 
 				<img
 					src={imgSrc}
 					alt='illustration'
 					width={imgWidth}
-					// height={448}
-					className='mt-20'
+					className='hidden lg:mt-20 lg:block'
 				/>
 
-				<p className='pt-8 text-center text-lg font-medium text-white lg:w-96 lg:text-left lg:text-2xl'>
+				<p className='hidden pt-4 font-medium text-white lg:block lg:w-96 lg:pt-8 lg:text-2xl'>
 					{text}
 				</p>
 			</section>

@@ -1,10 +1,8 @@
 import { ReactComponent as Call } from 'assets/icons/call.svg'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
 import { ReactComponent as Home } from 'assets/icons/home.svg'
-import { ReactComponent as Login } from 'assets/icons/login.svg'
 import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as Money } from 'assets/icons/money-change.svg'
-import { ReactComponent as Register } from 'assets/icons/people.svg'
 
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
@@ -12,7 +10,6 @@ import { Button } from './Button'
 import { WustomersLogo } from './WustomersLogo'
 
 export const Header = () => {
-	const [scrolled, setScrolled] = useState(false)
 	const [isOpen, setIsOpen] = useState(false)
 	const navs = [
 		{
@@ -31,21 +28,6 @@ export const Header = () => {
 			icon: <Call width={18} height={18} />,
 		},
 	]
-
-	// const handleScroll = () => {
-	// 	const offset = window.scrollY
-	// 	if (offset > 50) {
-	// 		setScrolled(true)
-	// 	} else {
-	// 		setScrolled(false)
-	// 	}
-	// }
-
-	// useEffect(() => {
-	// 	window.addEventListener('scroll', handleScroll)
-
-	// 	return () => window.removeEventListener('scroll', handleScroll)
-	// }, [])
 
 	return (
 		<div className='fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-b-wustomers-primary-light bg-white'>
@@ -76,6 +58,7 @@ export const Header = () => {
 						type='button'
 						variant='outline'
 						href='/login'
+						className='text-wustomers-blue'
 					/>
 					<Button
 						text='Sign up'
@@ -101,11 +84,11 @@ export const Header = () => {
 				/>
 
 				<div
-					className={`absolute right-0 top-0 z-50 h-screen w-64 bg-wustomers-blue py-20 px-7 text-white shadow-2xl transition lg:hidden ${
+					className={`absolute right-0 top-0 z-50 flex h-screen w-64 flex-col bg-wustomers-blue px-7 pt-28 pb-10 text-white shadow-2xl transition lg:hidden ${
 						isOpen ? 'translate-x-0' : 'translate-x-full'
 					}`}
 				>
-					<ul className='flex flex-col items-end gap-8 font-bold'>
+					<ul className='flex flex-col items-center gap-8 font-bold'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='capitalize'>
 								<NavLink
@@ -114,29 +97,25 @@ export const Header = () => {
 									className='flex items-center gap-4'
 								>
 									{nav.name}
-									<span className='rounded-md bg-wustomers-blue-light p-2'>
-										{nav.icon}
-									</span>
 								</NavLink>
 							</li>
 						))}
-						<li className='capitalize'>
-							<NavLink to='/login' className='flex items-center gap-4'>
-								Login
-								<span className='rounded-md bg-wustomers-blue-light p-2'>
-									<Login width={18} height={18} />
-								</span>
-							</NavLink>
-						</li>
-						<li className='capitalize'>
-							<NavLink to='/login' className='flex items-center gap-4'>
-								Signup
-								<span className='rounded-md bg-wustomers-blue-light p-2'>
-									<Register width={18} height={18} />
-								</span>
-							</NavLink>
-						</li>
 					</ul>
+
+					<div className='mt-20 flex flex-col gap-4'>
+						<Button
+							text='Login'
+							variant='outline'
+							href='/login'
+							className='border-white py-3 text-center text-white'
+						/>
+						<Button
+							text='Sign up'
+							variant='fill'
+							href='/signup'
+							className='bg-white py-3 text-center text-wustomers-blue'
+						/>
+					</div>
 
 					<button
 						onClick={() => setIsOpen(false)}

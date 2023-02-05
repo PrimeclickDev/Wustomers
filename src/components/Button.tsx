@@ -21,11 +21,11 @@ export const Button = ({
 			{href ? (
 				<Link
 					to={href}
-					className={`flex w-max rounded-sm px-11 text-sm font-medium uppercase tracking-wider text-white transition active:scale-95 md:text-base ${
+					className={`rounded-sm px-11 text-sm font-medium uppercase tracking-wider text-white transition active:scale-95 md:text-base ${
 						variant === 'fill'
 							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 hover:shadow-xl hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
-							? 'border-2 border-wustomers-blue py-[6px] text-wustomers-blue hover:scale-[1.01] hover:bg-wustomers-blue/5'
+							? 'border-2 border-wustomers-blue py-[6px] hover:scale-[1.01] hover:bg-wustomers-blue/5'
 							: ''
 					} ${className}`}
 				>

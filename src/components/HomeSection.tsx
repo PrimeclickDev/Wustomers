@@ -76,7 +76,7 @@ export const HomeSection = () => {
 									type='submit'
 									variant='outline'
 									href='/signup'
-									className='mt-10 md:mx-auto lg:mx-0'
+									className='mt-10 inline-block py-2.5 text-wustomers-blue md:mx-auto lg:mx-0'
 								/>
 							) : null}
 						</div>

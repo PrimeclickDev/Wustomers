@@ -53,7 +53,7 @@ const Home = () => {
 							type='submit'
 							variant='fill'
 							href='/signup'
-							className='mt-6'
+							className='mt-6 py-2.5'
 						/>
 					</div>
 
@@ -98,6 +98,7 @@ const Home = () => {
 							type='submit'
 							variant='fill'
 							href='/signup'
+							className='py-3'
 						/>
 					</div>
 				</div>
