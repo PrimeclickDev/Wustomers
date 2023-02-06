@@ -1,9 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReactComponent as CircleArrow } from 'assets/icons/arrowcircle.svg'
-import forgotPasswordIllustration from 'assets/images/forgot-password-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
-import { AuthLayout } from 'layouts/AuthLayout'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
@@ -18,7 +16,7 @@ const schema = z.object({
 
 type ForgotPasswordSchema = z.infer<typeof schema>
 
-export const ForgotPassword = () => {
+const ForgotPassword = () => {
 	const { register, handleSubmit, control } = useForm<ForgotPasswordSchema>({
 		defaultValues: {
 			email: '',
@@ -30,11 +28,7 @@ export const ForgotPassword = () => {
 		console.log('data: ', data)
 	}
 	return (
-		<AuthLayout
-			imgSrc={forgotPasswordIllustration}
-			imgWidth={500}
-			text='Keep track of your campaigns with little or no effort'
-		>
+		<>
 			<section>
 				<header>
 					<Link
@@ -73,6 +67,8 @@ export const ForgotPassword = () => {
 					/>
 				</form>
 			</section>
-		</AuthLayout>
+		</>
 	)
 }
+
+export default ForgotPassword

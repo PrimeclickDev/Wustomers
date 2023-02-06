@@ -39,7 +39,11 @@ body {
 	min-height: 100vh;
 }
 
-:focus-visible {
+:focus {
+	@apply focus:outline-wustomers-blue;
+}
+
+button {
 	@apply focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wustomers-blue;
 }
 

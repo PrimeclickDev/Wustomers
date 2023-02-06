@@ -19,15 +19,9 @@ export const ErrorFallback = ({
 				We are working on fixing the proble. Please try again
 			</p>
 			{process.env.NODE_ENV === 'development' ? (
-				<pre className='mt-5 bg-red-300 py-3 px-5'>{error.message}</pre>
+				<span className='mt-5 bg-red-300 py-3 px-5'>{error.message}</span>
 			) : null}
 
-			{/* <button
-				onClick={resetErrorBoundary}
-				className='mt-3 rounded border border-red-600 bg-red-300/30 py-3 px-8 text-sm text-red-600 transition hover:opacity-80 active:scale-95'
-			>
-				Refresh Page
-			</button> */}
 			<Button
 				text='Try again'
 				variant='fill'

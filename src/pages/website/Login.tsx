@@ -1,10 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
-import loginIllustration from 'assets/images/login-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
-import { AuthLayout } from 'layouts/AuthLayout'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
@@ -38,11 +36,7 @@ const Login = () => {
 	}
 
 	return (
-		<AuthLayout
-			imgWidth={550}
-			text='Keep track of your campaigns with little or no effort'
-			imgSrc={loginIllustration}
-		>
+		<>
 			<h2 className='text-4xl font-bold'>Log in</h2>
 
 			<form className='mt-8' onSubmit={handleSubmit(loginUser)}>
@@ -98,7 +92,7 @@ const Login = () => {
 					Sign up
 				</Link>
 			</p>
-		</AuthLayout>
+		</>
 	)
 }
 export default Login

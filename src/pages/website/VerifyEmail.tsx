@@ -1,9 +1,7 @@
 import { ReactComponent as CircleArrow } from 'assets/icons/arrowcircle.svg'
-import signUpIllustration from 'assets/images/signup-illustration.png'
 import { Button } from 'components/Button'
 import { OtpInput } from 'components/OtpInput'
 import { useTimer } from 'hooks/useTimer'
-import { AuthLayout } from 'layouts/AuthLayout'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -13,11 +11,7 @@ const VerifyEmail = () => {
 	const { min } = useTimer({ seconds: 10 })
 
 	return (
-		<AuthLayout
-			imgWidth={560}
-			text='Keep track of your campaigns with little or no effort'
-			imgSrc={signUpIllustration}
-		>
+		<>
 			<header>
 				<Link
 					to='/login'
@@ -59,7 +53,7 @@ const VerifyEmail = () => {
 					</p>
 				)}
 			</div>
-		</AuthLayout>
+		</>
 	)
 }
 export default VerifyEmail
