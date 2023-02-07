@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 // import forgotPasswordIllustration from 'assets/images/forgot-password-illustration.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
+import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -44,6 +45,8 @@ const schema = z
 type ResetPasswordSchema = z.infer<typeof schema>
 
 const ResetPassword = () => {
+	usePageTitle('Reset Password')
+
 	const { register, handleSubmit, control } = useForm<ResetPasswordSchema>({
 		defaultValues: {
 			newPassword: '',

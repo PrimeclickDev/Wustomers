@@ -3,6 +3,7 @@ import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
+import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
@@ -23,6 +24,8 @@ const schema = z.object({
 type LoginSchema = z.infer<typeof schema>
 
 const Login = () => {
+	usePageTitle('Login')
+
 	const { register, handleSubmit, control } = useForm<LoginSchema>({
 		defaultValues: {
 			email: '',

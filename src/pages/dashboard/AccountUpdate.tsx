@@ -1,0 +1,256 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ReactComponent as Facebook } from 'assets/icons/facebook.svg'
+import { ReactComponent as InformationIcon } from 'assets/icons/information.svg'
+import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
+import { ReactComponent as Tiktok } from 'assets/icons/tiktok.svg'
+import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
+import { Button } from 'components/Button'
+import { Details } from 'components/Details'
+import { ErrorMessage } from 'components/ErrorMessage'
+import { TextField } from 'components/TextField'
+import { usePageTitle } from 'hooks/usePageTitle'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+const schema = z.object({
+	firstName: z.string().min(1, { message: 'First name is required' }),
+	lastName: z.string().min(1, { message: 'First name is required' }),
+	emailAddress: z
+		.string()
+		.min(1, { message: 'Email address is required' })
+		.email({ message: 'Please enter a valid email address' })
+		.trim(),
+	phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+	businessName: z.string().min(1, { message: 'Business name is required' }),
+	businessMail: z
+		.string()
+		.min(1, { message: 'Business mail is required' })
+		.email({ message: 'Please enter a valid email address' })
+		.trim(),
+	industryType: z.string().min(1, { message: 'Industry type is required' }),
+	noOfEmployess: z.string().min(1, { message: 'No of Employees is required' }),
+	instagramLink: z
+		.string()
+		// .url({ message: 'Please enter a valid link' })
+		.optional(),
+	tiktokLink: z
+		.string()
+		// .url({ message: 'Please enter a valid link' })
+		.optional(),
+	facebookLink: z
+		.string()
+		// .url({ message: 'Please enter a valid link' })
+		.optional(),
+	twitterLink: z
+		.string()
+		// .url({ message: 'Please enter a valid link' })
+		.optional(),
+})
+
+type AccountUpdateSchema = z.infer<typeof schema>
+
+const initialFormValues = {
+	businessMail: '',
+	businessName: '',
+	emailAddress: '',
+	firstName: '',
+	industryType: '',
+	lastName: '',
+	noOfEmployess: '',
+	phoneNumber: '',
+	facebookLink: '',
+	instagramLink: '',
+	tiktokLink: '',
+	twitterLink: '',
+}
+
+const AccountUpdate = () => {
+	usePageTitle('Account Update')
+	const {
+		control,
+		register,
+		handleSubmit,
+		formState: { isValid, isSubmitted },
+	} = useForm<AccountUpdateSchema>({
+		resolver: zodResolver(schema),
+		defaultValues: initialFormValues,
+	})
+
+	const updateProfile: SubmitHandler<AccountUpdateSchema> = data => {
+		console.log(data)
+	}
+
+	return (
+		<>
+			<h2 className='text-3xl'>
+				Hi, <span className='font-black'>Bosun</span>
+			</h2>
+
+			{/*alert */}
+			<p
+				role='alert'
+				className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 font-medium'
+			>
+				<div className='bg-wustomers-blue py-2 px-4 text-white'>
+					<InformationIcon />
+				</div>
+				<span>
+					Note: Please fill this form to get your account verified
+				</span>
+			</p>
+
+			<div className='mr-10 mt-10 flex gap-20'>
+				<form
+					className='flex flex-1 flex-col gap-1'
+					onSubmit={handleSubmit(updateProfile)}
+				>
+					<Details heading='Basic Information'>
+						<TextField
+							control={control}
+							placeholder='First Name'
+							name='firstName'
+							register={register}
+							type='text'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							placeholder='Last Name'
+							name='lastName'
+							register={register}
+							type='text'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							name='emailAddress'
+							register={register}
+							type='email'
+							placeholder='Email Address'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							placeholder='Phone Number'
+							name='phoneNumber'
+							register={register}
+							type='tel'
+							inputMode='numeric'
+							className='mt-[6px]'
+						/>
+					</Details>
+					<Details heading='Business Information'>
+						<TextField
+							control={control}
+							placeholder='Business name'
+							name='businessName'
+							register={register}
+							type='text'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							name='businessMail'
+							register={register}
+							type='email'
+							placeholder='Business mail'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							placeholder='Industry type'
+							name='industryType'
+							register={register}
+							type='text'
+							className='mt-[6px]'
+						/>
+						<TextField
+							control={control}
+							placeholder='No of employees'
+							name='noOfEmployess'
+							register={register}
+							type='number'
+							inputMode='numeric'
+							className='mt-[6px]'
+						/>
+					</Details>
+					<Details heading='Social Media accounts'>
+						<TextField
+							control={control}
+							placeholder='Instagram link'
+							name='instagramLink'
+							register={register}
+							type='url'
+							className='mt-[6px]'
+							prefixIcon={<Instagram />}
+						/>
+						<TextField
+							control={control}
+							placeholder='Tiktok link'
+							name='tiktokLink'
+							register={register}
+							type='url'
+							className='mt-[6px]'
+							prefixIcon={<Tiktok />}
+						/>
+						<TextField
+							control={control}
+							placeholder='Facebook link'
+							name='facebookLink'
+							register={register}
+							type='url'
+							className='mt-[6px]'
+							prefixIcon={<Facebook />}
+						/>
+						<TextField
+							control={control}
+							placeholder='Twitter link'
+							name='twitterLink'
+							register={register}
+							type='url'
+							className='mt-[6px]'
+							prefixIcon={<Twitter />}
+						/>
+					</Details>
+
+					<div className='mt-2 flex items-center justify-between'>
+						{isSubmitted && !isValid ? (
+							<ErrorMessage message='You form has errors, kindly check' />
+						) : null}
+
+						<Button
+							text='Submit'
+							variant='fill'
+							type='submit'
+							className='ml-auto self-start'
+						/>
+					</div>
+				</form>
+
+				<div className='flex flex-col items-center'>
+					<img
+						src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
+						alt='user'
+						className='h-64 w-60 rounded-sx object-cover object-top'
+					/>
+
+					<div className='mt-4 flex flex-col items-start gap-4'>
+						<Button
+							text='Remove Image'
+							variant='outline'
+							type='button'
+							className='font-medium capitalize'
+						/>
+						<Button
+							text='Replace Image'
+							variant='fill'
+							type='button'
+							className='font-medium capitalize'
+						/>
+					</div>
+				</div>
+			</div>
+		</>
+	)
+}
+export default AccountUpdate

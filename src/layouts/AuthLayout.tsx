@@ -4,14 +4,11 @@ import signupIllustration from 'assets/images/signup-illustration.png'
 import { PageLoader } from 'components/PageLoader'
 import { WustomersLogo } from 'components/WustomersLogo'
 import { Suspense } from 'react'
-import { Location, Outlet } from 'react-router-dom'
-
-type AuthLayoutProps = {
-	location: Location
-}
+import { Outlet, useLocation } from 'react-router-dom'
 
 // wrapper for signup, login and forgot password
-export const AuthLayout = ({ location }: AuthLayoutProps) => {
+export const AuthLayout = () => {
+	const location = useLocation()
 	const changePageIllustration = () => {
 		if (location.pathname.includes('login')) {
 			return (

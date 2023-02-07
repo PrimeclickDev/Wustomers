@@ -4,8 +4,11 @@ import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Linkedln } from 'assets/icons/linkedln.svg'
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
 import { Button } from 'components/Button'
+import { usePageTitle } from 'hooks/usePageTitle'
 
 const Contact = () => {
+	usePageTitle('Contact')
+
 	return (
 		<main className='py-20 text-center lg:pb-32 lg:pt-28'>
 			<div className='mx-auto max-w-screen-xl px-3 xl:px-0'>

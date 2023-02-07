@@ -8,8 +8,11 @@ import { Accordion } from 'components/Accordion'
 import { Button } from 'components/Button'
 import { HomeSection } from 'components/HomeSection'
 import { ImgWithFallback } from 'components/ImgWithFallback'
+import { usePageTitle } from 'hooks/usePageTitle'
 
 const Home = () => {
+	usePageTitle('Home')
+
 	const howitWorks = [
 		{
 			title: 'Create Account',

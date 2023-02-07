@@ -4,6 +4,7 @@ import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import { Button } from 'components/Button'
 import { TextField } from 'components/TextField'
+import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
@@ -57,6 +58,8 @@ const schema = z
 type SignupSchema = z.infer<typeof schema>
 
 const Signup = () => {
+	usePageTitle('Sign up')
+
 	const {
 		register,
 		handleSubmit,
@@ -117,7 +120,6 @@ const Signup = () => {
 						className='border-3 h-4 w-4 cursor-pointer rounded-sm accent-wustomers-blue transition-colors hover:bg-gray-300'
 						{...register('acceptTerms')}
 					/>
-					{/* <div className='relative h-4 w-4 rounded-sm border-2 border-[#979797] after:absolute after:h-2 after:w-2 after:translate-x-1/2 after:bg-wustomers-blue' /> */}
 					<label htmlFor='acceptTerms' className='text-sm'>
 						I agree to{' '}
 						<a href='#' className='font-medium text-wustomers-blue'>

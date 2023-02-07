@@ -1,7 +1,10 @@
 import { ReactComponent as Checkmark } from 'assets/icons/checkmark.svg'
 import { Button } from 'components/Button'
+import { usePageTitle } from 'hooks/usePageTitle'
 
 const Pricing = () => {
+	usePageTitle('Pricing')
+
 	const features = [
 		'Unlimited landing page creation',
 		'Free data from google analytics',

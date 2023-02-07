@@ -1,11 +1,14 @@
 import { ReactComponent as CircleArrow } from 'assets/icons/arrowcircle.svg'
 import { Button } from 'components/Button'
 import { OtpInput } from 'components/OtpInput'
+import { usePageTitle } from 'hooks/usePageTitle'
 import { useTimer } from 'hooks/useTimer'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const VerifyEmail = () => {
+	usePageTitle('Verify Email')
+
 	const [otp, setOtp] = useState('')
 	const onChange = (value: string) => setOtp(value)
 	const { min } = useTimer({ seconds: 10 })

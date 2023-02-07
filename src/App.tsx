@@ -3,6 +3,13 @@ import { useConcurrentTransition } from 'hooks/useConcurrentTransition'
 import { AuthLayout } from 'layouts/AuthLayout'
 import { DashboardLayout } from 'layouts/DashboardLayout'
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
+import AccountUpdate from 'pages/dashboard/AccountUpdate'
+import CampaignMetrics from 'pages/dashboard/CampaignMetrics'
+import Campaigns from 'pages/dashboard/Campaigns'
+import Notifications from 'pages/dashboard/Notifications'
+import Overview from 'pages/dashboard/Overview'
+import Settings from 'pages/dashboard/Settings'
+import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
 import React from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -16,12 +23,10 @@ const Signup = React.lazy(() => import('pages/website/Signup'))
 const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
 const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))
 const ResetPassword = React.lazy(() => import('pages/website/ResetPassword'))
-const Dashboard = React.lazy(() => import('pages/dashboard/Dashboard'))
+const Dashboard = React.lazy(() => import('pages/dashboard/Overview'))
 
 const App = () => {
 	const location = useConcurrentTransition()
-
-	console.log(location)
 
 	return (
 		<ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -34,11 +39,17 @@ const App = () => {
 				</Route>
 
 				<Route path='dashboard' element={<DashboardLayout />}>
-					<Route index element={<Dashboard />} />
+					<Route index element={<Overview />} />
+					<Route path='campaigns' element={<Campaigns />} />
+					<Route path='campaigns-metrics' element={<CampaignMetrics />} />
+					<Route path='account-update' element={<AccountUpdate />} />
+					<Route path='settings' element={<Settings />} />
+					<Route path='support' element={<Support />} />
+					<Route path='notifications' element={<Notifications />} />
 				</Route>
 
 				{/* auth routes */}
-				<Route element={<AuthLayout location={location} />}>
+				<Route element={<AuthLayout />}>
 					<Route path='login' element={<Login />} />
 					<Route path='signup' element={<Signup />} />
 					<Route path='forgot-password' element={<ForgotPassword />} />

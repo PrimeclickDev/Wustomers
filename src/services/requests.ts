@@ -2,15 +2,15 @@ import axios from 'axios'
 import { Cookies } from 'react-cookie'
 
 const cookies = new Cookies()
-const pageUrl = new URL(window.location.href)
+// const pageUrl = new URL(window.location.href)
 
 const baseURL =
-	import.meta.env.MODE === 'development' || pageUrl.origin === '' ? '' : ''
+	import.meta.env.MODE === 'development'
+		? 'https://jsonplaceholder.typicode.com'
+		: ''
+const token = cookies.get('wustomers')
 
-export const publicInstance = axios.create({
-	baseURL,
-})
-export const privateInstance = axios.create({
+export const instance = axios.create({
 	baseURL,
 	headers: {
 		'Content-Type': 'application/json',
@@ -18,15 +18,24 @@ export const privateInstance = axios.create({
 })
 
 // intercepts private requests and add token to header
-privateInstance.interceptors.request.use(
+instance.interceptors.request.use(
 	async config => {
-		const token = cookies.get('wustomers')
-
 		if (token) {
 			config.headers['Authorization'] = `Bearer ${token}`
 		}
 
 		return config
+	},
+	error => Promise.reject(error)
+)
+
+// intercepts private response and check if token has expired
+instance.interceptors.response.use(
+	response => {
+		if (response.status === 401) {
+			window.location.pathname = '/login'
+		}
+		return response
 	},
 	error => Promise.reject(error)
 )
