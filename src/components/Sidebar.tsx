@@ -67,7 +67,7 @@ export const Sidebar = () => {
 	]
 
 	return (
-		<aside className='shadow-xl'>
+		<aside className='hidden shadow-xl lg:block'>
 			<header className='bg-wustomers-blue-light/5 px-10 py-5'>
 				<WustomersLogo className='text-wustomers-blue' />
 			</header>
@@ -78,7 +78,7 @@ export const Sidebar = () => {
 						key={nav.title}
 						className={`px-4 ${
 							nav.title === 'settings' &&
-							'mt-10 border-t border-t-[#D5D5D5] pt-2'
+							'mt-10 border-t border-t-wustomers-dark-gray pt-2'
 						}`}
 					>
 						{/* <h3 key={nav.title}>{nav.title}</h3> */}
@@ -103,7 +103,7 @@ export const Sidebar = () => {
 						</ul>
 					</div>
 				))}
-				<button className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-[#D5D5D5] py-4 px-5 capitalize text-wustomers-gray transition-all hover:text-wustomers-blue'>
+				<button className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-5 capitalize text-wustomers-gray transition-all hover:text-wustomers-blue'>
 					<LogoutIcon width={20} height={20} />
 					<p>Log out</p>
 				</button>

@@ -7,7 +7,7 @@ import { Outlet } from 'react-router-dom'
 
 export const DashboardLayout = () => {
 	return (
-		<main className='grid min-h-screen grid-cols-[300px_auto]'>
+		<main className='min-h-screen lg:grid lg:grid-cols-[300px_auto]'>
 			<Sidebar />
 
 			<QueryErrorResetBoundary>
@@ -16,7 +16,7 @@ export const DashboardLayout = () => {
 						<section className='bg-[#E6EAF9]'>
 							<DashboardHeader />
 
-							<div className='p-10'>
+							<div className='max-w-6xl px-4 py-10 lg:px-10'>
 								<Outlet />
 							</div>
 						</section>

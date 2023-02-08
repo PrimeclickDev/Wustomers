@@ -4,13 +4,18 @@ import { ReactComponent as InformationIcon } from 'assets/icons/information.svg'
 import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Tiktok } from 'assets/icons/tiktok.svg'
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
+import emptyUserImg from 'assets/images/empty.png?format=webp;png'
 import { Button } from 'components/Button'
 import { Details } from 'components/Details'
 import { ErrorMessage } from 'components/ErrorMessage'
+import { ImgWithFallback } from 'components/ImgWithFallback'
+// import { ImgWithFallback } from 'components/ImgWithFallback'
 import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+console.log('empty', emptyUserImg)
 
 const schema = z.object({
 	firstName: z.string().min(1, { message: 'First name is required' }),
@@ -87,9 +92,9 @@ const AccountUpdate = () => {
 			</h2>
 
 			{/*alert */}
-			<p
+			<div
 				role='alert'
-				className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 font-medium'
+				className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 text-sm font-medium lg:text-base'
 			>
 				<div className='bg-wustomers-blue py-2 px-4 text-white'>
 					<InformationIcon />
@@ -97,11 +102,11 @@ const AccountUpdate = () => {
 				<span>
 					Note: Please fill this form to get your account verified
 				</span>
-			</p>
+			</div>
 
-			<div className='mr-10 mt-10 flex gap-20'>
+			<div className='mt-10 flex flex-col md:flex-row md:gap-10 lg:gap-20'>
 				<form
-					className='flex flex-1 flex-col gap-1'
+					className='order-2 mt-8 flex flex-1 flex-col gap-1 md:order-none md:mt-0'
 					onSubmit={handleSubmit(updateProfile)}
 				>
 					<Details heading='Basic Information'>
@@ -213,7 +218,7 @@ const AccountUpdate = () => {
 						/>
 					</Details>
 
-					<div className='mt-2 flex items-center justify-between'>
+					<div className='mt-2 flex flex-col items-center justify-between md:mt-0 md:flex-row'>
 						{isSubmitted && !isValid ? (
 							<ErrorMessage message='You form has errors, kindly check' />
 						) : null}
@@ -222,17 +227,24 @@ const AccountUpdate = () => {
 							text='Submit'
 							variant='fill'
 							type='submit'
-							className='ml-auto self-start'
+							className='mt-3 lg:mt-0 lg:ml-auto'
 						/>
 					</div>
 				</form>
 
-				<div className='flex flex-col items-center'>
-					<img
+				<div className='order-1 flex flex-col items-center md:order-none'>
+					<ImgWithFallback
+						type='image/png'
+						fallback={emptyUserImg[1]}
+						src={emptyUserImg[0]}
+						alt='user'
+						className='h-64 w-60 rounded-sx bg-wustomers-main object-cover'
+					/>
+					{/* <img
 						src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
 						alt='user'
-						className='h-64 w-60 rounded-sx object-cover object-top'
-					/>
+						className=''
+					/> */}
 
 					<div className='mt-4 flex flex-col items-start gap-4'>
 						<Button

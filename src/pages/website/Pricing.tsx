@@ -18,7 +18,7 @@ const Pricing = () => {
 				<h2 className='text-4xl font-bold lg:text-6xl'>Pricing</h2>
 
 				<section className='mt-8 flex flex-col items-center bg-wustomers-primary-light py-14 px-3 lg:px-10'>
-					<p className='w-max rounded-sx border border-[#1E96FC] py-2 px-6 text-base text-[#1E96FC] lg:px-14 lg:text-lg'>
+					<p className='w-max rounded-sx border border-wustomers-blue-other py-2 px-6 text-base text-wustomers-blue-other lg:px-14 lg:text-lg'>
 						This is a commission based plan
 					</p>
 					<p className='pt-7 text-base text-black lg:text-xl'>

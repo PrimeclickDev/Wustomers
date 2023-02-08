@@ -41,7 +41,7 @@ export const TextField = <T extends FieldValues>({
 
 	return (
 		<div className={`mt-6 flex flex-col gap-1 ${className}`}>
-			<label htmlFor={name} className='text-lg capitalize'>
+			<label htmlFor={name} className='text-base capitalize md:text-lg'>
 				{label}
 			</label>
 			<div className='relative'>

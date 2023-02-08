@@ -1,12 +1,12 @@
 import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg'
 import { ReactComponent as ProfileIcon } from 'assets/icons/profile.svg'
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 export const DashboardHeader = () => {
 	return (
-		<div className='flex items-center gap-44 bg-white px-10 py-3'>
-			<form className='relative flex-1'>
+		<div className='flex items-center bg-white px-4 py-3 lg:gap-44 lg:px-10'>
+			<form className='relative hidden lg:block lg:flex-1'>
 				<input
 					type='search'
 					name='search'
@@ -17,13 +17,17 @@ export const DashboardHeader = () => {
 			</form>
 
 			<div className='flex items-center gap-5 text-wustomers-blue'>
-				<Link
+				<NavLink
 					to='/dashboard/notifications'
-					className='grid h-10 w-10 place-items-center rounded-full bg-[#F3F4FC] transition-colors hover:bg-wustomers-blue hover:text-white'
+					className={({ isActive }) =>
+						`grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-wustomers-blue hover:text-white ${
+							isActive ? 'bg-wustomers-blue text-white' : 'bg-[#F3F4FC]'
+						}`
+					}
 				>
 					<NotificationIcon />
 					<span className='sr-only'>notifications</span>
-				</Link>
+				</NavLink>
 				<button className='grid h-10 w-10 place-items-center rounded-full bg-[#F3F4FC] transition-colors hover:bg-wustomers-blue hover:text-white'>
 					<ProfileIcon />
 					<span className='sr-only'>profile</span>

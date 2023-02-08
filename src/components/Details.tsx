@@ -18,7 +18,7 @@ export const Details = ({ heading, children }: DetailsProps) => {
 								: 'bg-[#9CAAE9] hover:bg-wustomers-blue/50'
 						}`}
 					>
-						<h3 className='text-lg'>{heading}</h3>
+						<h3 className='text-base lg:text-lg'>{heading}</h3>
 						<Arrow
 							className={`transition-transform ${
 								open ? 'transform' : '-rotate-90 transform'
@@ -35,7 +35,7 @@ export const Details = ({ heading, children }: DetailsProps) => {
 					>
 						<Disclosure.Panel
 							as='div'
-							className='mt-1 bg-white px-6 pt-1 pb-5'
+							className='mt-1 bg-white px-3 pt-1 pb-5 lg:px-6'
 						>
 							{children}
 						</Disclosure.Panel>
