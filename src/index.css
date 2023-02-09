@@ -63,3 +63,8 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
 	-moz-appearance: textfield;
 }
+
+/* removes ms edge password reveal icon */
+::-ms-reveal {
+	display: none;
+}
