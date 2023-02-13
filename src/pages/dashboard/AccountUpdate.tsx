@@ -5,8 +5,13 @@ import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Tiktok } from 'assets/icons/tiktok.svg'
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
 import emptyUserImg from 'assets/images/empty.png?format=webp;png'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from 'components/Accordion'
 import { Button } from 'components/Button'
-import { Details } from 'components/Details'
 import { ErrorMessage } from 'components/ErrorMessage'
 import { ImgWithFallback } from 'components/ImgWithFallback'
 // import { ImgWithFallback } from 'components/ImgWithFallback'
@@ -14,8 +19,6 @@ import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
-
-console.log('empty', emptyUserImg)
 
 const schema = z.object({
 	firstName: z.string().min(1, { message: 'First name is required' }),
@@ -109,114 +112,133 @@ const AccountUpdate = () => {
 					className='order-2 mt-8 flex flex-1 flex-col gap-1 md:order-none md:mt-0'
 					onSubmit={handleSubmit(updateProfile)}
 				>
-					<Details heading='Basic Information'>
-						<TextField
-							control={control}
-							placeholder='First Name'
-							name='firstName'
-							register={register}
-							type='text'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							placeholder='Last Name'
-							name='lastName'
-							register={register}
-							type='text'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							name='emailAddress'
-							register={register}
-							type='email'
-							placeholder='Email Address'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							placeholder='Phone Number'
-							name='phoneNumber'
-							register={register}
-							type='tel'
-							inputMode='numeric'
-							className='mt-[6px]'
-						/>
-					</Details>
-					<Details heading='Business Information'>
-						<TextField
-							control={control}
-							placeholder='Business name'
-							name='businessName'
-							register={register}
-							type='text'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							name='businessMail'
-							register={register}
-							type='email'
-							placeholder='Business mail'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							placeholder='Industry type'
-							name='industryType'
-							register={register}
-							type='text'
-							className='mt-[6px]'
-						/>
-						<TextField
-							control={control}
-							placeholder='No of employees'
-							name='noOfEmployess'
-							register={register}
-							type='number'
-							inputMode='numeric'
-							className='mt-[6px]'
-						/>
-					</Details>
-					<Details heading='Social Media accounts'>
-						<TextField
-							control={control}
-							placeholder='Instagram link'
-							name='instagramLink'
-							register={register}
-							type='url'
-							className='mt-[6px]'
-							prefixIcon={<Instagram />}
-						/>
-						<TextField
-							control={control}
-							placeholder='Tiktok link'
-							name='tiktokLink'
-							register={register}
-							type='url'
-							className='mt-[6px]'
-							prefixIcon={<Tiktok />}
-						/>
-						<TextField
-							control={control}
-							placeholder='Facebook link'
-							name='facebookLink'
-							register={register}
-							type='url'
-							className='mt-[6px]'
-							prefixIcon={<Facebook />}
-						/>
-						<TextField
-							control={control}
-							placeholder='Twitter link'
-							name='twitterLink'
-							register={register}
-							type='url'
-							className='mt-[6px]'
-							prefixIcon={<Twitter />}
-						/>
-					</Details>
+					<Accordion>
+						<AccordionItem value='item-1' className='border-b-0'>
+							<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light lg:px-4 lg:py-2 lg:text-lg'>
+								Basic Information
+							</AccordionTrigger>
+							<AccordionContent className='bg-white text-base'>
+								<TextField
+									control={control}
+									placeholder='First Name'
+									name='firstName'
+									register={register}
+									type='text'
+									className='mt-0'
+								/>
+								<TextField
+									control={control}
+									placeholder='Last Name'
+									name='lastName'
+									register={register}
+									type='text'
+									className='mt-[6px]'
+								/>
+								<TextField
+									control={control}
+									name='emailAddress'
+									register={register}
+									type='email'
+									placeholder='Email Address'
+									className='mt-[6px]'
+								/>
+								<TextField
+									control={control}
+									placeholder='Phone Number'
+									name='phoneNumber'
+									register={register}
+									type='tel'
+									inputMode='numeric'
+									className='mt-[6px]'
+								/>
+							</AccordionContent>
+						</AccordionItem>
+
+						<AccordionItem value='item-2' className='border-b-0'>
+							<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light lg:px-4 lg:py-2 lg:text-lg'>
+								Business Information
+							</AccordionTrigger>
+							<AccordionContent className='bg-white text-base'>
+								<TextField
+									control={control}
+									placeholder='Business name'
+									name='businessName'
+									register={register}
+									type='text'
+									className='mt-0'
+								/>
+								<TextField
+									control={control}
+									name='businessMail'
+									register={register}
+									type='email'
+									placeholder='Business mail'
+									className='mt-[6px]'
+								/>
+								<TextField
+									control={control}
+									placeholder='Industry type'
+									name='industryType'
+									register={register}
+									type='text'
+									className='mt-[6px]'
+								/>
+								<TextField
+									control={control}
+									placeholder='No of employees'
+									name='noOfEmployess'
+									register={register}
+									type='number'
+									inputMode='numeric'
+									className='mt-[6px]'
+								/>
+							</AccordionContent>
+						</AccordionItem>
+
+						<AccordionItem value='item-3' className='border-b-0'>
+							<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light lg:px-4 lg:py-2 lg:text-lg'>
+								Social Media accounts
+							</AccordionTrigger>
+							<AccordionContent className='mt-0 bg-white text-base'>
+								<TextField
+									control={control}
+									placeholder='Instagram link'
+									name='instagramLink'
+									register={register}
+									type='url'
+									className='mt-0'
+									prefixIcon={<Instagram />}
+								/>
+								<TextField
+									control={control}
+									placeholder='Tiktok link'
+									name='tiktokLink'
+									register={register}
+									type='url'
+									className='mt-[6px]'
+									prefixIcon={<Tiktok />}
+								/>
+								<TextField
+									control={control}
+									placeholder='Facebook link'
+									name='facebookLink'
+									register={register}
+									type='url'
+									className='mt-[6px]'
+									prefixIcon={<Facebook />}
+								/>
+								<TextField
+									control={control}
+									placeholder='Twitter link'
+									name='twitterLink'
+									register={register}
+									type='url'
+									className='mt-[6px]'
+									prefixIcon={<Twitter />}
+								/>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 
 					<div className='mt-2 flex flex-col items-center justify-between md:mt-0 md:flex-row'>
 						{isSubmitted && !isValid ? (

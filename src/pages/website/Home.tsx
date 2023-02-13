@@ -4,10 +4,16 @@ import { ReactComponent as Monitor } from 'assets/icons/monitormobbile.svg'
 import { ReactComponent as User } from 'assets/icons/useredit.svg'
 // this is using 'vite-imagetools' to convert the image to webp and png format
 import heroImg from 'assets/images/hero-img.png?format=webp;png'
-import { Accordion } from 'components/Accordion'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from 'components/Accordion'
 import { Button } from 'components/Button'
 import { HomeSection } from 'components/HomeSection'
 import { ImgWithFallback } from 'components/ImgWithFallback'
+import { faqs } from 'data/faqs'
 import { usePageTitle } from 'hooks/usePageTitle'
 
 const Home = () => {
@@ -115,7 +121,18 @@ const Home = () => {
 							Frequently Asked Questions (FAQs)
 						</h3>
 
-						<Accordion />
+						<div className='mx-auto mt-8 w-full bg-[#1E1E1E] p-1 text-white lg:py-4 lg:px-7'>
+							<Accordion>
+								{faqs.map(faq => (
+									<AccordionItem value={`item ${faq.id}`} key={faq.id}>
+										<AccordionTrigger className='text-left'>
+											{faq.question}
+										</AccordionTrigger>
+										<AccordionContent>{faq.answer}</AccordionContent>
+									</AccordionItem>
+								))}
+							</Accordion>
+						</div>
 					</div>
 				</div>
 			</section>

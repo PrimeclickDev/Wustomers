@@ -2,7 +2,11 @@ import { ReactComponent as CampaignMetricIcon } from 'assets/icons/activity-outl
 import { ReactComponent as CampaignMetricFillIcon } from 'assets/icons/activity.svg'
 import { ReactComponent as CampaignFillIcon } from 'assets/icons/campaigns-fill.svg'
 import { ReactComponent as CampaignIcon } from 'assets/icons/campaigns.svg'
-import { ReactComponent as SupportFillIcon } from 'assets/icons/information-fill.svg'
+import { ReactComponent as Close } from 'assets/icons/close-square.svg'
+import {
+	ReactComponent as InfoIcon,
+	ReactComponent as SupportFillIcon,
+} from 'assets/icons/information-fill.svg'
 import { ReactComponent as SupportIcon } from 'assets/icons/information.svg'
 import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import { ReactComponent as OverviewFillIcon } from 'assets/icons/overview-fill.svg'
@@ -11,103 +15,171 @@ import { ReactComponent as ProfileOutlineIcon } from 'assets/icons/profile-outli
 import { ReactComponent as SettingsIcon } from 'assets/icons/setting.svg'
 import { ReactComponent as SettingsFillIcon } from 'assets/icons/settings-fill.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/useredit.svg'
+import { useScrollLock } from 'hooks/useScrollLock'
+import { useState } from 'react'
 
 import { NavLink, useLocation } from 'react-router-dom'
+import { Button } from './Button'
+import { Modal } from './Modal'
 import { WustomersLogo } from './WustomersLogo'
 
-export const Sidebar = () => {
+type SidebarProps = {
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+	isOpen: boolean
+}
+
+const dashboardNavs = [
+	{
+		title: 'user',
+		routes: [
+			{
+				name: 'Overview',
+				link: 'dashboard',
+				icon: <OverviewIcon />,
+				activeIcon: <OverviewFillIcon />,
+			},
+			{
+				name: 'Campaigns',
+				link: 'campaigns',
+				icon: <CampaignIcon />,
+				activeIcon: <CampaignFillIcon />,
+			},
+			{
+				name: 'Campaign metrics',
+				link: 'campaigns-metrics',
+				icon: <CampaignMetricIcon />,
+				activeIcon: <CampaignMetricFillIcon width={20} height={20} />,
+			},
+			{
+				name: 'Account update',
+				link: 'account-update',
+				icon: <ProfileOutlineIcon />,
+				activeIcon: <UserIcon width={20} height={20} />,
+			},
+		],
+	},
+	{
+		title: 'settings',
+		routes: [
+			{
+				name: 'Settings',
+				link: 'settings',
+				icon: <SettingsIcon />,
+				activeIcon: <SettingsFillIcon />,
+			},
+			{
+				name: 'Support',
+				link: 'support',
+				icon: <SupportIcon />,
+				activeIcon: <SupportFillIcon />,
+			},
+		],
+	},
+]
+
+export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
+	useScrollLock({ isOpen })
 	const location = useLocation()
-	const dashboardNavs = [
-		{
-			title: 'user',
-			routes: [
-				{
-					name: 'Overview',
-					link: '/dashboard',
-					icon: <OverviewIcon />,
-					activeIcon: <OverviewFillIcon />,
-				},
-				{
-					name: 'Campaigns',
-					link: '/dashboard/campaigns',
-					icon: <CampaignIcon />,
-					activeIcon: <CampaignFillIcon />,
-				},
-				{
-					name: 'Campaign metrics',
-					link: '/dashboard/campaigns-metrics',
-					icon: <CampaignMetricIcon />,
-					activeIcon: <CampaignMetricFillIcon width={20} height={20} />,
-				},
-				{
-					name: 'Account update',
-					link: '/dashboard/account-update',
-					icon: <ProfileOutlineIcon />,
-					activeIcon: <UserIcon width={20} height={20} />,
-				},
-			],
-		},
-		{
-			title: 'settings',
-			routes: [
-				{
-					name: 'Settings',
-					link: '/dashboard/settings',
-					icon: <SettingsIcon />,
-					activeIcon: <SettingsFillIcon />,
-				},
-				{
-					name: 'Support',
-					link: '/dashboard/support',
-					icon: <SupportIcon />,
-					activeIcon: <SupportFillIcon />,
-				},
-			],
-		},
-	]
+	const [modalOpen, setModalOpen] = useState(false)
+	console.log('isOpen', isOpen)
+
+	const openModal = () => setModalOpen(true)
+	const closeModal = () => setModalOpen(false)
 
 	return (
-		<aside className='hidden shadow-xl lg:block'>
-			<header className='bg-wustomers-blue-light/5 px-10 py-5'>
-				<WustomersLogo className='text-wustomers-blue' />
-			</header>
+		<>
+			<div
+				aria-hidden='true'
+				onClick={() => setIsOpen(false)}
+				className={`absolute inset-0 z-30 min-h-screen w-full bg-black/70 shadow-xl transition-all lg:hidden lg:shadow-none ${
+					isOpen ? 'block' : 'hidden'
+				}`}
+			/>
+			<aside
+				className={`absolute left-0 top-0 z-50 w-64 flex-col bg-white transition lg:sticky lg:top-0 lg:left-0 lg:flex lg:w-auto lg:self-start ${
+					isOpen
+						? 'lg:transition-y-0 -translate-x-0'
+						: '-translate-x-full lg:translate-x-0'
+				}`}
+			>
+				<header className='bg-wustomers-blue-light/5 py-5 pl-4 pr-8 lg:px-10'>
+					<WustomersLogo className='text-wustomers-blue' />
+				</header>
 
-			<nav className='pt-6 pb-10'>
-				{dashboardNavs.map(nav => (
-					<div
-						key={nav.title}
-						className={`px-4 ${
-							nav.title === 'settings' &&
-							'mt-10 border-t border-t-wustomers-dark-gray pt-2'
-						}`}
+				<nav className='pt-6 pb-10'>
+					{dashboardNavs.map(nav => (
+						<div
+							key={nav.title}
+							className={`px-4 ${
+								nav.title === 'settings' &&
+								'mt-10 border-t border-t-wustomers-dark-gray pt-2'
+							}`}
+						>
+							{/* <h3 key={nav.title}>{nav.title}</h3> */}
+							<ul className='flex flex-col gap-2'>
+								{nav.routes.map(route => (
+									<li key={route.name}>
+										<NavLink
+											to={route.link}
+											onClick={() => setIsOpen(false)}
+											className={`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
+												location.pathname === `/${route.link}`
+													? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
+													: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
+											}`}
+										>
+											{location.pathname === `/${route.link}`
+												? route.activeIcon
+												: route.icon}
+											<span>{route.name}</span>
+										</NavLink>
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+					<button
+						onClick={openModal}
+						type='button'
+						className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-5 capitalize text-wustomers-gray transition-all hover:text-red-600'
 					>
-						{/* <h3 key={nav.title}>{nav.title}</h3> */}
-						<ul className='flex flex-col gap-2'>
-							{nav.routes.map(route => (
-								<li key={route.name}>
-									<NavLink
-										to={route.link}
-										className={`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
-											location.pathname === route.link
-												? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
-												: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
-										}`}
-									>
-										{location.pathname === route.link
-											? route.activeIcon
-											: route.icon}
-										<span>{route.name}</span>
-									</NavLink>
-								</li>
-							))}
-						</ul>
-					</div>
-				))}
-				<button className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-5 capitalize text-wustomers-gray transition-all hover:text-wustomers-blue'>
-					<LogoutIcon width={20} height={20} />
-					<p>Log out</p>
+						<LogoutIcon width={20} height={20} />
+						<p>Log out</p>
+					</button>
+				</nav>
+
+				<button
+					type='button'
+					onClick={() => setIsOpen(false)}
+					className='absolute right-2 top-6 rounded text-lg text-wustomers-blue lg:hidden'
+				>
+					<Close />
+					<span className='sr-only'>close mobile menu</span>
 				</button>
-			</nav>
-		</aside>
+			</aside>
+
+			<Modal modalOpen={modalOpen} closeModal={closeModal}>
+				<div className='flex flex-col items-center text-center'>
+					<InfoIcon width={100} height={100} className='text-gray-500' />
+					<h3 className='pt-2 text-2xl font-semibold'>
+						Are you sure you want to log out?
+					</h3>
+
+					<div className='mx-12 mt-5 flex items-center gap-5'>
+						<Button
+							variant='fill'
+							text="Yes, I'm sure"
+							className='bg-red-600 py-2.5 px-4 normal-case hover:bg-red-700 hover:shadow-none'
+						/>
+						<Button
+							variant='outline'
+							onClick={closeModal}
+							text='No, Cancel'
+							className='border-red-600 px-4 normal-case text-red-600 hover:bg-red-100 hover:shadow-none'
+						/>
+					</div>
+				</div>
+			</Modal>
+		</>
 	)
 }

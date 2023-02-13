@@ -1,77 +1,59 @@
-import { Disclosure, Transition } from '@headlessui/react'
-import { ReactComponent as Arrow } from 'assets/icons/chevron-left.svg'
+/* eslint-disable react/display-name */
+import * as Disclosure from '@radix-ui/react-accordion'
+import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-left.svg'
+import React, { PropsWithChildren } from 'react'
 
-export const Accordion = () => {
-	const faqs = [
-		{
-			id: 1,
-			question:
-				'Do I need to create a google ads account before I can run my campaigns?',
-			answer:
-				'consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue ',
-		},
-		{
-			id: 2,
-			question:
-				'Do I need to create a google ads account before I can run my campaigns?',
-			answer:
-				'consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue ',
-		},
-		{
-			id: 3,
-			question:
-				'Do I need to create a google ads account before I can run my campaigns?',
-			answer:
-				'consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue ',
-		},
-		{
-			id: 4,
-			question:
-				'Do I need to create a google ads account before I can run my campaigns?',
-			answer:
-				'consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue ',
-		},
-		{
-			id: 5,
-			question:
-				'Do I need to create a google ads account before I can run my campaigns?',
-			answer:
-				'consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue consectetur adipiscing elit duis tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula ipsum a arcu cursus vitae congue ',
-		},
-	]
+export const AccordionItem: React.ForwardRefExoticComponent<
+	Disclosure.AccordionItemProps & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
+	<Disclosure.Item
+		className={`mt-2 overflow-hidden border-0 border-b border-b-[#585858] pb-2 outline-none first:mt-0  last:border-0 focus-visible:z-10 focus-visible:shadow-[0_2px_10px] ${className}`}
+		{...props}
+		ref={forwardedRef}
+	>
+		{children}
+	</Disclosure.Item>
+))
+
+export const AccordionTrigger: React.ForwardRefExoticComponent<
+	Disclosure.AccordionTriggerProps & React.RefAttributes<HTMLButtonElement>
+> = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
+	<Disclosure.Header className='flex'>
+		<Disclosure.Trigger
+			className={`group flex w-full cursor-pointer items-center justify-between gap-5 p-2 leading-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${className}`}
+			{...props}
+			ref={forwardedRef}
+		>
+			{children}
+			<ArrowIcon
+				className='ease-[cubic-bezier(0.87, 0, 0.13, 1)] transition-transform duration-300 group-data-[state=open]:rotate-90'
+				aria-hidden
+			/>
+		</Disclosure.Trigger>
+	</Disclosure.Header>
+))
+
+export const AccordionContent: React.ForwardRefExoticComponent<
+	Disclosure.AccordionContentProps & React.RefAttributes<HTMLDivElement>
+> = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
+	<Disclosure.Content
+		className={`mt-1 overflow-hidden rounded-sx bg-[#2A2A2A] text-sm font-normal data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp ${className}`}
+		{...props}
+		ref={forwardedRef}
+	>
+		<div className='py-[15px] px-2 md:px-5'>{children}</div>
+	</Disclosure.Content>
+))
+
+export const Accordion = ({ children }: PropsWithChildren) => {
 	return (
-		<div className='mx-auto mt-8 w-full bg-[#1E1E1E] p-1 text-white lg:py-4 lg:px-7'>
-			{faqs?.map(faq => (
-				<Disclosure key={faq.id}>
-					{({ open }) => (
-						<div className='border-b border-b-[#585858] py-2 last-of-type:border-b-0 lg:pb-2 lg:pt-1'>
-							<Disclosure.Button className='flex w-full items-center justify-between gap-8 p-2 text-left text-sm focus:outline-none focus-visible:ring focus-visible:ring-gray-500 focus-visible:ring-opacity-75 lg:px-4 lg:py-2 lg:text-base'>
-								<span>{faq.question}</span>
-								<Arrow
-									className={`transition-transform ${
-										open ? 'transform' : '-rotate-90 transform'
-									}`}
-								/>
-							</Disclosure.Button>
-							<Transition
-								enter='transition duration-100 ease-out'
-								enterFrom='transform scale-95 opacity-0'
-								enterTo='transform scale-100 opacity-100'
-								leave='transition duration-75 ease-out'
-								leaveFrom='transform scale-100 opacity-100'
-								leaveTo='transform scale-95 opacity-0'
-							>
-								<Disclosure.Panel
-									as='p'
-									className='rounded-sx bg-[#2A2A2A] p-4 text-sm leading-relaxed text-white'
-								>
-									{faq.answer}
-								</Disclosure.Panel>
-							</Transition>
-						</div>
-					)}
-				</Disclosure>
-			))}
-		</div>
+		<Disclosure.Root
+			className='shadow-[0_2px_10px] shadow-black/5'
+			type='single'
+			defaultValue='item-1'
+			collapsible
+		>
+			{children}
+		</Disclosure.Root>
 	)
 }

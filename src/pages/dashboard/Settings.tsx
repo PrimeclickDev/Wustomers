@@ -1,9 +1,10 @@
-import { Switch } from '@headlessui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+// import * as Switch from '@radix-ui/react-switch'
 import { Button } from 'components/Button'
+import { Switch } from 'components/Switch'
 import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { useState } from 'react'
+import useToggle from 'hooks/useToggle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -54,6 +55,7 @@ type ChangePasswordSchema = z.infer<typeof schema>
 
 const Settings = () => {
 	usePageTitle('Settings')
+	const [value, toggle] = useToggle()
 	const { register, control, handleSubmit } = useForm<ChangePasswordSchema>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -62,7 +64,6 @@ const Settings = () => {
 			newPassword: '',
 		},
 	})
-	const [enabled, setEnabled] = useState(false)
 
 	const changePassword: SubmitHandler<ChangePasswordSchema> = data => {
 		console.log(data)
@@ -114,22 +115,7 @@ const Settings = () => {
 
 			<div className='mt-10 flex items-center justify-between rounded-sx bg-white py-4 px-4 lg:px-7'>
 				<h4 className='text-lg'>Notifications</h4>
-				<Switch
-					checked={enabled}
-					onChange={setEnabled}
-					className={`${
-						enabled ? 'bg-wustomers-blue' : 'bg-[#585858]'
-					} relative inline-flex h-6 w-11 items-center rounded-sx`}
-				>
-					<span className='sr-only'>Enable notifications</span>
-					<span
-						className={`${
-							enabled
-								? 'translate-x-6 bg-white'
-								: 'translate-x-1 bg-[#C1C1C1]'
-						} inline-block h-4 w-4 transform rounded-sm transition`}
-					/>
-				</Switch>
+				<Switch enabled={value} toggle={toggle} />
 			</div>
 		</>
 	)

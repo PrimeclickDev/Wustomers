@@ -1,11 +1,38 @@
+import { ReactComponent as Logo } from 'assets/icons/logo.svg'
+import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg'
 import { ReactComponent as ProfileIcon } from 'assets/icons/profile.svg'
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
-export const DashboardHeader = () => {
+type DashboardHeaderProps = {
+	toggle: () => void
+}
+
+export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 	return (
-		<div className='flex items-center bg-white px-4 py-3 lg:gap-44 lg:px-10'>
+		<div className='flex items-center justify-between bg-white px-4 py-3 lg:gap-44 lg:px-10'>
+			{/* for mobile view */}
+			<div className='flex items-center gap-2 lg:hidden'>
+				<button
+					onClick={toggle}
+					type='button'
+					className='p-1 text-2xl lg:hidden'
+				>
+					<Menu />
+					<span className='sr-only'>open mobile menu</span>
+				</button>
+			</div>
+			<Link
+				to='/dashboard'
+				className='flex items-center gap-2 self-center lg:hidden'
+			>
+				<Logo width={24} height={22} className='text-wustomers-blue' />
+				<h1 className='text-lg font-black text-wustomers-blue'>
+					Wustomers
+				</h1>
+			</Link>
+
 			<form className='relative hidden lg:block lg:flex-1'>
 				<input
 					type='search'
@@ -18,7 +45,7 @@ export const DashboardHeader = () => {
 
 			<div className='flex items-center gap-5 text-wustomers-blue'>
 				<NavLink
-					to='/dashboard/notifications'
+					to='notifications'
 					className={({ isActive }) =>
 						`grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-wustomers-blue hover:text-white ${
 							isActive ? 'bg-wustomers-blue text-white' : 'bg-[#F3F4FC]'
@@ -28,7 +55,7 @@ export const DashboardHeader = () => {
 					<NotificationIcon />
 					<span className='sr-only'>notifications</span>
 				</NavLink>
-				<button className='grid h-10 w-10 place-items-center rounded-full bg-[#F3F4FC] transition-colors hover:bg-wustomers-blue hover:text-white'>
+				<button className='hidden transition-colors hover:bg-wustomers-blue hover:text-white lg:grid lg:h-10 lg:w-10 lg:place-items-center lg:rounded-full lg:bg-[#F3F4FC]'>
 					<ProfileIcon />
 					<span className='sr-only'>profile</span>
 				</button>

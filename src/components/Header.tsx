@@ -3,31 +3,34 @@ import { ReactComponent as Close } from 'assets/icons/close-square.svg'
 import { ReactComponent as Home } from 'assets/icons/home.svg'
 import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as Money } from 'assets/icons/money-change.svg'
+import { useScrollLock } from 'hooks/useScrollLock'
+import useToggle from 'hooks/useToggle'
 
-import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Button } from './Button'
 import { WustomersLogo } from './WustomersLogo'
 
+const navs = [
+	{
+		name: 'home',
+		link: '/',
+		icon: <Home width={18} height={18} />,
+	},
+	{
+		name: 'pricing',
+		link: '/pricing',
+		icon: <Money width={18} height={18} />,
+	},
+	{
+		name: 'contact',
+		link: '/contact',
+		icon: <Call width={18} height={18} />,
+	},
+]
+
 export const Header = () => {
-	const [isOpen, setIsOpen] = useState(false)
-	const navs = [
-		{
-			name: 'home',
-			link: '/',
-			icon: <Home width={18} height={18} />,
-		},
-		{
-			name: 'pricing',
-			link: '/pricing',
-			icon: <Money width={18} height={18} />,
-		},
-		{
-			name: 'contact',
-			link: '/contact',
-			icon: <Call width={18} height={18} />,
-		},
-	]
+	const [isOpen, toggle] = useToggle(false)
+	useScrollLock({ isOpen })
 
 	return (
 		<div className='fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-b-wustomers-primary-light bg-white'>
@@ -69,7 +72,7 @@ export const Header = () => {
 				</div>
 
 				{/* mobile menu */}
-				<button className='lg:hidden' onClick={() => setIsOpen(true)}>
+				<button className='lg:hidden' onClick={toggle}>
 					<Menu />
 					<span className='sr-only'>menu</span>
 				</button>
@@ -77,7 +80,7 @@ export const Header = () => {
 				{/* overlay */}
 				<div
 					aria-hidden='true'
-					onClick={() => setIsOpen(false)}
+					onClick={toggle}
 					className={`absolute inset-0 z-50 min-h-screen w-full bg-wustomers-blue-light/30 transition-all ${
 						isOpen ? 'block' : 'hidden'
 					}`}
@@ -93,7 +96,7 @@ export const Header = () => {
 							<li key={nav.name} className='capitalize'>
 								<NavLink
 									to={nav.link}
-									onClick={() => setIsOpen(false)}
+									onClick={toggle}
 									className='flex items-center gap-4'
 								>
 									{nav.name}
@@ -118,7 +121,7 @@ export const Header = () => {
 					</div>
 
 					<button
-						onClick={() => setIsOpen(false)}
+						onClick={toggle}
 						className='absolute top-3 left-3 z-50 rounded-md bg-wustomers-blue-light p-2 text-white'
 					>
 						<Close />

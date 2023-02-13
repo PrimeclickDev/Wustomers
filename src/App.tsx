@@ -38,8 +38,8 @@ const App = () => {
 					<Route path='contact' element={<Contact />} />
 				</Route>
 
-				<Route path='dashboard' element={<DashboardLayout />}>
-					<Route index element={<Overview />} />
+				<Route element={<DashboardLayout />}>
+					<Route path='dashboard' element={<Overview />} />
 					<Route path='campaigns' element={<Campaigns />} />
 					<Route path='campaigns-metrics' element={<CampaignMetrics />} />
 					<Route path='account-update' element={<AccountUpdate />} />

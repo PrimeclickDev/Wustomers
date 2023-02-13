@@ -59,7 +59,7 @@ const Overview = () => {
 		<>
 			<h2 className='text-3xl font-black'>Hi, Temitayo</h2>
 
-			<div className='mt-10 grid grid-cols-3 gap-10'>
+			<div className='mt-10 grid gap-4 lg:grid-cols-3 lg:gap-10'>
 				{summaries.map(summary => (
 					<div
 						key={summary.id}
@@ -75,14 +75,14 @@ const Overview = () => {
 				))}
 			</div>
 
-			<div className='mt-10 grid grid-cols-5 gap-10'>
+			<div className='mt-10 gap-10 lg:grid lg:grid-cols-5'>
 				<div className='col-span-3 rounded-sx'>
 					<h3 className='bg-wustomers-primary py-3 px-7 text-lg font-medium text-wustomers-main'>
 						Previous campaigns
 					</h3>
 
 					<ul>
-						<li className='flex items-center justify-between bg-white py-3 px-5'>
+						<li className='flex flex-wrap items-center gap-x-5 bg-white py-3 px-5 lg:justify-between'>
 							<img src={testImg} alt='test' />
 							<p>Campaign page</p>
 							<p>12, Nov. 2022</p>
@@ -94,7 +94,7 @@ const Overview = () => {
 					</ul>
 				</div>
 
-				<div className='col-span-2 rounded-sx'>
+				<div className='col-span-2 mt-5 rounded-sx lg:mt-0'>
 					<h3 className='bg-wustomers-primary py-3 px-7 text-lg font-medium text-wustomers-main'>
 						Linked accounts
 					</h3>

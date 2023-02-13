@@ -1,52 +1,26 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, PropsWithChildren, useState } from 'react'
+import * as Dialog from '@radix-ui/react-dialog'
 
-export const Modal = ({ children }: PropsWithChildren) => {
-	const [isOpen, setIsOpen] = useState(true)
+type ModalProps = {
+	modalOpen: boolean
+	closeModal: () => void
+	children: React.ReactNode
+}
 
-	function closeModal() {
-		setIsOpen(false)
-	}
-
-	function openModal() {
-		setIsOpen(true)
-	}
-
+export const Modal = ({ children, modalOpen, closeModal }: ModalProps) => {
 	return (
-		<>
-			<Transition appear show={isOpen} as={Fragment}>
-				<Dialog as='div' className='relative z-10' onClose={closeModal}>
-					<Transition.Child
-						as={Fragment}
-						enter='ease-out duration-300'
-						enterFrom='opacity-0'
-						enterTo='opacity-100'
-						leave='ease-in duration-200'
-						leaveFrom='opacity-100'
-						leaveTo='opacity-0'
-					>
-						<div className='fixed inset-0 bg-black/70' />
-					</Transition.Child>
+		<Dialog.Root open={modalOpen} onOpenChange={closeModal}>
+			<Dialog.Portal>
+				<Dialog.Overlay className='fixed inset-0 z-50 animate-overlayShow bg-black/80' />
+				<Dialog.Content className='fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-contentShow rounded-sx bg-white p-6 shadow-2xl focus:outline-none'>
+					{children}
 
-					<div className='fixed inset-0 overflow-y-auto'>
-						<div className='flex min-h-full items-center justify-center p-4 text-center'>
-							<Transition.Child
-								as={Fragment}
-								enter='ease-out duration-300'
-								enterFrom='opacity-0 scale-95'
-								enterTo='opacity-100 scale-100'
-								leave='ease-in duration-200'
-								leaveFrom='opacity-100 scale-100'
-								leaveTo='opacity-0 scale-95'
-							>
-								<Dialog.Panel className='w-full max-w-md transform overflow-hidden rounded-sx bg-white p-6 text-left align-middle shadow-xl transition-all'>
-									{children}
-								</Dialog.Panel>
-							</Transition.Child>
-						</div>
-					</div>
-				</Dialog>
-			</Transition>
-		</>
+					{/* <Dialog.Close asChild>
+						<button className='IconButton' aria-label='Close'>
+							<CloseSquare />
+						</button>
+					</Dialog.Close> */}
+				</Dialog.Content>
+			</Dialog.Portal>
+		</Dialog.Root>
 	)
 }
