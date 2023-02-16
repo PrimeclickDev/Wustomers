@@ -1,33 +1,30 @@
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { AuthResponse, ErrorResponse } from 'models/auth-models'
+import { ResetPasswordSchema } from 'pages/website/ResetPassword'
 import { toast } from 'react-toastify'
 import { baseURL } from 'services/requests'
 
-type ResetPasswordInput = {
-	password: string
-	confirmPassword: string
-}
+const url = new URL(window.location.href)
 
 export const resetPassword = async (
-	user: ResetPasswordInput
+	user: ResetPasswordSchema
 ): Promise<AxiosResponse<AuthResponse>> => {
-	return await axios.post(`${baseURL}/register`, user)
+	return await axios.patch(`${baseURL}${url.pathname}`, user)
 }
 
-export const useRegister = () => {
+export const useResetPassword = () => {
 	return useMutation<
 		AxiosResponse<AuthResponse>,
 		AxiosError<ErrorResponse>,
-		ResetPasswordInput
+		ResetPasswordSchema
 	>({
-		mutationFn: (data: ResetPasswordInput) => resetPassword(data),
+		mutationFn: (data: ResetPasswordSchema) => resetPassword(data),
 		onSuccess: ({ data }) => {
-			localStorage.setItem('wustomers-user', JSON.stringify(data))
 			toast.success(data?.message)
 		},
-		// onError: error => {
-		// 	toast.error(error.response?.data.message)
-		// },
+		onError: error => {
+			toast.error(error.response?.data.message)
+		},
 	})
 }

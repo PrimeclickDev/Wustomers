@@ -7,6 +7,7 @@ export type ErrorResponse = {
 export type Errors = {
 	email: string[]
 	otp: string[]
+	passwordReset: string[]
 }
 
 export type AuthResponse = {

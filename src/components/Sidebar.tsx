@@ -15,12 +15,14 @@ import { ReactComponent as ProfileOutlineIcon } from 'assets/icons/profile-outli
 import { ReactComponent as SettingsIcon } from 'assets/icons/setting.svg'
 import { ReactComponent as SettingsFillIcon } from 'assets/icons/settings-fill.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/useredit.svg'
+import { useLogout } from 'hooks/auth/useLogout'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
 import { NavLink, useLocation } from 'react-router-dom'
 import { Button } from './Button'
 import { Modal } from './Modal'
+import { Spinner } from './Spinner'
 import { WustomersLogo } from './WustomersLogo'
 
 type SidebarProps = {
@@ -81,10 +83,11 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 	useScrollLock({ isOpen })
 	const location = useLocation()
 	const [modalOpen, setModalOpen] = useState(false)
-	console.log('isOpen', isOpen)
+	const { mutate, isLoading } = useLogout()
 
 	const openModal = () => setModalOpen(true)
 	const closeModal = () => setModalOpen(false)
+	const logout = () => mutate()
 
 	return (
 		<>
@@ -96,7 +99,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 				}`}
 			/>
 			<aside
-				className={`absolute left-0 top-0 z-50 w-64 flex-col bg-white transition lg:sticky lg:top-0 lg:left-0 lg:flex lg:w-auto lg:self-start ${
+				className={`absolute left-0 top-0 z-50 h-screen w-64 flex-col bg-white transition lg:sticky lg:top-0 lg:left-0 lg:flex lg:w-auto lg:self-start ${
 					isOpen
 						? 'lg:transition-y-0 -translate-x-0'
 						: '-translate-x-full lg:translate-x-0'
@@ -167,9 +170,17 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
 					<div className='mx-12 mt-5 flex items-center gap-5'>
 						<Button
+							disabled={isLoading}
+							text={
+								isLoading ? (
+									<Spinner className='text-white' />
+								) : (
+									"Yes, I'm sure"
+								)
+							}
 							variant='fill'
-							text="Yes, I'm sure"
 							className='bg-red-600 py-2.5 px-4 normal-case hover:bg-red-700 hover:shadow-none'
+							onClick={logout}
 						/>
 						<Button
 							variant='outline'

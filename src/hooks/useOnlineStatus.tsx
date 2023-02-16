@@ -14,5 +14,5 @@ export const useOnlineStatus = () => {
 		}
 	})
 
-	return { isOnline }
+	return { isOnline, setNetwork }
 }

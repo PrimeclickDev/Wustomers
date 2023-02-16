@@ -1,14 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-// import forgotPasswordIllustration from 'assets/images/forgot-password-illustration.png'
 import { Button } from 'components/Button'
+import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
+import { useResetPassword } from 'hooks/auth/useResetPassword'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
 const schema = z
 	.object({
-		newPassword: z
+		password: z
 			.string()
 			.min(1, { message: 'Password is required' })
 			.min(8, {
@@ -22,7 +24,7 @@ const schema = z
 				}
 			)
 			.trim(),
-		confirmNewPassword: z
+		confirmPassword: z
 			.string()
 			.min(1, { message: 'Password confirmation is required' })
 			.min(8, {
@@ -37,38 +39,39 @@ const schema = z
 			)
 			.trim(),
 	})
-	.refine(data => data.newPassword === data.confirmNewPassword, {
+	.refine(data => data.password === data.confirmPassword, {
 		path: ['confirmPassword'],
 		message: 'Passwords do not match',
 	})
 
-type ResetPasswordSchema = z.infer<typeof schema>
+export type ResetPasswordSchema = z.infer<typeof schema>
 
 const ResetPassword = () => {
 	usePageTitle('Reset Password')
+	const navigate = useNavigate()
 
 	const { register, handleSubmit, control } = useForm<ResetPasswordSchema>({
 		defaultValues: {
-			newPassword: '',
-			confirmNewPassword: '',
+			password: '',
+			confirmPassword: '',
 		},
 		resolver: zodResolver(schema),
 	})
 
+	const { mutate, isLoading } = useResetPassword()
+
 	const resetPassword: SubmitHandler<ResetPasswordSchema> = data => {
-		console.log('data: ', data)
+		mutate(data, {
+			onSuccess: () => {
+				navigate('/login')
+			},
+		})
 	}
+
 	return (
 		<>
 			<section>
 				<header>
-					{/* <Link
-						to='/login'
-						className='transition-opacity hover:opacity-70 active:scale-95'
-					>
-						<CircleArrow />
-						<span className='sr-only'>Go back button</span>
-					</Link> */}
 					<h2 className='mt-7 text-4xl font-bold'>Reset Password</h2>
 
 					<p className='max-w-[32ch] pt-3 text-lg'>
@@ -81,22 +84,24 @@ const ResetPassword = () => {
 						register={register}
 						control={control}
 						label='new password'
-						name='newPassword'
+						name='password'
 						type='password'
 					/>
 
 					<TextField
 						register={register}
 						control={control}
-						label='confirm new password'
-						name='confirmNewPassword'
+						label='confirm password'
+						name='confirmPassword'
 						type='password'
 					/>
+
 					<Button
-						text='Reset Password'
+						text={isLoading ? <Spinner /> : 'Reset Password'}
 						variant='fill'
 						type='submit'
 						className='mt-6 w-full py-2.5'
+						disabled={isLoading}
 					/>
 				</form>
 			</section>

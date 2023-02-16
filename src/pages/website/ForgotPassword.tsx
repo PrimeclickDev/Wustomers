@@ -25,7 +25,7 @@ type ForgotPasswordSchema = z.infer<typeof schema>
 const ForgotPassword = () => {
 	usePageTitle('Forgot Password')
 	const [openModal, setOpenModal] = useState(true)
-	const { register, handleSubmit, control, watch } =
+	const { register, handleSubmit, control, watch, reset } =
 		useForm<ForgotPasswordSchema>({
 			defaultValues: {
 				email: '',
@@ -36,6 +36,11 @@ const ForgotPassword = () => {
 
 	const { isFetching, refetch, isSuccess } = useForgotPassword({ email })
 	const resetPassword = () => refetch()
+
+	const closeModal = () => {
+		reset()
+		setOpenModal(false)
+	}
 
 	return (
 		<>
@@ -73,8 +78,8 @@ const ForgotPassword = () => {
 			</section>
 
 			{isSuccess ? (
-				<Modal closeModal={() => setOpenModal(false)} modalOpen={openModal}>
-					<div className='flex flex-col items-center justify-center'>
+				<Modal closeModal={closeModal} modalOpen={openModal}>
+					<div className='flex flex-col items-center justify-center p-5'>
 						<h3 className='text-2xl font-black'>Reset link sent</h3>
 						<div className='mt-7 grid h-20 w-20 place-content-center rounded-full bg-wustomers-blue'>
 							<TickCircleIcon />
@@ -83,11 +88,7 @@ const ForgotPassword = () => {
 							We have sent a password reset link to your mail
 						</p>
 
-						<Button
-							variant='fill'
-							text='Go to mail'
-							className='mt-5 px-20'
-						/>
+						{/* <Button variant='fill' text='Close' className='mt-5' /> */}
 					</div>
 				</Modal>
 			) : null}
