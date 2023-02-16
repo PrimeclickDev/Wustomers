@@ -11,19 +11,16 @@ import Overview from 'pages/dashboard/Overview'
 import Settings from 'pages/dashboard/Settings'
 import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
-import React from 'react'
+import Contact from 'pages/website/Contact'
+import ForgotPassword from 'pages/website/ForgotPassword'
+import Home from 'pages/website/Home'
+import Login from 'pages/website/Login'
+import Pricing from 'pages/website/Pricing'
+import ResetPassword from 'pages/website/ResetPassword'
+import Signup from 'pages/website/Signup'
+import VerifyEmail from 'pages/website/VerifyEmail'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Route, Routes } from 'react-router-dom'
-
-const Home = React.lazy(() => import('pages/website/Home'))
-const Pricing = React.lazy(() => import('pages/website/Pricing'))
-const Contact = React.lazy(() => import('pages/website/Contact'))
-const Login = React.lazy(() => import('pages/website/Login'))
-const Signup = React.lazy(() => import('pages/website/Signup'))
-const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
-const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))
-const ResetPassword = React.lazy(() => import('pages/website/ResetPassword'))
-const Dashboard = React.lazy(() => import('pages/dashboard/Overview'))
 
 const App = () => {
 	const location = useConcurrentTransition()

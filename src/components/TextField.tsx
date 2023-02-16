@@ -8,6 +8,7 @@ import {
 	useController,
 	UseFormRegister,
 } from 'react-hook-form'
+import { useLocation } from 'react-router-dom'
 import { ErrorMessage } from './ErrorMessage'
 
 interface TextFieldProps<T extends FieldValues>
@@ -31,6 +32,7 @@ export const TextField = <T extends FieldValues>({
 	prefixIcon,
 	...inputProps
 }: TextFieldProps<T>) => {
+	const location = useLocation()
 	const [togglePassword, setTogglePassword] = useState(false)
 	const {
 		fieldState: { error },
@@ -73,7 +75,7 @@ export const TextField = <T extends FieldValues>({
 					</button>
 				) : null}
 			</div>
-			{type === 'password' ? (
+			{type === 'password' && location.pathname !== '/login' && !error ? (
 				<span className='text-xs text-gray-500'>
 					Password must contain a symbol, a number, an uppercase and
 					lowercase character

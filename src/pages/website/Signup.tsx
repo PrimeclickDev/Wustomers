@@ -3,93 +3,79 @@ import { ReactComponent as Error } from 'assets/icons/danger.svg'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import { Button } from 'components/Button'
+import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
+import { useRegister } from 'hooks/auth/useRegister'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
 
-const schema = z
-	.object({
-		email: z
-			.string()
-			.min(1, { message: 'Email address is required' })
-			.email({ message: 'Please enter a valid email address' })
-			.trim(),
-		password: z
-			.string()
-			.min(1, { message: 'Password is required' })
-			.min(8, {
-				message: 'Password must be at least 8 characters long',
-			})
-			.regex(
-				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-				{
-					message:
-						'Password must contain a symbol, a number, an uppercase and lowercase character',
-				}
-			)
-			.trim(),
-		confirmPassword: z
-			.string()
-			.min(1, { message: 'Password confirmation is required' })
-			.min(8, {
-				message: 'Password confirmation must be at least 8 characters long',
-			})
-			.regex(
-				/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-				{
-					message:
-						'Password must contain a symbol, a number, an uppercase and lowercase character',
-				}
-			)
-			.trim(),
-		acceptTerms: z.literal(true, {
-			errorMap: () => ({
-				message: 'You must accept the terms and conditions',
-			}),
+const schema = z.object({
+	email: z
+		.string()
+		.min(1, { message: 'Email address is required' })
+		.email({ message: 'Please enter a valid email address' })
+		.trim(),
+	password: z
+		.string()
+		.min(1, { message: 'Password is required' })
+		.min(8, {
+			message: 'Password must be at least 8 characters long',
+		})
+		.regex(
+			/(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+			{
+				message:
+					'Password must contain a symbol, a number, an uppercase and lowercase character',
+			}
+		)
+		.trim(),
+	acceptTerms: z.literal(true, {
+		errorMap: () => ({
+			message: 'You must accept the terms and conditions',
 		}),
-	})
-	.refine(data => data.password === data.confirmPassword, {
-		path: ['confirmPassword'],
-		message: 'Passwords do not match',
-	})
+	}),
+})
 
-type SignupSchema = z.infer<typeof schema>
+export type SignupSchema = z.infer<typeof schema>
 
 const Signup = () => {
 	usePageTitle('Sign up')
-
+	const navigate = useNavigate()
 	const {
 		register,
 		handleSubmit,
 		control,
+		setError,
 		formState: { errors },
 	} = useForm<SignupSchema>({
 		defaultValues: {
 			email: '',
 			password: '',
-			confirmPassword: '',
 			acceptTerms: undefined,
 		},
 		resolver: zodResolver(schema),
 	})
+	const { mutate, isLoading } = useRegister()
 
 	const registerUser: SubmitHandler<SignupSchema> = data => {
-		console.log('data: ', data)
+		const { email, password } = data
+		sessionStorage.setItem('email', email)
+		mutate(
+			{ email, password },
+			{
+				onSuccess: () => navigate('/verify-email'),
+				onError: error => {
+					setError('email', { message: error.response?.data.message })
+				},
+			}
+		)
 	}
+
 	return (
 		<>
-			<header>
-				{/* <Link
-					to='/login'
-					className='transition-opacity hover:opacity-70 active:scale-95'
-				>
-					<CircleArrow />
-					<span className='sr-only'>Go back button</span>
-				</Link> */}
-				<h2 className='text-4xl font-bold'>Sign up</h2>
-			</header>
+			<h2 className='text-4xl font-bold'>Sign up</h2>
 
 			<form className='mt-8' onSubmit={handleSubmit(registerUser)}>
 				<TextField
@@ -106,13 +92,7 @@ const Signup = () => {
 					name='password'
 					type='password'
 				/>
-				<TextField
-					register={register}
-					control={control}
-					label='Confirm password'
-					name='confirmPassword'
-					type='password'
-				/>
+
 				<div className='mt-5 flex items-center gap-2 font-[#979797]'>
 					<input
 						type='checkbox'
@@ -140,11 +120,13 @@ const Signup = () => {
 						<span>{errors.acceptTerms.message}</span>
 					</div>
 				) : null}
+
 				<Button
-					text='Sign up'
+					text={isLoading ? <Spinner /> : 'Sign up'}
 					variant='fill'
 					className='mt-6 w-full py-2.5'
 					type='submit'
+					disabled={isLoading}
 				/>
 			</form>
 

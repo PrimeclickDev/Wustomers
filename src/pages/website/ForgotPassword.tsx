@@ -1,9 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ReactComponent as CircleArrow } from 'assets/icons/arrowcircle.svg'
+import { ReactComponent as CircleArrowIcon } from 'assets/icons/arrowcircle.svg'
+import { ReactComponent as TickCircleIcon } from 'assets/icons/tickcircle.svg'
 import { Button } from 'components/Button'
+import { Modal } from 'components/Modal'
+import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
+import { useForgotPassword } from 'hooks/auth/useForgotPassword'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
@@ -19,17 +24,19 @@ type ForgotPasswordSchema = z.infer<typeof schema>
 
 const ForgotPassword = () => {
 	usePageTitle('Forgot Password')
+	const [openModal, setOpenModal] = useState(true)
+	const { register, handleSubmit, control, watch } =
+		useForm<ForgotPasswordSchema>({
+			defaultValues: {
+				email: '',
+			},
+			resolver: zodResolver(schema),
+		})
+	const email = watch('email')
 
-	const { register, handleSubmit, control } = useForm<ForgotPasswordSchema>({
-		defaultValues: {
-			email: '',
-		},
-		resolver: zodResolver(schema),
-	})
+	const { isFetching, refetch, isSuccess } = useForgotPassword({ email })
+	const resetPassword = () => refetch()
 
-	const resetPassword: SubmitHandler<ForgotPasswordSchema> = data => {
-		console.log('data: ', data)
-	}
 	return (
 		<>
 			<section>
@@ -38,7 +45,7 @@ const ForgotPassword = () => {
 						to='/login'
 						className='transition-opacity hover:opacity-70 active:scale-95'
 					>
-						<CircleArrow />
+						<CircleArrowIcon />
 						<span className='sr-only'>Go back button</span>
 					</Link>
 					<h2 className='mt-7 text-4xl font-bold'>Forgot Password</h2>
@@ -55,21 +62,35 @@ const ForgotPassword = () => {
 						name='email'
 						type='email'
 					/>
-					{/* <Button
-						text='Reset Password'
-						variant='fill'
-						type='submit'
-						className='mt-6 w-full py-2.5'
-					/> */}
 					<Button
-						text='Reset Password'
+						text={isFetching ? <Spinner /> : 'Reset Password'}
 						variant='fill'
 						type='submit'
 						className='mt-6 flex !w-full justify-center py-2.5'
-						href='/reset-password'
+						disabled={isFetching}
 					/>
 				</form>
 			</section>
+
+			{isSuccess ? (
+				<Modal closeModal={() => setOpenModal(false)} modalOpen={openModal}>
+					<div className='flex flex-col items-center justify-center'>
+						<h3 className='text-2xl font-black'>Reset link sent</h3>
+						<div className='mt-7 grid h-20 w-20 place-content-center rounded-full bg-wustomers-blue'>
+							<TickCircleIcon />
+						</div>
+						<p className='pt-5 text-center text-lg'>
+							We have sent a password reset link to your mail
+						</p>
+
+						<Button
+							variant='fill'
+							text='Go to mail'
+							className='mt-5 px-20'
+						/>
+					</div>
+				</Modal>
+			) : null}
 		</>
 	)
 }

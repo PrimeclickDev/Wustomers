@@ -1,13 +1,15 @@
+import React from 'react'
 import { Link, To } from 'react-router-dom'
 
-type ButtonProps = {
-	text: string
+interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
+	text: React.ReactNode
 	onClick?: () => void
 	type?: 'button' | 'submit' | 'reset' | undefined
 	variant: 'fill' | 'outline'
 	className?: string
 	href?: To
 }
+
 export const Button = ({
 	onClick,
 	text,
@@ -15,6 +17,7 @@ export const Button = ({
 	variant,
 	className,
 	href,
+	...buttonProps
 }: ButtonProps) => {
 	return (
 		<>
@@ -35,13 +38,14 @@ export const Button = ({
 				<button
 					type={type ?? 'button'}
 					onClick={onClick}
-					className={`rounded-sm px-11 font-medium uppercase tracking-wider text-white transition active:scale-[0.98] ${
+					className={`flex items-center justify-center rounded-sm px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-wustomers-blue/10 ${
 						variant === 'fill'
 							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 hover:shadow-xl hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
 							? 'border-2 border-wustomers-blue py-[7px] text-wustomers-blue hover:scale-[1.01] hover:bg-wustomers-blue/5'
 							: ''
 					} ${className}`}
+					{...buttonProps}
 				>
 					{text}
 				</button>

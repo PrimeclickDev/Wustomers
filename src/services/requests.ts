@@ -4,10 +4,10 @@ import { Cookies } from 'react-cookie'
 const cookies = new Cookies()
 // const pageUrl = new URL(window.location.href)
 
-const baseURL =
-	import.meta.env.MODE === 'development'
-		? 'https://jsonplaceholder.typicode.com'
-		: ''
+export const baseURL = 'http://www.stage-api.wustomers.com/api/v1'
+// import.meta.env.MODE === 'development'
+// 	? 'https://jsonplaceholder.typicode.com'
+// 	: ''
 const token = cookies.get('wustomers')
 
 export const instance = axios.create({
