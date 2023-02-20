@@ -7,6 +7,7 @@ import { useScrollLock } from 'hooks/useScrollLock'
 import useToggle from 'hooks/useToggle'
 
 import { NavLink } from 'react-router-dom'
+import { getAccessToken } from 'utils/storage'
 import { Button } from './Button'
 import { WustomersLogo } from './WustomersLogo'
 
@@ -31,6 +32,7 @@ const navs = [
 export const Header = () => {
 	const [isOpen, toggle] = useToggle(false)
 	useScrollLock({ isOpen })
+	const token = getAccessToken()
 
 	return (
 		<div className='fixed top-0 left-0 z-50 w-full border-b-[1.5px] border-b-wustomers-primary-light bg-white'>
@@ -56,19 +58,30 @@ export const Header = () => {
 					</ul>
 				</nav>
 				<div className='hidden items-center gap-5 lg:flex'>
-					<Button
-						text='Login'
-						type='button'
-						variant='outline'
-						href='/login'
-						className='text-wustomers-blue'
-					/>
-					<Button
-						text='Sign up'
-						type='button'
-						variant='fill'
-						href='/signup'
-					/>
+					{!token ? (
+						<>
+							<Button
+								text='Login'
+								type='button'
+								variant='outline'
+								href='/login'
+								className='text-wustomers-blue'
+							/>
+							<Button
+								text='Sign up'
+								type='button'
+								variant='fill'
+								href='/signup'
+							/>
+						</>
+					) : (
+						<Button
+							text='Go to dashboard'
+							type='button'
+							variant='fill'
+							href='/dashboard'
+						/>
+					)}
 				</div>
 
 				{/* mobile menu */}
@@ -106,18 +119,29 @@ export const Header = () => {
 					</ul>
 
 					<div className='mt-20 flex flex-col gap-4'>
-						<Button
-							text='Login'
-							variant='outline'
-							href='/login'
-							className='border-white py-3 text-center text-white'
-						/>
-						<Button
-							text='Sign up'
-							variant='fill'
-							href='/signup'
-							className='bg-white py-3 text-center text-wustomers-blue hover:bg-white'
-						/>
+						{token ? (
+							<>
+								<Button
+									text='Login'
+									variant='outline'
+									href='/login'
+									className='border-white py-3 text-center text-white'
+								/>
+								<Button
+									text='Sign up'
+									variant='fill'
+									href='/signup'
+									className='bg-white py-3 text-center text-wustomers-blue hover:bg-white'
+								/>
+							</>
+						) : (
+							<Button
+								text='Go to dashboard'
+								variant='fill'
+								href='/dashboard'
+								className='bg-white py-3 text-center text-wustomers-blue hover:bg-white'
+							/>
+						)}
 					</div>
 
 					<button

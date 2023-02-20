@@ -5,11 +5,11 @@ import { Sidebar } from 'components/Sidebar'
 import useToggle from 'hooks/useToggle'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Navigate, Outlet } from 'react-router-dom'
-import { getAccessCookie } from 'utils/storage'
+import { getAccessToken } from 'utils/storage'
 
 export const DashboardLayout = () => {
 	const [isOpen, toggle, setIsOpen] = useToggle(false)
-	const token = getAccessCookie()
+	const token = getAccessToken()
 
 	return (
 		<>

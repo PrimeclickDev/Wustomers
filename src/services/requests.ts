@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { getAccessCookie } from 'utils/storage'
+import { getAccessToken } from 'utils/storage'
 
 // const pageUrl = new URL(window.location.href)
 
@@ -18,7 +18,7 @@ export const instance = axios.create({
 // intercepts private requests and add token to header
 instance.interceptors.request.use(
 	async config => {
-		const token = getAccessCookie()
+		const token = getAccessToken()
 		if (token) {
 			config.headers['Authorization'] = `Bearer ${token}`
 		}

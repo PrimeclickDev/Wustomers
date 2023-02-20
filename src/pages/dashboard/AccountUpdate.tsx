@@ -14,9 +14,11 @@ import {
 import { Button } from 'components/Button'
 import { ErrorMessage } from 'components/ErrorMessage'
 import { ImgWithFallback } from 'components/ImgWithFallback'
+import { Modal } from 'components/Modal'
 // import { ImgWithFallback } from 'components/ImgWithFallback'
 import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -28,7 +30,13 @@ const schema = z.object({
 		.min(1, { message: 'Email address is required' })
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
-	phoneNumber: z.string().min(1, { message: 'Phone number is required' }),
+	phoneNumber: z
+		.string()
+		.min(1, { message: 'Phone number is required' })
+		.regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
+			message: 'Please enter a valid phone number',
+		})
+		.trim(),
 	businessName: z.string().min(1, { message: 'Business name is required' }),
 	businessMail: z
 		.string()
@@ -74,6 +82,8 @@ const initialFormValues = {
 
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
+	const [openModal, setOpenModal] = useState(false)
+	const [formData, setFormData] = useState({})
 	const {
 		control,
 		register,
@@ -84,8 +94,12 @@ const AccountUpdate = () => {
 		defaultValues: initialFormValues,
 	})
 
+	const closeModal = () => setOpenModal(false)
+
 	const updateProfile: SubmitHandler<AccountUpdateSchema> = data => {
 		console.log(data)
+		setOpenModal(true)
+		setFormData(data)
 	}
 
 	return (
@@ -149,6 +163,7 @@ const AccountUpdate = () => {
 									register={register}
 									type='tel'
 									inputMode='numeric'
+									maxLength={11}
 									className='mt-[6px]'
 								/>
 							</AccordionContent>
@@ -242,7 +257,7 @@ const AccountUpdate = () => {
 
 					<div className='mt-2 flex flex-col items-center justify-between md:mt-0 md:flex-row'>
 						{isSubmitted && !isValid ? (
-							<ErrorMessage message='You form has errors, kindly check' />
+							<ErrorMessage message='This form has errors, pls check' />
 						) : null}
 
 						<Button
@@ -275,15 +290,41 @@ const AccountUpdate = () => {
 							type='button'
 							className='font-medium capitalize'
 						/>
-						<Button
-							text='Replace Image'
-							variant='fill'
-							type='button'
-							className='font-medium capitalize'
-						/>
+						<label className='w-full cursor-pointer rounded-sm bg-wustomers-blue px-11 py-2 text-sm font-medium tracking-wider text-white transition hover:scale-[1.01] hover:bg-wustomers-blue/90 active:scale-95 md:text-base'>
+							<span>Upload Image</span>
+							<input
+								type='file'
+								name='profileImage'
+								id='profileImage'
+								accept='image/png, image/jpeg'
+								className='sr-only'
+							/>
+						</label>
 					</div>
 				</div>
 			</div>
+
+			<Modal closeModal={closeModal} modalOpen={openModal}>
+				<div className='flex flex-col items-center justify-center py-5'>
+					<p className='px-14 text-center text-lg'>
+						Are tou sure you want to update your account?
+					</p>
+
+					<div className='flex items-center gap-5'>
+						<Button
+							variant='outline'
+							text='Close'
+							className='mt-5 normal-case'
+							onClick={closeModal}
+						/>
+						<Button
+							variant='fill'
+							text='Update account'
+							className='mt-5 px-8 normal-case'
+						/>
+					</div>
+				</div>
+			</Modal>
 		</>
 	)
 }

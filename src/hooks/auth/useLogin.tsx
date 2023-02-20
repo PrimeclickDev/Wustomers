@@ -4,7 +4,7 @@ import { ErrorResponse } from 'models/auth-models'
 import { LoginSchema } from 'pages/website/Login'
 import { toast } from 'react-toastify'
 import { baseURL } from 'services/requests'
-import { setAccessCookie } from 'utils/storage'
+import { setAccessToken } from 'utils/storage'
 
 export type LoginInput = LoginSchema
 
@@ -47,7 +47,7 @@ export const useLogin = () => {
 		mutationFn: (data: LoginInput) => login(data),
 		onSuccess: ({ data }) => {
 			localStorage.setItem('wustomers-user', JSON.stringify(data.data.user))
-			setAccessCookie(data.data.access_token)
+			setAccessToken(data.data.access_token)
 			toast.success(data?.message)
 		},
 		// onError: error => {},
