@@ -135,11 +135,11 @@ const Signup = () => {
 			<div className='flex flex-col gap-3 pt-4'>
 				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
 					<img src={googleLogo} alt='google logo' className='w-7' />
-					<span>Log in with Google</span>
+					<span>Sign up with Google</span>
 				</button>
 				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />
-					<span>Log in with Instagram</span>
+					<span>Sign up with Instagram</span>
 				</button>
 			</div>
 

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { ReactComponent as CircleArrowIcon } from 'assets/icons/arrowcircle.svg'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
@@ -72,6 +73,13 @@ const ResetPassword = () => {
 		<>
 			<section>
 				<header>
+					<button
+						onClick={() => navigate(-1)}
+						className='transition-opacity hover:opacity-70 active:scale-95'
+					>
+						<CircleArrowIcon />
+						<span className='sr-only'>Go back button</span>
+					</button>
 					<h2 className='mt-7 text-4xl font-bold'>Reset Password</h2>
 
 					<p className='max-w-[32ch] pt-3 text-lg'>

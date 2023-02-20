@@ -139,7 +139,7 @@ export const Header = () => {
 								text='Go to dashboard'
 								variant='fill'
 								href='/dashboard'
-								className='bg-white py-3 text-center text-wustomers-blue hover:bg-white'
+								className='bg-white py-3 px-1 text-center text-wustomers-blue hover:bg-white'
 							/>
 						)}
 					</div>

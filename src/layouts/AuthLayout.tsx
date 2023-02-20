@@ -51,7 +51,7 @@ export const AuthLayout = () => {
 
 	return (
 		<main className='min-h-screen lg:grid lg:grid-cols-5 lg:gap-3 xl:gap-10'>
-			<section className='col-span-3 flex flex-col bg-wustomers-blue-light px-5 py-10 lg:sticky lg:top-0 lg:right-0 lg:h-screen lg:self-start lg:px-20 lg:pt-16'>
+			<section className=';g:py-10 col-span-3 flex flex-col bg-wustomers-blue-light px-5 py-7 lg:sticky lg:top-0 lg:right-0 lg:h-screen lg:self-start lg:px-20 lg:pt-16'>
 				<WustomersLogo className='text-white' />
 
 				{changePageIllustration()}
