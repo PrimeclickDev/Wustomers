@@ -33,7 +33,7 @@ const VerifyEmail = () => {
 						JSON.stringify(data?.data?.user)
 					)
 					sessionStorage.removeItem('email')
-					navigate('/account-details')
+					navigate('/account-update')
 				},
 			})
 		}

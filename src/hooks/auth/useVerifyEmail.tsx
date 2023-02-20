@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ErrorResponse } from 'models/auth-models'
 import { toast } from 'react-toastify'
 import { baseURL } from 'services/requests'
+import { setAccessToken } from 'utils/storage'
 
 export type VerifyOTPInput = {
 	identifier: string
@@ -47,6 +48,8 @@ export const useVerifyEmail = () => {
 	>({
 		mutationFn: (data: VerifyOTPInput) => verifyOtp(data),
 		onSuccess: ({ data }) => {
+			localStorage.setItem('wustomers-user', JSON.stringify(data.data.user))
+			setAccessToken(data.data.access_token)
 			toast.success(data?.message)
 		},
 		onError: error => {

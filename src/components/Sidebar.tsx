@@ -186,7 +186,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 							variant='outline'
 							onClick={closeModal}
 							text='No, Cancel'
-							className='border-red-600 px-4 normal-case text-red-600 hover:bg-red-100 hover:shadow-none'
+							className='border-gray-600 px-4 normal-case text-gray-600 hover:bg-gray-100 hover:shadow-none'
 						/>
 					</div>
 				</div>
