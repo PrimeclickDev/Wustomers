@@ -3,10 +3,7 @@ import { ReactComponent as CampaignMetricFillIcon } from 'assets/icons/activity.
 import { ReactComponent as CampaignFillIcon } from 'assets/icons/campaigns-fill.svg'
 import { ReactComponent as CampaignIcon } from 'assets/icons/campaigns.svg'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
-import {
-	ReactComponent as InfoIcon,
-	ReactComponent as SupportFillIcon,
-} from 'assets/icons/information-fill.svg'
+import { ReactComponent as SupportFillIcon } from 'assets/icons/information-fill.svg'
 import { ReactComponent as SupportIcon } from 'assets/icons/information.svg'
 import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import { ReactComponent as OverviewFillIcon } from 'assets/icons/overview-fill.svg'
@@ -19,7 +16,8 @@ import { useLogout } from 'hooks/auth/useLogout'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { removeAccessToken } from 'utils/storage'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Spinner } from './Spinner'
@@ -84,10 +82,15 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 	const location = useLocation()
 	const [modalOpen, setModalOpen] = useState(false)
 	const { mutate, isLoading } = useLogout()
+	const navigate = useNavigate()
 
 	const openModal = () => setModalOpen(true)
 	const closeModal = () => setModalOpen(false)
-	const logout = () => mutate()
+	const logout = () => {
+		removeAccessToken()
+		localStorage.removeItem('wustomers-user')
+		navigate('/login')
+	}
 
 	return (
 		<>
@@ -163,30 +166,29 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 
 			<Modal modalOpen={modalOpen} closeModal={closeModal}>
 				<div className='flex flex-col items-center text-center'>
-					<InfoIcon width={100} height={100} className='text-gray-500' />
-					<h3 className='pt-2 text-2xl font-semibold'>
-						Are you sure you want to log out?
+					<h3 className='max-w-[20ch] pt-2 text-xl font-medium'>
+						Are you sure you want to log out of your account?
 					</h3>
 
-					<div className='mx-12 mt-5 flex items-center gap-5'>
+					<div className='mx-8 mt-5 flex items-center gap-5'>
+						<Button
+							variant='outline'
+							onClick={closeModal}
+							text='No, Cancel'
+							className='px-8 normal-case hover:shadow-none'
+						/>
 						<Button
 							disabled={isLoading}
 							text={
 								isLoading ? (
 									<Spinner className='text-white' />
 								) : (
-									"Yes, I'm sure"
+									'Yes, Logout'
 								)
 							}
 							variant='fill'
-							className='bg-red-600 py-2.5 px-4 normal-case hover:bg-red-700 hover:shadow-none'
+							className='py-2 px-8 normal-case hover:shadow-none'
 							onClick={logout}
-						/>
-						<Button
-							variant='outline'
-							onClick={closeModal}
-							text='No, Cancel'
-							className='border-gray-600 px-4 normal-case text-gray-600 hover:bg-gray-100 hover:shadow-none'
 						/>
 					</div>
 				</div>
