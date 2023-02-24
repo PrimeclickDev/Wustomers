@@ -4,6 +4,7 @@ import { ErrorResponse } from 'models/auth-models'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { baseURL, instance } from 'services/requests'
+import { removeAccessToken } from 'utils/storage'
 
 type LogoutResponse = {
 	message: string
@@ -20,6 +21,9 @@ export const useLogout = () => {
 		{
 			mutationFn: logout,
 			onSuccess: ({ data }) => {
+				removeAccessToken()
+				localStorage.removeItem('wustomers-user')
+				navigate('/login')
 				toast.success(data?.message)
 			},
 			onError: error => {

@@ -16,8 +16,7 @@ import { useLogout } from 'hooks/auth/useLogout'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
-import { NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { removeAccessToken } from 'utils/storage'
+import { NavLink, useLocation } from 'react-router-dom'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Spinner } from './Spinner'
@@ -82,16 +81,10 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 	const location = useLocation()
 	const [modalOpen, setModalOpen] = useState(false)
 	const { mutate, isLoading } = useLogout()
-	const navigate = useNavigate()
 
 	const openModal = () => setModalOpen(true)
 	const closeModal = () => setModalOpen(false)
-	const logout = () => {
-		removeAccessToken()
-		localStorage.removeItem('wustomers-user')
-		navigate('/login')
-	}
-
+	const logout = () => mutate()
 	return (
 		<>
 			<div
