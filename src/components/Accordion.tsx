@@ -7,7 +7,7 @@ export const AccordionItem: React.ForwardRefExoticComponent<
 	Disclosure.AccordionItemProps & React.RefAttributes<HTMLDivElement>
 > = React.forwardRef(({ children, className, ...props }, forwardedRef) => (
 	<Disclosure.Item
-		className={`mt-2 overflow-hidden border-0 border-b border-b-[#585858] pb-2 outline-none first:mt-0  last:border-0 focus-visible:z-10 focus-visible:shadow-[0_2px_10px] ${className}`}
+		className={`mt-2 overflow-hidden border-0 border-b border-b-wustomers-neutral-dark pb-2 outline-none first:mt-0  last:border-0 focus-visible:z-10 focus-visible:shadow-[0_2px_10px] ${className}`}
 		{...props}
 		ref={forwardedRef}
 	>

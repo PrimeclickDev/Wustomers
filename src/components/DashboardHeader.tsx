@@ -38,9 +38,9 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 					type='search'
 					name='search'
 					placeholder='Search for anything'
-					className='w-full rounded-sx bg-[#F3F4FC] py-3 pl-6 pr-14'
+					className='w-full rounded-sx bg-wustomers-primary py-3 pl-6 pr-14'
 				/>
-				<SearchIcon className='absolute top-1/2 right-0 mr-6 -translate-y-1/2' />
+				<SearchIcon className='absolute top-1/2 right-0 mr-6 -translate-y-1/2 text-[#ACACAC]' />
 			</form>
 
 			<div className='flex items-center gap-5 text-wustomers-blue'>
@@ -48,14 +48,16 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 					to='notifications'
 					className={({ isActive }) =>
 						`grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-wustomers-blue hover:text-white ${
-							isActive ? 'bg-wustomers-blue text-white' : 'bg-[#F3F4FC]'
+							isActive
+								? 'bg-wustomers-blue text-white'
+								: 'bg-wustomers-primary'
 						}`
 					}
 				>
 					<NotificationIcon />
 					<span className='sr-only'>notifications</span>
 				</NavLink>
-				<button className='hidden transition-colors hover:bg-wustomers-blue hover:text-white lg:grid lg:h-10 lg:w-10 lg:place-items-center lg:rounded-full lg:bg-[#F3F4FC]'>
+				<button className='hidden transition-colors hover:bg-wustomers-blue hover:text-white lg:grid lg:h-10 lg:w-10 lg:place-items-center lg:rounded-full lg:bg-wustomers-primary'>
 					<ProfileIcon />
 					<span className='sr-only'>profile</span>
 				</button>

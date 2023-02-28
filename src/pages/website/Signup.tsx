@@ -1,11 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin } from '@react-oauth/google'
 import { ReactComponent as Error } from 'assets/icons/danger.svg'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
+import axios from 'axios'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
 import { useRegister } from 'hooks/auth/useRegister'
+import { useSignupWithGoogle } from 'hooks/auth/useSignupWithGoogle'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -58,6 +61,7 @@ const Signup = () => {
 		resolver: zodResolver(schema),
 	})
 	const { mutate, isLoading } = useRegister()
+	const mutation = useSignupWithGoogle()
 
 	const registerUser: SubmitHandler<SignupSchema> = data => {
 		const { email, password } = data
@@ -72,6 +76,35 @@ const Signup = () => {
 			}
 		)
 	}
+
+	const registerWithGoogle = useGoogleLogin({
+		onSuccess: async response => {
+			const userInfo = await axios.get(
+				'https://www.googleapis.com/oauth2/v3/userinfo',
+				{
+					headers: {
+						Authorization: `Bearer ${response.access_token}`,
+					},
+				}
+			)
+
+			mutation.mutate(
+				{
+					email: userInfo.data?.email,
+					first_name: userInfo.data?.given_name ?? 'user',
+					provider: 'google',
+					last_name: userInfo.data?.family_name ?? 'user',
+				},
+				{
+					onSuccess: () => navigate('/account-update'),
+				}
+			)
+		},
+		onError: async error => {
+			console.error(error)
+			// toast.error(error)
+		},
+	})
 
 	return (
 		<>
@@ -133,9 +166,20 @@ const Signup = () => {
 			<p className='pt-6 text-center text-lg font-medium uppercase'>or</p>
 
 			<div className='flex flex-col gap-3 pt-4'>
-				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
-					<img src={googleLogo} alt='google logo' className='w-7' />
-					<span>Sign up with Google</span>
+				<button
+					type='button'
+					disabled={isLoading}
+					onClick={() => registerWithGoogle()}
+					className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-[#C1C1C1]/20'
+				>
+					{mutation.isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<img src={googleLogo} alt='google logo' className='w-7' />
+							<span>Sign up with Google</span>
+						</>
+					)}
 				</button>
 				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />

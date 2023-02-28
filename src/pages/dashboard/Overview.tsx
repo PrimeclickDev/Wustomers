@@ -83,8 +83,11 @@ const Overview = () => {
 
 					<ul>
 						<li className='flex flex-wrap items-center gap-x-5 bg-white py-3 px-5 lg:justify-between'>
-							<img src={testImg} alt='test' />
-							<p>Campaign page</p>
+							<div className='flex items-center gap-4'>
+								<img src={testImg} alt='campaign' />
+								<p>Campaign page</p>
+							</div>
+
 							<p>12, Nov. 2022</p>
 							<p className='flex items-center gap-3 text-green-600'>
 								<span className='h-3 w-3 rounded-full bg-green-600' />
@@ -110,13 +113,13 @@ const Overview = () => {
 									<p>{account.name}</p>
 								</div>
 								<p
-									className={`py-1 px-4 text-sm ${
+									className={`py-1 px-4 text-sm font-medium ${
 										account.link
 											? 'bg-green-100 text-green-600'
 											: 'bg-red-100 text-red-600'
 									}`}
 								>
-									Linked
+									{account.link ? 'Linked' : 'Unlinked'}
 								</p>
 							</li>
 						))}

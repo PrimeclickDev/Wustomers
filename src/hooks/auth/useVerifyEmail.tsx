@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import { ErrorResponse } from 'models/auth-models'
+import { ErrorResponse, LoginResponse } from 'models/auth-models'
 import { toast } from 'react-toastify'
 import { baseURL } from 'services/requests'
 import { setAccessToken } from 'utils/storage'
@@ -8,30 +8,6 @@ import { setAccessToken } from 'utils/storage'
 export type VerifyOTPInput = {
 	identifier: string
 	otp: number
-}
-
-export type LoginResponse = {
-	success: boolean
-	data: Data
-	message: string
-}
-
-export type Data = {
-	user: User
-	access_token: string
-}
-
-export type User = {
-	id: number
-	email: string
-	status: Status
-	created_at: Date
-	updated_at: Date
-}
-
-export type Status = {
-	id: number
-	name: string
 }
 
 export const verifyOtp = async (

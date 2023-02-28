@@ -1,10 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useGoogleLogin } from '@react-oauth/google'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
+import axios from 'axios'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
 import { useLogin } from 'hooks/auth/useLogin'
+import { useLoginWithGoogle } from 'hooks/auth/useLoginWithGoogle'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -35,6 +38,7 @@ const Login = () => {
 		resolver: zodResolver(schema),
 	})
 	const { mutate, isLoading, error } = useLogin()
+	const mutation = useLoginWithGoogle()
 
 	const loginUser: SubmitHandler<LoginSchema> = data => {
 		mutate(data, {
@@ -47,6 +51,32 @@ const Login = () => {
 			},
 		})
 	}
+
+	const loginWithGoogle = useGoogleLogin({
+		onSuccess: async response => {
+			const userInfo = await axios.get(
+				'https://www.googleapis.com/oauth2/v3/userinfo',
+				{
+					headers: {
+						Authorization: `Bearer ${response.access_token}`,
+					},
+				}
+			)
+
+			mutation.mutate(
+				{
+					email: userInfo.data?.email,
+				},
+				{
+					onSuccess: () => navigate('/dashboard'),
+				}
+			)
+		},
+		onError: async error => {
+			console.error(error)
+			// toast.error(error)
+		},
+	})
 
 	return (
 		<>
@@ -99,9 +129,19 @@ const Login = () => {
 			<p className='pt-6 text-center text-lg font-medium uppercase'>or</p>
 
 			<div className='flex flex-col gap-3 pt-4'>
-				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
-					<img src={googleLogo} alt='google logo' className='w-7' />
-					<span>Log in with Google</span>
+				<button
+					onClick={() => loginWithGoogle()}
+					disabled={mutation.isLoading}
+					className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-[#C1C1C1]/20'
+				>
+					{mutation.isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<img src={googleLogo} alt='google logo' className='w-7' />
+							<span>Log in with Google</span>
+						</>
+					)}
 				</button>
 				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />

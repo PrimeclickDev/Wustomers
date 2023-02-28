@@ -1,7 +1,10 @@
-export type ErrorResponse = {
+type ResponseType = {
 	success: boolean
-	errors: Errors
 	message: string
+}
+
+export interface ErrorResponse extends ResponseType {
+	errors: Errors
 }
 
 export type Errors = {
@@ -9,14 +12,20 @@ export type Errors = {
 	otp: string[]
 	passwordReset: string[]
 }
-
-export type AuthResponse = {
-	success: boolean
-	data: Data
-	message: string
+export interface AuthResponse extends ResponseType {
+	data: User
 }
 
-type Data = {
+export interface LoginResponse extends ResponseType {
+	data: Data
+}
+
+export type Data = {
+	user: User
+	access_token: string
+}
+
+export type User = {
 	id: number
 	email: string
 	status: Status
@@ -24,7 +33,7 @@ type Data = {
 	updated_at: Date
 }
 
-type Status = {
+export type Status = {
 	id: number
 	name: string
 }

@@ -1,40 +1,21 @@
 import { useMutation } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import { ErrorResponse } from 'models/auth-models'
+import { AuthResponse, ErrorResponse } from 'models/auth-models'
 import { SignupSchema } from 'pages/website/Signup'
 import { toast } from 'react-toastify'
 import { baseURL } from 'services/requests'
 
 export type RegisterInput = Pick<SignupSchema, 'email' | 'password'>
 
-type RegisterResponse = {
-	success: boolean
-	data: Data
-	message: string
-}
-
-type Data = {
-	id: number
-	email: string
-	status: Status
-	created_at: Date
-	updated_at: Date
-}
-
-type Status = {
-	id: number
-	name: string
-}
-
 export const register = async (
 	user: RegisterInput
-): Promise<AxiosResponse<RegisterResponse>> => {
+): Promise<AxiosResponse<AuthResponse>> => {
 	return await axios.post(`${baseURL}/register`, user)
 }
 
 export const useRegister = () => {
 	return useMutation<
-		AxiosResponse<RegisterResponse>,
+		AxiosResponse<AuthResponse>,
 		AxiosError<ErrorResponse>,
 		RegisterInput
 	>({

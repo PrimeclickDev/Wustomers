@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
@@ -11,21 +12,25 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<QueryWrapper>
-				<App />
-
-				<ToastContainer
-					position='top-right'
-					autoClose={5000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					closeOnClick
-					rtl={false}
-					pauseOnFocusLoss
-					draggable
-					pauseOnHover
-					theme='light'
-				/>
+				<GoogleOAuthProvider
+					clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
+				>
+					<App />
+				</GoogleOAuthProvider>
 			</QueryWrapper>
+
+			<ToastContainer
+				position='top-right'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme='light'
+			/>
 		</BrowserRouter>
 	</React.StrictMode>
 )

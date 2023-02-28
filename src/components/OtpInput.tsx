@@ -144,7 +144,7 @@ export const OtpInput = ({ value, valueLength, onChange }: OtpInputProps) => {
 					autoComplete='one-time-code'
 					pattern='\d{1}' // constrains the OTP to a one digit string
 					maxLength={valueLength} // restrict maximum digits per input box but we are not using 1 because we will allow pasting of code and simutaneously allow autocomplete to work
-					className='h-14 w-14 rounded-sx border border-[#E6EAF9] bg-[#F3F4FC] p-2 text-center text-xl font-bold focus-visible:outline-offset-0'
+					className='h-14 w-14 rounded-sx border border-[#E6EAF9] bg-wustomers-primary p-2 text-center text-xl font-bold focus-visible:outline-offset-0'
 					value={digit}
 					onChange={e => inputOnChange(e, idx)}
 					onFocus={inputOnFocus}
