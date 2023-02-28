@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { getAccessToken } from 'utils/storage'
+import { getAccessToken, removeAccessToken } from 'utils/storage'
 
 // const pageUrl = new URL(window.location.href)
 
@@ -36,8 +36,11 @@ instance.interceptors.response.use(
 	error => {
 		if (error instanceof AxiosError) {
 			if (error.response?.status === 401) {
-				window.location.pathname = '/login'
+				removeAccessToken()
+				// window.location.pathname = '/login'
 			}
+
+			throw error
 		}
 	}
 )

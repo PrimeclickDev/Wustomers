@@ -19,6 +19,7 @@ specifiers:
   axios: ^1.2.3
   eslint: ^8.32.0
   eslint-plugin-react: ^7.32.1
+  frappe-charts: ^1.6.2
   husky: ^8.0.3
   js-cookie: ^3.0.1
   lint-staged: ^13.1.0
@@ -29,6 +30,7 @@ specifiers:
   react-cookie: ^4.1.1
   react-dom: ^18.2.0
   react-error-boundary: ^3.1.4
+  react-frappe-charts: ^4.1.0
   react-hook-form: ^7.42.1
   react-router-dom: ^6.7.0
   react-toastify: ^9.1.1
@@ -51,11 +53,13 @@ dependencies:
   '@tanstack/react-query': 4.22.4_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.22.4_nuvt6iw2zzunisurt5cxfst6qu
   axios: 1.2.3
+  frappe-charts: 1.6.2
   js-cookie: 3.0.1
   react: 18.2.0
   react-cookie: 4.1.1_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-error-boundary: 3.1.4_react@18.2.0
+  react-frappe-charts: 4.1.0_lbmkygfjs3cddxtcbmjrj4qiwe
   react-hook-form: 7.42.1_react@18.2.0
   react-router-dom: 6.7.0_biqbaboplfbrettd7655fr4n2y
   react-toastify: 9.1.1_biqbaboplfbrettd7655fr4n2y
@@ -3538,6 +3542,10 @@ packages:
     resolution: {integrity: sha512-MhLuK+2gUcnZe8ZHlaaINnQLl0xRIGRfcGk2yl8xoQAfHrSsL3rYu6FCmBdkdbhc9EPlwyGHewaRsvwRMJtAlA==}
     dev: true
 
+  /frappe-charts/1.6.2:
+    resolution: {integrity: sha512-9TC3/+YVUi84yYoEbxFiSqu+1FQ5If/ydUNj6i8FRpwynd08t6a7RkS+IRJozAk6NfdL8/LVTTE1DUOjjKZZxg==}
+    dev: false
+
   /fs-constants/1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
     dev: true
@@ -4705,6 +4713,18 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.13
       react: 18.2.0
+    dev: false
+
+  /react-frappe-charts/4.1.0_lbmkygfjs3cddxtcbmjrj4qiwe:
+    resolution: {integrity: sha512-DeQrzy2nGawbQsMQHpNeXAXuhkK0myWzr/d75k/UCcff57JsPxsyQz15jRNtlWN9j6JcdN9Y7awyGIgXxjZq7w==}
+    peerDependencies:
+      frappe-charts: '>= 1.5.2'
+      react: '>= 16.8.0'
+      react-dom: '>= 16.8.0'
+    dependencies:
+      frappe-charts: 1.6.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-hook-form/7.42.1_react@18.2.0:

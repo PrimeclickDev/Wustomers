@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 // import * as Switch from '@radix-ui/react-switch'
 import { Button } from 'components/Button'
+import { Spinner } from 'components/Spinner'
 import { Switch } from 'components/Switch'
 import { TextField } from 'components/TextField'
+import { useUpdatePassword } from 'hooks/profile/useUpdatePassword'
 import { usePageTitle } from 'hooks/usePageTitle'
 import useToggle from 'hooks/useToggle'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -56,17 +58,28 @@ type ChangePasswordSchema = z.infer<typeof schema>
 const Settings = () => {
 	usePageTitle('Settings')
 	const [value, toggle] = useToggle()
-	const { register, control, handleSubmit } = useForm<ChangePasswordSchema>({
-		resolver: zodResolver(schema),
-		defaultValues: {
-			confirmNewPassword: '',
-			currentPassword: '',
-			newPassword: '',
-		},
-	})
+	const { register, control, handleSubmit, reset } =
+		useForm<ChangePasswordSchema>({
+			resolver: zodResolver(schema),
+			defaultValues: {
+				confirmNewPassword: '',
+				currentPassword: '',
+				newPassword: '',
+			},
+		})
+	const { mutate, isLoading } = useUpdatePassword()
 
 	const changePassword: SubmitHandler<ChangePasswordSchema> = data => {
-		console.log(data)
+		mutate(
+			{
+				old_password: data.currentPassword,
+				new_password: data.newPassword,
+				confirmPassword: data.confirmNewPassword,
+			},
+			{
+				onSuccess: () => reset(),
+			}
+		)
 	}
 
 	return (
@@ -105,10 +118,11 @@ const Settings = () => {
 					/>
 
 					<Button
+						text={isLoading ? <Spinner /> : 'Submit'}
 						type='submit'
-						text='Submit'
 						variant='fill'
 						className='mt-10 ml-auto'
+						disabled={isLoading}
 					/>
 				</form>
 			</div>
