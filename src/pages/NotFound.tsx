@@ -9,9 +9,7 @@ const NotFound = () => {
 			<h2 className='mt-4 text-3xl font-bold uppercase tracking-wide text-wustomers-blue lg:text-6xl'>
 				Page not found...
 			</h2>
-			{/* <pre className='mt-1 rounded-sm bg-gray-200 py-1 px-4'>
-				http://localhost:5173/reset
-			</pre> */}
+
 			<p className='pt-2 lg:text-lg'>
 				This page is missing or you assembled the link incorretly.
 			</p>

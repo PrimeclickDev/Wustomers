@@ -15,11 +15,13 @@ import { Button } from 'components/Button'
 import { ErrorMessage } from 'components/ErrorMessage'
 import { ImgWithFallback } from 'components/ImgWithFallback'
 import { Modal } from 'components/Modal'
+import { Select } from 'components/Select'
 // import { ImgWithFallback } from 'components/ImgWithFallback'
 import { TextField } from 'components/TextField'
+import { useGetIndustries } from 'hooks/globals/useGetIndustries'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const schema = z.object({
@@ -44,7 +46,12 @@ const schema = z.object({
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
 	industryType: z.string().min(1, { message: 'Industry type is required' }),
-	noOfEmployess: z.string().min(1, { message: 'No of Employees is required' }),
+	noOfEmployess: z
+		.number({
+			invalid_type_error: 'Please enter a number',
+			required_error: 'No of Employees is required',
+		})
+		.min(1, { message: 'No of Employees is required' }),
 	instagramLink: z
 		.string()
 		// .url({ message: 'Please enter a valid link' })
@@ -72,7 +79,7 @@ const initialFormValues = {
 	firstName: '',
 	industryType: '',
 	lastName: '',
-	noOfEmployess: '',
+	noOfEmployess: 0,
 	phoneNumber: '',
 	facebookLink: '',
 	instagramLink: '',
@@ -80,10 +87,31 @@ const initialFormValues = {
 	twitterLink: '',
 }
 
+const options = [
+	{
+		id: 1,
+		name: 'Agriculture Industry',
+		status: 'Active',
+		value: 'agriculture-industry',
+	},
+	{
+		id: 2,
+		name: 'Computer Industry',
+		status: 'Active',
+		value: 'computer-industry',
+	},
+	{
+		id: 3,
+		name: 'Construction Industry',
+		status: 'Active',
+		value: 'construction-industry',
+	},
+]
+
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
 	const [openModal, setOpenModal] = useState(false)
-	const [formData, setFormData] = useState({})
+	// const [formData, setFormData] = useState({})
 	const {
 		control,
 		register,
@@ -93,13 +121,14 @@ const AccountUpdate = () => {
 		resolver: zodResolver(schema),
 		defaultValues: initialFormValues,
 	})
+	const { data: industries } = useGetIndustries()
 
 	const closeModal = () => setOpenModal(false)
 
 	const updateProfile: SubmitHandler<AccountUpdateSchema> = data => {
-		console.log(data)
+		console.log('data', data)
 		setOpenModal(true)
-		setFormData(data)
+		// setFormData(data)
 	}
 
 	return (
@@ -190,14 +219,39 @@ const AccountUpdate = () => {
 									placeholder='Business mail'
 									className='mt-[6px]'
 								/>
-								<TextField
+								<Controller
+									name='industryType'
+									control={control}
+									render={({
+										field: { onChange, value },
+										fieldState: { error },
+									}) => (
+										<>
+											<Select
+												options={industries?.data.data}
+												className={`custom-select ${
+													error
+														? 'ring-red-600'
+														: 'ring-wustomers-primary-light'
+												}`}
+												placeholder='Select industry type'
+												value={value}
+												onChange={onChange}
+											/>
+											{error ? (
+												<ErrorMessage message={error.message} />
+											) : null}
+										</>
+									)}
+								/>
+								{/* <TextField
 									control={control}
 									placeholder='Industry type'
 									name='industryType'
 									register={register}
 									type='text'
 									className='mt-[6px]'
-								/>
+								/> */}
 								<TextField
 									control={control}
 									placeholder='No of employees'
