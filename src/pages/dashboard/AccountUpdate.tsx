@@ -46,12 +46,7 @@ const schema = z.object({
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
 	industryType: z.string().min(1, { message: 'Industry type is required' }),
-	noOfEmployess: z
-		.number({
-			invalid_type_error: 'Please enter a number',
-			required_error: 'No of Employees is required',
-		})
-		.min(1, { message: 'No of Employees is required' }),
+	noOfEmployess: z.string().min(1, { message: 'No of Employees is required' }),
 	instagramLink: z
 		.string()
 		// .url({ message: 'Please enter a valid link' })
@@ -79,34 +74,13 @@ const initialFormValues = {
 	firstName: '',
 	industryType: '',
 	lastName: '',
-	noOfEmployess: 0,
+	noOfEmployess: '',
 	phoneNumber: '',
 	facebookLink: '',
 	instagramLink: '',
 	tiktokLink: '',
 	twitterLink: '',
 }
-
-const options = [
-	{
-		id: 1,
-		name: 'Agriculture Industry',
-		status: 'Active',
-		value: 'agriculture-industry',
-	},
-	{
-		id: 2,
-		name: 'Computer Industry',
-		status: 'Active',
-		value: 'computer-industry',
-	},
-	{
-		id: 3,
-		name: 'Construction Industry',
-		status: 'Active',
-		value: 'construction-industry',
-	},
-]
 
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
