@@ -1,7 +1,4 @@
-type ResponseType = {
-	success: boolean
-	message: string
-}
+import { ResponseType } from './shared'
 
 export interface ErrorResponse extends ResponseType {
 	errors: Errors

@@ -70,5 +70,5 @@ input[type='number'] {
 }
 
 .custom-select {
-	@apply mt-2 h-[46px] w-full appearance-none rounded-sm border-0 bg-wustomers-primary px-4 text-base text-wustomers-main ring-[1.5px] data-[placeholder]:!text-gray-400;
+	@apply mt-2 h-[46px] w-full appearance-none rounded-sm border-0 bg-wustomers-primary px-4 text-base text-wustomers-main ring-[1.5px] data-[placeholder]:text-gray-500;
 }

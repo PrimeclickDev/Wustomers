@@ -1,3 +1,26 @@
+export const noOfEmployees = [
+	{
+		id: 1,
+		name: 'Self employed',
+	},
+	{
+		id: 2,
+		name: '1-10 employees',
+	},
+	{
+		id: 3,
+		name: '11-50 employees',
+	},
+	{
+		id: 4,
+		name: '51-200 employees',
+	},
+	{
+		id: 5,
+		name: '201-500 employees',
+	},
+]
+
 export const faqs = [
 	{
 		id: 1,

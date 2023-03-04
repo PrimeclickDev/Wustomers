@@ -4,7 +4,6 @@ import { ReactComponent as InformationIcon } from 'assets/icons/information.svg'
 import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Tiktok } from 'assets/icons/tiktok.svg'
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
-import emptyUserImg from 'assets/images/empty.png?format=webp;png'
 import {
 	Accordion,
 	AccordionContent,
@@ -13,12 +12,13 @@ import {
 } from 'components/Accordion'
 import { Button } from 'components/Button'
 import { ErrorMessage } from 'components/ErrorMessage'
-import { ImgWithFallback } from 'components/ImgWithFallback'
 import { Modal } from 'components/Modal'
 import { Select } from 'components/Select'
 // import { ImgWithFallback } from 'components/ImgWithFallback'
 import { TextField } from 'components/TextField'
-import { useGetIndustries } from 'hooks/globals/useGetIndustries'
+import { UserAvatar } from 'components/UserAvatar'
+import { noOfEmployees } from 'data/constants'
+import { useGetIndustries } from 'hooks/api/globals/useGetIndustries'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { useState } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -46,7 +46,7 @@ const schema = z.object({
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
 	industryType: z.string().min(1, { message: 'Industry type is required' }),
-	noOfEmployess: z.string().min(1, { message: 'No of Employees is required' }),
+	noOfEmployees: z.string().min(1, { message: 'No of Employees is required' }),
 	instagramLink: z
 		.string()
 		// .url({ message: 'Please enter a valid link' })
@@ -74,7 +74,7 @@ const initialFormValues = {
 	firstName: '',
 	industryType: '',
 	lastName: '',
-	noOfEmployess: '',
+	noOfEmployees: '',
 	phoneNumber: '',
 	facebookLink: '',
 	instagramLink: '',
@@ -85,7 +85,6 @@ const initialFormValues = {
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
 	const [openModal, setOpenModal] = useState(false)
-	// const [formData, setFormData] = useState({})
 	const {
 		control,
 		register,
@@ -101,7 +100,7 @@ const AccountUpdate = () => {
 
 	const updateProfile: SubmitHandler<AccountUpdateSchema> = data => {
 		console.log('data', data)
-		setOpenModal(true)
+		// setOpenModal(true)
 		// setFormData(data)
 	}
 
@@ -193,6 +192,7 @@ const AccountUpdate = () => {
 									placeholder='Business mail'
 									className='mt-[6px]'
 								/>
+
 								<Controller
 									name='industryType'
 									control={control}
@@ -208,7 +208,32 @@ const AccountUpdate = () => {
 														? 'ring-red-600'
 														: 'ring-wustomers-primary-light'
 												}`}
-												placeholder='Select industry type'
+												placeholder='Select an industry type....'
+												value={value}
+												onChange={onChange}
+											/>
+											{error ? (
+												<ErrorMessage message={error.message} />
+											) : null}
+										</>
+									)}
+								/>
+								<Controller
+									name='noOfEmployees'
+									control={control}
+									render={({
+										field: { onChange, value },
+										fieldState: { error },
+									}) => (
+										<>
+											<Select
+												options={noOfEmployees}
+												className={`custom-select ${
+													error
+														? 'ring-red-600'
+														: 'ring-wustomers-primary-light'
+												}`}
+												placeholder='Select number of employees...'
 												value={value}
 												onChange={onChange}
 											/>
@@ -226,7 +251,7 @@ const AccountUpdate = () => {
 									type='text'
 									className='mt-[6px]'
 								/> */}
-								<TextField
+								{/* <TextField
 									control={control}
 									placeholder='No of employees'
 									name='noOfEmployess'
@@ -234,7 +259,7 @@ const AccountUpdate = () => {
 									type='number'
 									inputMode='numeric'
 									className='mt-[6px]'
-								/>
+								/> */}
 							</AccordionContent>
 						</AccordionItem>
 
@@ -297,39 +322,7 @@ const AccountUpdate = () => {
 					</div>
 				</form>
 
-				<div className='order-1 flex flex-col items-center md:order-none'>
-					<ImgWithFallback
-						type='image/png'
-						fallback={emptyUserImg[1]}
-						src={emptyUserImg[0]}
-						alt='user'
-						className='h-64 w-60 rounded-sx bg-wustomers-main object-cover'
-					/>
-					{/* <img
-						src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXNlcnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60'
-						alt='user'
-						className=''
-					/> */}
-
-					<div className='mt-4 flex flex-col items-start gap-4'>
-						<Button
-							text='Remove Image'
-							variant='outline'
-							type='button'
-							className='font-medium capitalize'
-						/>
-						<label className='w-full cursor-pointer rounded-sm bg-wustomers-blue px-11 py-2 text-sm font-medium tracking-wider text-white transition hover:scale-[1.01] hover:bg-wustomers-blue/90 active:scale-95 md:text-base'>
-							<span>Upload Image</span>
-							<input
-								type='file'
-								name='profileImage'
-								id='profileImage'
-								accept='image/png, image/jpeg'
-								className='sr-only'
-							/>
-						</label>
-					</div>
-				</div>
+				<UserAvatar />
 			</div>
 
 			<Modal closeModal={closeModal} modalOpen={openModal}>

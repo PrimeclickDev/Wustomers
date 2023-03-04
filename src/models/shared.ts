@@ -1,3 +1,8 @@
+export type ResponseType = {
+	success: boolean
+	message: string
+}
+
 export type Industries = {
 	success: boolean
 	data: Industry[]

@@ -44,12 +44,7 @@ export const Select = ({
 					<RadixSelect.Viewport className='p-[5px]'>
 						<RadixSelect.Group>
 							{options?.map(option => (
-								<SelectItem
-									value={option.name
-										.replace(/\s+/g, '-')
-										.toLowerCase()}
-									key={option.id}
-								>
+								<SelectItem value={option.name} key={option.id}>
 									{option.name}
 								</SelectItem>
 							))}

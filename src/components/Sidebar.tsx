@@ -12,7 +12,7 @@ import { ReactComponent as ProfileOutlineIcon } from 'assets/icons/profile-outli
 import { ReactComponent as SettingsIcon } from 'assets/icons/setting.svg'
 import { ReactComponent as SettingsFillIcon } from 'assets/icons/settings-fill.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/useredit.svg'
-import { useLogout } from 'hooks/auth/useLogout'
+import { useLogout } from 'hooks/api/auth/useLogout'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
