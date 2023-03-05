@@ -13,8 +13,8 @@ import {
 import { Button } from 'components/Button'
 import { HomeSection } from 'components/HomeSection'
 import { ImgWithFallback } from 'components/ImgWithFallback'
-import { faqs } from 'data/constants'
 import { usePageTitle } from 'hooks/usePageTitle'
+import { faqs } from 'utils/constants'
 
 const Home = () => {
 	usePageTitle('Home')

@@ -1,7 +1,11 @@
 import { ResponseType } from './shared'
 
 export interface UserProfile extends ResponseType {
-	data: Profile
+	data: ProfileData
+}
+
+type ProfileData = {
+	profile: Profile
 }
 
 export type Profile = {
@@ -10,6 +14,7 @@ export type Profile = {
 	industry: string
 	business_name: string
 	business_email: string
+	no_employee: string
 	instagram_url: string
 	facebook_url: string
 	twitter_url: string
@@ -21,6 +26,7 @@ export type Profile = {
 
 export type User = {
 	id: number
+	avatar: string
 	last_name: string
 	first_name: string
 	provider: null
@@ -36,7 +42,7 @@ export type ProfileInput = {
 	first_name: string
 	phone: string
 	no_employee: string
-	industry_type_id: number
+	industry_type_id?: number
 	business_name: string
 	business_email: string
 	instagram_url: string

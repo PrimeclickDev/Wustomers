@@ -87,10 +87,11 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 	const logout = () => mutate()
 	return (
 		<>
+			{/* mobile overlay */}
 			<div
 				aria-hidden='true'
 				onClick={() => setIsOpen(false)}
-				className={`absolute inset-0 z-30 min-h-screen w-full bg-black/70 shadow-xl transition-all lg:hidden lg:shadow-none ${
+				className={`absolute inset-0 z-30 min-h-screen w-full bg-[rgba(47,47,47,0.9)] transition-all backdrop:blur-sm lg:hidden ${
 					isOpen ? 'block' : 'hidden'
 				}`}
 			/>
@@ -150,7 +151,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 				<button
 					type='button'
 					onClick={() => setIsOpen(false)}
-					className='absolute right-2 top-6 rounded text-lg text-wustomers-blue lg:hidden'
+					className='absolute right-2 top-6 rounded bg-wustomers-blue text-lg text-white lg:hidden'
 				>
 					<Close />
 					<span className='sr-only'>close mobile menu</span>

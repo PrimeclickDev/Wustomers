@@ -3,32 +3,31 @@ import * as RadixSelect from '@radix-ui/react-select'
 import { ReactComponent as ChevronDownIcon } from 'assets/icons/chevron-down.svg'
 import React from 'react'
 
-type OptionType = {
-	name: string
-	id: number
-}
-
-type SelectProps = {
-	options: OptionType[] | undefined
+interface SelectProps extends RadixSelect.SelectProps {
 	icon?: React.ReactNode
 	className?: string
 	placeholder: string
 	value?: string
 	onChange?: () => void
+	children: React.ReactNode
+	// defaultValue?: string
 }
 
 export const Select = ({
-	options,
 	icon,
 	className,
 	placeholder,
 	value,
 	onChange,
+	children,
 }: SelectProps) => {
 	return (
-		<RadixSelect.Root value={value} onValueChange={onChange}>
+		<RadixSelect.Root
+			value={value === '' ? undefined : value}
+			onValueChange={onChange}
+		>
 			<RadixSelect.Trigger
-				className={`inline-flex h-9 w-72 items-center justify-between gap-[5px] rounded border border-wustomers-blue bg-wustomers-primary-light pl-2 pr-[15px] text-sm leading-none text-wustomers-blue data-[placeholder]:text-wustomers-blue-light/50 ${className}`}
+				className={`flex h-9 w-72 items-center justify-between gap-[5px] rounded border border-wustomers-blue bg-wustomers-primary-light pl-2 pr-[15px] text-sm leading-none text-wustomers-blue data-[placeholder]:text-wustomers-blue-light/50 ${className}`}
 				// aria-label='Food'
 			>
 				<RadixSelect.Group className='flex items-center gap-3'>
@@ -42,13 +41,7 @@ export const Select = ({
 			<RadixSelect.Portal>
 				<RadixSelect.Content className='overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
 					<RadixSelect.Viewport className='p-[5px]'>
-						<RadixSelect.Group>
-							{options?.map(option => (
-								<SelectItem value={option.name} key={option.id}>
-									{option.name}
-								</SelectItem>
-							))}
-						</RadixSelect.Group>
+						<RadixSelect.Group>{children}</RadixSelect.Group>
 					</RadixSelect.Viewport>
 				</RadixSelect.Content>
 			</RadixSelect.Portal>
@@ -56,7 +49,7 @@ export const Select = ({
 	)
 }
 
-const SelectItem: React.ForwardRefExoticComponent<
+export const SelectItem: React.ForwardRefExoticComponent<
 	RadixSelect.SelectItemProps & React.RefAttributes<HTMLDivElement>
 > = React.forwardRef(({ children, className, ...props }, forwardedRef) => {
 	return (

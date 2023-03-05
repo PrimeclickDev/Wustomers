@@ -23,7 +23,7 @@ export const DashboardLayout = () => {
 								onReset={reset}
 								FallbackComponent={ErrorFallback}
 							>
-								<section className='bg-[#E6EAF9]'>
+								<section className='min-h-screen bg-[#E6EAF9]'>
 									<DashboardHeader toggle={toggle} />
 
 									<div className='relative max-w-6xl px-3 py-10 md:px-5 lg:px-10'>

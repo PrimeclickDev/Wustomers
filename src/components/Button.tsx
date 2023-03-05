@@ -40,7 +40,7 @@ export const Button = ({
 					onClick={onClick}
 					className={`flex items-center justify-center rounded-sm px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-wustomers-blue/10 ${
 						variant === 'fill'
-							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 hover:shadow-xl hover:shadow-wustomers-blue/20'
+							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 lg:hover:shadow-xl lg:hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
 							? 'border-2 border-wustomers-blue py-[7px] text-wustomers-blue hover:scale-[1.01] hover:bg-wustomers-blue/5'
 							: ''

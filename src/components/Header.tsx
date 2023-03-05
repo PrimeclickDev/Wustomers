@@ -87,26 +87,29 @@ export const Header = () => {
 				{/* mobile menu */}
 				<button className='lg:hidden' onClick={toggle}>
 					<Menu />
-					<span className='sr-only'>menu</span>
+					<span className='sr-only'>open menu</span>
 				</button>
 
 				{/* overlay */}
 				<div
 					aria-hidden='true'
 					onClick={toggle}
-					className={`absolute inset-0 z-50 min-h-screen w-full bg-wustomers-blue-light/30 transition-all ${
+					className={`absolute inset-0 z-50 min-h-screen w-full bg-wustomers-blue/50 transition-all backdrop:blur-sm ${
 						isOpen ? 'block' : 'hidden'
 					}`}
 				/>
 
 				<div
-					className={`absolute right-0 top-0 z-50 flex h-screen w-64 flex-col bg-wustomers-blue px-7 pt-28 pb-10 text-white shadow-2xl transition lg:hidden ${
-						isOpen ? 'translate-x-0' : 'translate-x-full'
+					className={`absolute left-0 top-0 z-50 flex h-screen w-64 flex-col bg-wustomers-blue px-7 pt-28 pb-10 text-white shadow-2xl transition lg:hidden ${
+						isOpen ? 'translate-x-0' : '-translate-x-full'
 					}`}
 				>
 					<ul className='flex flex-col items-center gap-8 font-bold'>
 						{navs?.map(nav => (
-							<li key={nav.name} className='capitalize'>
+							<li
+								key={nav.name}
+								className='flex w-full items-center justify-center border-b border-b-wustomers-blue-light pb-2 capitalize'
+							>
 								<NavLink
 									to={nav.link}
 									onClick={toggle}
@@ -119,7 +122,7 @@ export const Header = () => {
 					</ul>
 
 					<div className='mt-20 flex flex-col gap-4'>
-						{token ? (
+						{!token ? (
 							<>
 								<Button
 									text='Login'
@@ -146,7 +149,7 @@ export const Header = () => {
 
 					<button
 						onClick={toggle}
-						className='absolute top-3 left-3 z-50 rounded-md bg-wustomers-blue-light p-2 text-white'
+						className='absolute top-5 right-3 z-50 rounded-md bg-wustomers-blue-light p-1 text-white'
 					>
 						<Close />
 						<span className='sr-only'>close menu</span>

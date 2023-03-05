@@ -1,36 +1,11 @@
 import { ReactComponent as ActivityIcon } from 'assets/icons/activity-outline.svg'
 import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg'
 import { CampaignMetricsTable } from 'components/CampaignMetricsTable'
-import { Select } from 'components/Select'
+import { Select, SelectItem } from 'components/Select'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense } from 'react'
 
 const CampaignChart = lazy(() => import('components/CampaignChart'))
-
-const tableHeaders = ['Title', 'Date', 'Status', 'Duration', 'Action']
-const tableBody = [
-	{
-		id: 1,
-		title: 'Campaign title number 1',
-		date: '12, Nov. 2022',
-		status: 'active',
-		duration: '2 weeks',
-	},
-	{
-		id: 2,
-		title: 'Campaign title number 2',
-		date: '12, Nov. 2022',
-		status: 'complete',
-		duration: '1 week',
-	},
-	{
-		id: 3,
-		title: 'Campaign title number 3',
-		date: '12, Nov. 2022',
-		status: 'pending',
-		duration: '1 week',
-	},
-]
 
 const durations = [
 	{
@@ -57,7 +32,6 @@ const durations = [
 
 const CampaignMetrics = () => {
 	usePageTitle('Campaign Metrics')
-	const [openMenu, setOpenMenu] = useState<number | null>(null)
 
 	return (
 		<>
@@ -66,15 +40,26 @@ const CampaignMetrics = () => {
 			<div className='mt-6 bg-white p-3 md:p-6 '>
 				<div className='flex flex-wrap items-center gap-4 lg:gap-9'>
 					<Select
-						options={durations}
+						// options={durations}
 						icon={<CalendarIcon />}
 						placeholder='Select a duration...'
-					/>
+					>
+						{durations?.map(option => (
+							<SelectItem value={option.name} key={option.id}>
+								{option.name}
+							</SelectItem>
+						))}
+					</Select>
 					<Select
-						options={durations}
 						icon={<ActivityIcon className='text-wustomers-blue' />}
 						placeholder='Select a duration....'
-					/>
+					>
+						{durations?.map(option => (
+							<SelectItem value={option.name} key={option.id}>
+								{option.name}
+							</SelectItem>
+						))}
+					</Select>
 				</div>
 
 				<div className='mt-6 grid gap-7 xl:grid-cols-2'>

@@ -4,6 +4,7 @@ import { ErrorResponse } from 'models/auth-models'
 import { ProfileInput, UserProfile } from 'models/profile'
 import { toast } from 'react-toastify'
 import { baseURL, instance } from 'services/requests'
+import { queryClient } from 'utils/react-query/QueryWrapper'
 
 export const updateProfile = async (
 	profile: ProfileInput
@@ -20,7 +21,13 @@ export const useUpdateProfile = () => {
 		mutationFn: (data: ProfileInput) => updateProfile(data),
 		onSuccess: ({ data }) => {
 			toast.success(data?.message)
+			queryClient.invalidateQueries({ queryKey: ['profile'] })
 		},
-		// onError: error => {},
+		onError: error => {
+			if (error instanceof AxiosError) {
+				toast.error(error.response?.data.message)
+				console.error(error)
+			}
+		},
 	})
 }

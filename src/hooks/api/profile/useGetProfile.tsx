@@ -11,10 +11,11 @@ export const getUserProfile = async (): Promise<AxiosResponse<UserProfile>> => {
 
 export const useGetProfile = () => {
 	return useQuery<AxiosResponse<UserProfile>, AxiosError<ErrorResponse>>({
+		queryKey: ['profile'],
 		queryFn: getUserProfile,
-		onSuccess: ({ data }) => {
-			console.log('yh baby')
-		},
+		// onSuccess: () => {
+		// 	console.log('yh baby')
+		// },
 		onError: error => toast.error(error.response?.data.message),
 	})
 }

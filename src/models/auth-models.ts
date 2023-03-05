@@ -8,6 +8,7 @@ export type Errors = {
 	email: string[]
 	otp: string[]
 	passwordReset: string[]
+	avatar: string[]
 }
 export interface AuthResponse extends ResponseType {
 	data: User

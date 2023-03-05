@@ -6,58 +6,67 @@ import { ReactComponent as ActivityIcon } from 'assets/icons/overview-activity.s
 import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
 import { ReactComponent as Whatsapp } from 'assets/icons/whatsapp.svg'
 import testImg from 'assets/images/test-img.jpg'
+import { Spinner } from 'components/Spinner'
+import { useGetProfile } from 'hooks/api/profile/useGetProfile'
 import { usePageTitle } from 'hooks/usePageTitle'
 
+const summaries = [
+	{
+		id: 1,
+		title: 'Total No. of Campaign pages',
+		number: 40,
+		icon: <MonitorIcon />,
+	},
+	{
+		id: 2,
+		title: 'Total No. of Visits',
+		number: 240,
+		icon: <ActivityIcon width={32} height={32} />,
+	},
+	{
+		id: 3,
+		title: 'Total No. of Contacts',
+		number: 200,
+		icon: <ChartSquareIcon />,
+	},
+]
+
+const accounts = [
+	{
+		icon: <Instagram />,
+		name: 'Instagram',
+		link: true,
+	},
+	{
+		icon: <Twitter />,
+		name: 'Twitter',
+		link: true,
+	},
+	{
+		icon: <Whatsapp />,
+		name: 'Whatsapp',
+		link: true,
+	},
+	{
+		icon: <Mail />,
+		name: 'Email',
+		link: false,
+	},
+]
 const Overview = () => {
 	usePageTitle('Dashboard')
-
-	const summaries = [
-		{
-			id: 1,
-			title: 'Total No. of Campaign pages',
-			number: 40,
-			icon: <MonitorIcon />,
-		},
-		{
-			id: 2,
-			title: 'Total No. of Visits',
-			number: 240,
-			icon: <ActivityIcon width={32} height={32} />,
-		},
-		{
-			id: 3,
-			title: 'Total No. of Contacts',
-			number: 200,
-			icon: <ChartSquareIcon />,
-		},
-	]
-
-	const accounts = [
-		{
-			icon: <Instagram />,
-			name: 'Instagram',
-			link: true,
-		},
-		{
-			icon: <Twitter />,
-			name: 'Twitter',
-			link: true,
-		},
-		{
-			icon: <Whatsapp />,
-			name: 'Whatsapp',
-			link: true,
-		},
-		{
-			icon: <Mail />,
-			name: 'Email',
-			link: false,
-		},
-	]
+	const { data: profile, isLoading } = useGetProfile()
 
 	return (
 		<>
-			<h2 className='text-3xl font-black'>Hi, Temitayo</h2>
+			<h2 className='flex items-center text-3xl font-black'>
+				Hi,{' '}
+				{isLoading ? (
+					<Spinner />
+				) : (
+					profile?.data.data.profile.user.first_name
+				)}
+			</h2>
 
 			<div className='mt-10 grid gap-4 lg:grid-cols-3 lg:gap-10'>
 				{summaries.map(summary => (

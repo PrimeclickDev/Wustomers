@@ -1,10 +1,12 @@
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
-import emptyUserImg from 'assets/images/empty.png?format=webp;png'
-import { useState } from 'react'
+import emptyUserImg from 'assets/images/empty.png'
+import { useGetProfile } from 'hooks/api/profile/useGetProfile'
+import { useUpdateAvatar } from 'hooks/api/profile/useUpdateAvatar'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from './Button'
-import { ImgWithFallback } from './ImgWithFallback'
 import { Modal } from './Modal'
+import { Spinner } from './Spinner'
 
 // upload avatar flow
 /*
@@ -17,37 +19,53 @@ import { Modal } from './Modal'
 
 export const UserAvatar = () => {
 	// const { register, handleSubmit } = useForm()
+	const { data } = useGetProfile()
+	const mutation = useUpdateAvatar()
 	const [selectedImage, setSelectedImage] = useState<File | undefined>(
 		undefined
 	)
-
-	console.log(selectedImage)
 
 	const uploadImage = () => {
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		if (selectedImage!.size > 500000) {
 			return toast.error('Image size cannot be more than 5MB')
 		}
-		console.log('hellooooooooo')
+
+		const formdata = new FormData()
+		formdata.append('avatar', selectedImage as Blob, selectedImage?.name)
+
+		mutation.mutate(formdata)
 	}
+
+	useEffect(() => {
+		if (mutation.isSuccess) {
+			setSelectedImage(undefined)
+		}
+	}, [mutation.isSuccess])
 
 	return (
 		<>
 			<div className='order-1 flex flex-col items-center md:order-none'>
-				<ImgWithFallback
-					type='image/png'
-					fallback={emptyUserImg[1]}
-					src={emptyUserImg[0]}
-					alt='user'
-					className='h-64 w-60 rounded-sx bg-wustomers-main object-cover'
+				<img
+					src={
+						data?.data.data?.profile.user.avatar
+							? data?.data.data?.profile.user.avatar
+							: emptyUserImg
+					}
+					alt={
+						data?.data.data?.profile.user.avatar
+							? `${data?.data.data?.profile.user.first_name} avatar`
+							: 'empty user data'
+					}
+					className='h-64 w-60 rounded-sm bg-wustomers-main/20 object-cover shadow-lg'
 				/>
 
 				<div
 					// onSubmit={handleSubmit(onSubmit)}
-					className='mt-4 flex flex-col items-start gap-3'
+					className='mt-6 flex flex-col items-start gap-3'
 				>
 					<label className='w-full cursor-pointer rounded-sm bg-wustomers-blue px-11 py-2 text-sm font-normal tracking-wider text-white transition hover:scale-[1.01] hover:bg-wustomers-blue/80 active:scale-95 md:text-base'>
-						<span>Select Image</span>
+						<span>Choose Image</span>
 						<input
 							type='file'
 							id='user-avatar'
@@ -87,11 +105,12 @@ export const UserAvatar = () => {
 					) : null}
 				</div>
 				<Button
-					text='Upload Image'
+					text={mutation.isLoading ? <Spinner /> : 'Set image as avatar'}
 					variant='fill'
 					type='button'
 					className='mt-6 w-full rounded font-medium capitalize'
 					onClick={uploadImage}
+					disabled={mutation.isLoading}
 				/>
 			</Modal>
 		</>
