@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useGetProfile } from 'api/hooks/profile/useGetProfile'
 // import * as Switch from '@radix-ui/react-switch'
 import { useUpdatePassword } from 'api/hooks/profile/useUpdatePassword'
 import { Button } from 'components/Button'
@@ -68,6 +69,7 @@ const Settings = () => {
 			},
 		})
 	const { mutate, isLoading } = useUpdatePassword()
+	const { data: profile } = useGetProfile()
 
 	const changePassword: SubmitHandler<ChangePasswordSchema> = data => {
 		mutate(
@@ -86,46 +88,48 @@ const Settings = () => {
 		<>
 			<h2 className='text-3xl font-black'>Settings</h2>
 
-			<div className='mt-10 rounded-sx bg-white'>
-				<h3 className='bg-wustomers-primary py-3 px-4 text-lg font-medium text-wustomers-main md:px-7 md:text-xl'>
-					Change Password
-				</h3>
+			{!profile?.data.data.profile.user.social_login ? (
+				<div className='mt-10 rounded-sx bg-white'>
+					<h3 className='bg-wustomers-primary py-3 px-4 text-lg font-medium text-wustomers-main md:px-7 md:text-xl'>
+						Change Password
+					</h3>
 
-				<form
-					className='px-3 pb-10 md:px-7'
-					onSubmit={handleSubmit(changePassword)}
-				>
-					<TextField
-						label='Current Password'
-						type='password'
-						name='currentPassword'
-						register={register}
-						control={control}
-					/>
-					<TextField
-						label='New Password'
-						type='password'
-						name='newPassword'
-						register={register}
-						control={control}
-					/>
-					<TextField
-						label='Confirm new password'
-						type='password'
-						name='confirmNewPassword'
-						register={register}
-						control={control}
-					/>
+					<form
+						className='px-3 pb-10 md:px-7'
+						onSubmit={handleSubmit(changePassword)}
+					>
+						<TextField
+							label='Current Password'
+							type='password'
+							name='currentPassword'
+							register={register}
+							control={control}
+						/>
+						<TextField
+							label='New Password'
+							type='password'
+							name='newPassword'
+							register={register}
+							control={control}
+						/>
+						<TextField
+							label='Confirm new password'
+							type='password'
+							name='confirmNewPassword'
+							register={register}
+							control={control}
+						/>
 
-					<Button
-						text={isLoading ? <Spinner /> : 'Submit'}
-						type='submit'
-						variant='fill'
-						className='mt-10 ml-auto'
-						disabled={isLoading}
-					/>
-				</form>
-			</div>
+						<Button
+							text={isLoading ? <Spinner /> : 'Submit'}
+							type='submit'
+							variant='fill'
+							className='mt-10 ml-auto'
+							disabled={isLoading}
+						/>
+					</form>
+				</div>
+			) : null}
 
 			<div className='mt-10 flex items-center justify-between rounded-sx bg-white py-4 px-4 lg:px-7'>
 				<h4 className='text-lg'>Notifications</h4>

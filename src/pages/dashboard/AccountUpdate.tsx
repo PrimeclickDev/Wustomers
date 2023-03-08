@@ -133,8 +133,6 @@ const AccountUpdate = () => {
 		})
 	}
 
-	console.log('profile', profile)
-
 	useEffect(() => {
 		if (profile?.data.data) {
 			const data = profile?.data.data.profile
@@ -166,17 +164,19 @@ const AccountUpdate = () => {
 						</span>
 					</h2>
 
-					<div
-						role='alert'
-						className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 text-sm font-medium lg:text-base'
-					>
-						<div className='bg-wustomers-blue py-2 px-4 text-white'>
-							<InformationIcon />
+					{!profile?.data.data.profile.business_name ? (
+						<div
+							role='alert'
+							className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 text-sm font-medium lg:text-base'
+						>
+							<div className='bg-wustomers-blue py-2 px-4 text-white'>
+								<InformationIcon />
+							</div>
+							<span>
+								Note: Please fill this form to get your account verified
+							</span>
 						</div>
-						<span>
-							Note: Please fill this form to get your account verified
-						</span>
-					</div>
+					) : null}
 
 					<div className='mt-10 flex flex-col md:flex-row md:gap-10 xl:gap-20'>
 						<form
