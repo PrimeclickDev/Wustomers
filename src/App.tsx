@@ -5,6 +5,7 @@ import { WebsiteLayout } from 'layouts/WebsiteLayout'
 import AccountUpdate from 'pages/dashboard/AccountUpdate'
 import CampaignMetrics from 'pages/dashboard/CampaignMetrics'
 import Campaigns from 'pages/dashboard/Campaigns'
+import NewCampaign from 'pages/dashboard/NewCampaign'
 import Notifications from 'pages/dashboard/Notifications'
 import Overview from 'pages/dashboard/Overview'
 import Settings from 'pages/dashboard/Settings'
@@ -35,7 +36,10 @@ const App = () => {
 
 			<Route element={<DashboardLayout />}>
 				<Route path='dashboard' element={<Overview />} />
-				<Route path='campaigns' element={<Campaigns />} />
+				<Route path='campaigns'>
+					<Route index element={<Campaigns />} />
+					<Route path='new' element={<NewCampaign />} />
+				</Route>
 				<Route path='campaigns-metrics' element={<CampaignMetrics />} />
 				<Route path='account-update' element={<AccountUpdate />} />
 				<Route path='settings' element={<Settings />} />

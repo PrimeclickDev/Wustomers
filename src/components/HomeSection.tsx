@@ -1,39 +1,36 @@
-import apiConnection from 'assets/images/api-connection.png?format=webp;png'
-import campaignTracking from 'assets/images/campaign-tracking.png?format=webp;png'
-import productMovement from 'assets/images/product-movement.png?format=webp;png'
+import apiConnection from 'assets/images/api-connection.png'
+import campaignTracking from 'assets/images/campaign-tracking.png'
+import productMovement from 'assets/images/product-movement.png'
 import { Button } from './Button'
-import { ImgWithFallback } from './ImgWithFallback'
 
+const sections = [
+	{
+		id: 1,
+		subheading: 'What we do',
+		heading: 'We offer you financial opportunities outside a closed system',
+		body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
+		containsButton: false,
+		img: productMovement,
+	},
+	{
+		id: 2,
+		subheading: 'Api connection',
+		heading:
+			'Link your products from IG to a custom landing page for easy Google Ads campaign',
+		body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
+		containsButton: false,
+		img: apiConnection,
+	},
+	{
+		id: 3,
+		subheading: 'Campaign tracking',
+		heading: 'You keep track your ads campaign data with no complexities.',
+		body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
+		containsButton: true,
+		img: campaignTracking,
+	},
+]
 export const HomeSection = () => {
-	const sections = [
-		{
-			id: 1,
-			subheading: 'What we do',
-			heading:
-				'We offer you financial opportunities outside a closed system',
-			body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
-			containsButton: false,
-			img: productMovement,
-		},
-		{
-			id: 2,
-			subheading: 'Api connection',
-			heading:
-				'Link your products from IG to a custom landing page for easy Google Ads campaign',
-			body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
-			containsButton: false,
-			img: apiConnection,
-		},
-		{
-			id: 3,
-			subheading: 'Campaign tracking',
-			heading: 'You keep track your ads campaign data with no complexities.',
-			body: 'Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.',
-			containsButton: true,
-			img: campaignTracking,
-		},
-	]
-
 	return (
 		<>
 			{sections.map(info => (
@@ -46,12 +43,7 @@ export const HomeSection = () => {
 									: ''
 							}`}
 						>
-							<ImgWithFallback
-								type='image/png'
-								fallback={info.img[1]}
-								src={info.img[0]}
-								alt={`${info.heading} illustration`}
-							/>
+							<img src={info.img} alt={`${info.heading} illustration`} />
 						</div>
 						<div
 							className={` md:text-center lg:text-left ${

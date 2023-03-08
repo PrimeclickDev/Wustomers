@@ -72,3 +72,12 @@ input[type='number'] {
 .custom-select {
 	@apply mt-2 h-[46px] w-full appearance-none rounded-sm border-0 bg-wustomers-primary px-4 text-base text-wustomers-main ring-[1.5px] data-[placeholder]:!text-gray-400;
 }
+
+.campaign-badge {
+	background: linear-gradient(
+		92.36deg,
+		rgba(255, 255, 255, 0.75) -2.12%,
+		rgba(255, 255, 255, 0.8) -2.11%,
+		rgba(255, 255, 255, 0.75) 106.8%
+	);
+}

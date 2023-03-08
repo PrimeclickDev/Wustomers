@@ -3,9 +3,24 @@ import { ReactComponent as LeftChevron } from 'assets/icons/left-chevron.svg'
 import { ReactComponent as RightChevron } from 'assets/icons/right-chevron.svg'
 import { ReactComponent as TrashIcon } from 'assets/icons/trash.svg'
 import { usePageTitle } from 'hooks/usePageTitle'
+import { useState } from 'react'
 
 const Notifications = () => {
 	usePageTitle('Notifications')
+	const [selected, setSelected] = useState<Array<number | boolean>>(
+		new Array([1, 2, 3, 4].length).fill(false)
+	)
+
+	const handleChange = (position: number) => {
+		const updatedCheckedState = selected.map((item, index) =>
+			index === position ? !item : item
+		)
+		setSelected(updatedCheckedState)
+	}
+	// const handleSelectAll = () => {
+	// 	const select = selectAll.map(item => !item)
+	// 	setSelectAll(select)
+	// }
 
 	return (
 		<>
@@ -19,6 +34,7 @@ const Notifications = () => {
 							name='selectAll'
 							id='selectAll'
 							className='h-4 w-4'
+							// onChange={handleSelectAll}
 						/>
 						<h3 className='text-lg font-medium'>All notifications</h3>
 					</div>
@@ -56,19 +72,24 @@ const Notifications = () => {
 				</header>
 
 				<ul className='rounded-sx bg-white py-3'>
-					{[1, 2, 3, 4].map(num => (
+					{[1, 2, 3, 4].map((num, index) => (
 						<li
 							key={num}
-							className='flex flex-col border-b border-b-gray-200 px-3 py-3 last-of-type:border-0 sm:flex-row sm:items-center sm:justify-between md:px-8'
+							className={`flex flex-col border-b border-b-gray-200 px-3 py-3 transition-colors last-of-type:border-0 sm:flex-row sm:items-center sm:justify-between md:px-8 ${
+								selected[index] ? 'bg-wustomers-blue/20' : ''
+							}`}
 						>
 							<div className='flex items-center gap-4 lg:gap-7'>
 								<input
 									type='checkbox'
 									name='select'
 									id='select'
-									className='h-4 w-4'
+									checked={selected[index] as boolean}
+									onChange={() => handleChange(index)}
+									// onChange={() => setSelected([...selected, num])}
+									className='h-4 w-4 accent-wustomers-blue'
 								/>
-								<div>
+								<div className='transition-colors'>
 									<h4 className='font-medium text-[#444444]'>
 										Your campaign setup was successful
 									</h4>

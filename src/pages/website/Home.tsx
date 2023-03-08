@@ -3,7 +3,7 @@ import { ReactComponent as Money } from 'assets/icons/money.svg'
 import { ReactComponent as Monitor } from 'assets/icons/monitormobbile.svg'
 import { ReactComponent as User } from 'assets/icons/useredit.svg'
 // this is using 'vite-imagetools' to convert the image to webp and png format
-import heroImg from 'assets/images/hero-img.png?format=webp;png'
+import heroImg from 'assets/images/hero-img.png'
 import {
 	Accordion,
 	AccordionContent,
@@ -12,7 +12,6 @@ import {
 } from 'components/Accordion'
 import { Button } from 'components/Button'
 import { HomeSection } from 'components/HomeSection'
-import { ImgWithFallback } from 'components/ImgWithFallback'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { faqs } from 'utils/constants'
 
@@ -46,8 +45,8 @@ const Home = () => {
 		<main>
 			{/* hero */}
 			<section>
-				<div className='relative mx-auto flex max-w-screen-xl flex-col items-center px-2 pt-20 lg:flex-row lg:gap-5 lg:px-2 lg:pt-32'>
-					<div className='order-2 mt-6 flex max-w-[70ch] flex-col items-center text-center lg:order-none lg:mt-0 lg:items-start lg:text-left'>
+				<div className='relative mx-auto flex max-w-screen-xl flex-col items-center px-2 pt-20 lg:grid lg:grid-cols-5 lg:gap-5 lg:px-2 lg:pt-32'>
+					<div className='order-2 mt-6 flex max-w-[70ch] flex-col items-center text-center lg:order-none lg:col-span-3 lg:mt-0 lg:items-start lg:text-left'>
 						<h2 className='text-3xl font-bold leading-tight md:text-5xl md:leading-tight lg:text-6xl lg:leading-[72px]'>
 							Launch lead generation Google ads campaigns fast with a
 							dedicated landing page
@@ -66,13 +65,13 @@ const Home = () => {
 						/>
 					</div>
 
-					<ImgWithFallback
-						src={heroImg[0]}
-						fallback={heroImg[1]}
-						type='image/png'
-						className='order-1 lg:order-none'
-						alt='beautiful african lady holding her phone her chest filled with joy'
-					/>
+					<div className='lg:col-span-2'>
+						<img
+							src={heroImg}
+							className='order-1 w-full lg:order-none'
+							alt='beautiful african lady holding her phone her chest filled with joy'
+						/>
+					</div>
 				</div>
 			</section>
 

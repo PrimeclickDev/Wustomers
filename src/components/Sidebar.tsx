@@ -16,7 +16,7 @@ import { ReactComponent as UserIcon } from 'assets/icons/useredit.svg'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Spinner } from './Spinner'
@@ -78,7 +78,6 @@ const dashboardNavs = [
 
 export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 	useScrollLock({ isOpen })
-	const location = useLocation()
 	const [modalOpen, setModalOpen] = useState(false)
 	const { mutate, isLoading } = useLogout()
 
@@ -122,16 +121,22 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 										<NavLink
 											to={route.link}
 											onClick={() => setIsOpen(false)}
-											className={`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
-												location.pathname === `/${route.link}`
-													? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
-													: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
-											}`}
+											className={({ isActive }) =>
+												`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
+													isActive
+														? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
+														: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
+												}`
+											}
 										>
-											{location.pathname === `/${route.link}`
-												? route.activeIcon
-												: route.icon}
-											<span>{route.name}</span>
+											{({ isActive }) => (
+												<>
+													{isActive
+														? route.activeIcon
+														: route.icon}
+													<span>{route.name}</span>
+												</>
+											)}
 										</NavLink>
 									</li>
 								))}
