@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query'
+import { baseURL } from 'api/requests'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { AuthResponse, ErrorResponse } from 'models/auth-models'
 import { SignupSchema } from 'pages/website/Signup'
 import { toast } from 'react-toastify'
-import { baseURL } from 'services/requests'
 
 export type RegisterInput = Pick<SignupSchema, 'email' | 'password'>
 

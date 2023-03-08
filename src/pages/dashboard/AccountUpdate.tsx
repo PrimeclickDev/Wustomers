@@ -15,11 +15,11 @@ import { ErrorMessage } from 'components/ErrorMessage'
 import { Select, SelectItem } from 'components/Select'
 import { Spinner } from 'components/Spinner'
 // import { ImgWithFallback } from 'components/ImgWithFallback'
+import { useGetIndustries } from 'api/hooks/globals/useGetIndustries'
+import { useGetProfile } from 'api/hooks/profile/useGetProfile'
+import { useUpdateProfile } from 'api/hooks/profile/useUpdateProfile'
 import { TextField } from 'components/TextField'
 import { UserAvatar } from 'components/UserAvatar'
-import { useGetIndustries } from 'hooks/api/globals/useGetIndustries'
-import { useGetProfile } from 'hooks/api/profile/useGetProfile'
-import { useUpdateProfile } from 'hooks/api/profile/useUpdateProfile'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { useEffect } from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -133,6 +133,8 @@ const AccountUpdate = () => {
 		})
 	}
 
+	console.log('profile', profile)
+
 	useEffect(() => {
 		if (profile?.data.data) {
 			const data = profile?.data.data.profile
@@ -176,14 +178,14 @@ const AccountUpdate = () => {
 						</span>
 					</div>
 
-					<div className='mt-10 flex flex-col md:flex-row md:gap-10 lg:gap-20'>
+					<div className='mt-10 flex flex-col md:flex-row md:gap-10 xl:gap-20'>
 						<form
 							className='order-2 mt-8 flex flex-1 flex-col gap-1 md:order-none md:mt-0'
 							onSubmit={handleSubmit(updateProfile)}
 						>
 							<Accordion>
 								<AccordionItem value='item-1' className='border-b-0'>
-									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:px-4 md:py-2 md:text-lg'>
+									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-4 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:py-2 md:text-lg'>
 										Basic Information
 									</AccordionTrigger>
 									<AccordionContent className='bg-white text-base'>
@@ -225,7 +227,7 @@ const AccountUpdate = () => {
 								</AccordionItem>
 
 								<AccordionItem value='item-2' className='border-b-0'>
-									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:px-4 md:py-2 md:text-lg'>
+									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-4 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:py-2 md:text-lg'>
 										Business Information
 									</AccordionTrigger>
 									<AccordionContent className='bg-white text-base'>
@@ -322,7 +324,7 @@ const AccountUpdate = () => {
 								</AccordionItem>
 
 								<AccordionItem value='item-3' className='border-b-0'>
-									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-2 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:px-4 md:py-2 md:text-lg'>
+									<AccordionTrigger className='w-full rounded-sx bg-[#9CAAE9] p-4 text-left text-base text-white transition-all hover:bg-wustomers-blue/50 focus-visible:outline-wustomers-blue data-[state=open]:bg-wustomers-blue-light md:py-2 md:text-lg'>
 										Social Media accounts
 									</AccordionTrigger>
 									<AccordionContent className='mt-0 bg-white text-base'>

@@ -1,30 +1,27 @@
 import { useMutation } from '@tanstack/react-query'
+import { baseURL } from 'api/requests'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { ErrorResponse, LoginResponse } from 'models/auth-models'
 import { toast } from 'react-toastify'
-import { baseURL } from 'services/requests'
 import { setAccessToken } from 'utils/storage'
 
-export type RegisterInput = {
-	last_name?: string
-	first_name?: string
-	provider: 'google' | 'instagram'
+export type LoginInput = {
 	email: string
 }
 
-export const register = async (
-	user: RegisterInput
+export const login = async (
+	user: LoginInput
 ): Promise<AxiosResponse<LoginResponse>> => {
-	return await axios.post(`${baseURL}/register/social`, user)
+	return await axios.post(`${baseURL}/login/social`, user)
 }
 
-export const useSignupWithGoogle = () => {
+export const useLoginWithGoogle = () => {
 	return useMutation<
 		AxiosResponse<LoginResponse>,
 		AxiosError<ErrorResponse>,
-		RegisterInput
+		LoginInput
 	>({
-		mutationFn: (data: RegisterInput) => register(data),
+		mutationFn: (data: LoginInput) => login(data),
 		onSuccess: ({ data }) => {
 			localStorage.setItem('wustomers-user', JSON.stringify(data.data.user))
 			setAccessToken(data.data.access_token)

@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
+import { queryClient } from 'api/QueryWrapper'
+import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
 import { ErrorResponse } from 'models/auth-models'
 import { UserAvatar } from 'models/profile'
 import { toast } from 'react-toastify'
-import { baseURL, instance } from 'services/requests'
-import { queryClient } from 'utils/react-query/QueryWrapper'
 
 export const updateAvatar = async (
 	data: FormData

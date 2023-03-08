@@ -165,7 +165,7 @@ export const CampaignMetricsTable = () => {
 											<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
 												Renew
 											</button>
-											<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
+											<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
 												Delete
 											</button>
 											<Popover.Arrow className='fill-gray-300' />

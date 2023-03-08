@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
+import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
 import { ErrorResponse } from 'models/auth-models'
 import { UserProfile } from 'models/profile'
 import { toast } from 'react-toastify'
-import { baseURL, instance } from 'services/requests'
 
 export const getUserProfile = async (): Promise<AxiosResponse<UserProfile>> => {
 	return await instance.get(`${baseURL}/profile`)

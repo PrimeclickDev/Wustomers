@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
+import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
 import { AuthResponse, ErrorResponse } from 'models/auth-models'
 import { toast } from 'react-toastify'
-import { baseURL, instance } from 'services/requests'
 
 type UpdatePasswordInput = {
 	old_password: string

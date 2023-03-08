@@ -26,7 +26,7 @@ export const DashboardLayout = () => {
 								<section className='min-h-screen bg-[#E6EAF9]'>
 									<DashboardHeader toggle={toggle} />
 
-									<div className='relative max-w-6xl px-3 py-10 md:px-5 lg:px-10'>
+									<div className='relative max-w-6xl px-3 py-10 md:px-5 lg:px-5 xl:px-10'>
 										<Outlet />
 									</div>
 								</section>

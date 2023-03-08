@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { baseURL } from 'api/requests'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { Industries } from 'models/shared'
-import { baseURL } from 'services/requests'
 
 export const getAllIndustries = async (): Promise<
 	AxiosResponse<Industries>

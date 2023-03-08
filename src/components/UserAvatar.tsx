@@ -1,7 +1,7 @@
+import { useGetProfile } from 'api/hooks/profile/useGetProfile'
+import { useUpdateAvatar } from 'api/hooks/profile/useUpdateAvatar'
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import emptyUserImg from 'assets/images/empty.png'
-import { useGetProfile } from 'hooks/api/profile/useGetProfile'
-import { useUpdateAvatar } from 'hooks/api/profile/useUpdateAvatar'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { Button } from './Button'
@@ -57,7 +57,7 @@ export const UserAvatar = () => {
 							? `${data?.data.data?.profile.user.first_name} avatar`
 							: 'empty user data'
 					}
-					className='h-64 w-60 rounded-sm bg-wustomers-main/20 object-cover shadow-lg'
+					className='h-64 w-60 rounded-md bg-wustomers-main/20 object-cover shadow-lg'
 				/>
 
 				<div

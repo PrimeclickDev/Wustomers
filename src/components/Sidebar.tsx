@@ -1,3 +1,4 @@
+import { useLogout } from 'api/hooks/auth/useLogout'
 import { ReactComponent as CampaignMetricIcon } from 'assets/icons/activity-outline.svg'
 import { ReactComponent as CampaignMetricFillIcon } from 'assets/icons/activity.svg'
 import { ReactComponent as CampaignFillIcon } from 'assets/icons/campaigns-fill.svg'
@@ -12,7 +13,6 @@ import { ReactComponent as ProfileOutlineIcon } from 'assets/icons/profile-outli
 import { ReactComponent as SettingsIcon } from 'assets/icons/setting.svg'
 import { ReactComponent as SettingsFillIcon } from 'assets/icons/settings-fill.svg'
 import { ReactComponent as UserIcon } from 'assets/icons/useredit.svg'
-import { useLogout } from 'hooks/api/auth/useLogout'
 import { useScrollLock } from 'hooks/useScrollLock'
 import { useState } from 'react'
 
@@ -164,7 +164,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 						Are you sure you want to log out of your account?
 					</h3>
 
-					<div className='mx-8 mt-5 flex items-center gap-5'>
+					<div className='mt-6 flex items-center gap-5 md:mx-8'>
 						<Button
 							variant='outline'
 							onClick={closeModal}

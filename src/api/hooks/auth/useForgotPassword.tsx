@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
+import { baseURL } from 'api/requests'
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { AuthResponse } from 'models/auth-models'
 import { toast } from 'react-toastify'
-import { baseURL } from 'services/requests'
 
 export const forgotPassword = async (
 	email: string

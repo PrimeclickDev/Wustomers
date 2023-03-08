@@ -1,3 +1,4 @@
+import { useGetProfile } from 'api/hooks/profile/useGetProfile'
 import { ReactComponent as ChartSquareIcon } from 'assets/icons/chartsquare.svg'
 import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Mail } from 'assets/icons/mail.svg'
@@ -7,7 +8,6 @@ import { ReactComponent as Twitter } from 'assets/icons/twitter.svg'
 import { ReactComponent as Whatsapp } from 'assets/icons/whatsapp.svg'
 import testImg from 'assets/images/test-img.jpg'
 import { Spinner } from 'components/Spinner'
-import { useGetProfile } from 'hooks/api/profile/useGetProfile'
 import { usePageTitle } from 'hooks/usePageTitle'
 
 const summaries = [
@@ -59,13 +59,15 @@ const Overview = () => {
 
 	return (
 		<>
-			<h2 className='flex items-center text-3xl font-black'>
+			<h2 className='flex items-center gap-2 text-3xl font-black'>
 				Hi,{' '}
-				{isLoading ? (
-					<Spinner />
-				) : (
-					profile?.data.data.profile.user.first_name
-				)}
+				<span>
+					{isLoading ? (
+						<Spinner />
+					) : (
+						profile?.data.data.profile.user.first_name
+					)}
+				</span>
 			</h2>
 
 			<div className='mt-10 grid gap-4 lg:grid-cols-3 lg:gap-10'>
