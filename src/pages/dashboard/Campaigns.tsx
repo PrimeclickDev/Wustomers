@@ -25,7 +25,7 @@ const Campaigns = () => {
 
 	return (
 		<>
-			<h2 className='text-3xl font-black'>My Campagins</h2>
+			<h2 className='text-3xl font-black'>My Campaigns</h2>
 
 			<ul className='mt-9 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-center gap-7'>
 				{campaigns.map(campaign => (
