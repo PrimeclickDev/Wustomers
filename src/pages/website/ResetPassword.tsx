@@ -78,7 +78,10 @@ const ResetPassword = () => {
 					</p>
 				</header>
 
-				<form className='mt-10' onSubmit={handleSubmit(resetPassword)}>
+				<form
+					className='mt-10 flex flex-col gap-8'
+					onSubmit={handleSubmit(resetPassword)}
+				>
 					<TextField
 						register={register}
 						control={control}

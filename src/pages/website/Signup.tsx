@@ -110,7 +110,10 @@ const Signup = () => {
 		<>
 			<h2 className='text-4xl font-bold'>Sign up</h2>
 
-			<form className='mt-8' onSubmit={handleSubmit(registerUser)}>
+			<form
+				className='mt-8 flex flex-col gap-8'
+				onSubmit={handleSubmit(registerUser)}
+			>
 				<TextField
 					register={register}
 					control={control}

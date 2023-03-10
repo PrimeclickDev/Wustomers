@@ -4,7 +4,7 @@ export interface UserProfile extends ResponseType {
 	data: ProfileData
 }
 
-type ProfileData = {
+export type ProfileData = {
 	profile: Profile
 }
 

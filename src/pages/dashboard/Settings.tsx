@@ -95,7 +95,7 @@ const Settings = () => {
 					</h3>
 
 					<form
-						className='px-3 pb-10 md:px-7'
+						className='flex flex-col gap-8 px-3 pb-10 md:px-7'
 						onSubmit={handleSubmit(changePassword)}
 					>
 						<TextField
@@ -104,6 +104,7 @@ const Settings = () => {
 							name='currentPassword'
 							register={register}
 							control={control}
+							className='mt-8'
 						/>
 						<TextField
 							label='New Password'
