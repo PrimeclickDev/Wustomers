@@ -2,68 +2,151 @@ import { useGetProfile } from 'api/hooks/profile/useGetProfile'
 import { useUpdateAvatar } from 'api/hooks/profile/useUpdateAvatar'
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import emptyUserImg from 'assets/images/empty.png'
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
+import ReactCrop, {
+	centerCrop,
+	Crop,
+	makeAspectCrop,
+	PixelCrop,
+} from 'react-image-crop'
+import 'react-image-crop/dist/ReactCrop.css'
 import { toast } from 'react-toastify'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Spinner } from './Spinner'
 
-// upload avatar flow
-/*
-  upload avatar flow
+const centerAspectCrop = (
+	mediaWidth: number,
+	mediaHeight: number,
+	aspect: number
+) => {
+	return centerCrop(
+		makeAspectCrop(
+			{
+				unit: '%',
+				width: 90,
+			},
+			aspect,
+			mediaWidth,
+			mediaHeight
+		),
+		mediaWidth,
+		mediaHeight
+	)
+}
 
-  - select image to upload
-  - show a modal for user to preview the image before uploading it
-  - show a button 'set image as profile image' for user to click if they are satistifed with the image
-*/
+const aspect = 1 / 1
 
 export const UserAvatar = () => {
-	// const { register, handleSubmit } = useForm()
-	const { data } = useGetProfile()
+	const { data, isRefetching } = useGetProfile()
 	const mutation = useUpdateAvatar()
-	const [selectedImage, setSelectedImage] = useState<File | undefined>(
-		undefined
-	)
+	const [imgSrc, setImgSrc] = useState('')
+	const imgRef = useRef<HTMLImageElement>(null)
+	const [crop, setCrop] = useState<Crop>()
+	const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
 
-	const uploadImage = () => {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		if (selectedImage!.size > 500000) {
+	const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length > 0) {
+			setCrop(undefined) // Makes crop preview update between images.
+			const reader = new FileReader()
+			reader.addEventListener('load', () =>
+				setImgSrc(reader.result?.toString() || '')
+			)
+			reader.readAsDataURL(e.target.files[0])
+		}
+	}
+
+	const onImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+		if (aspect) {
+			const { width, height } = e.currentTarget
+			setCrop(centerAspectCrop(width, height, aspect))
+		}
+	}
+
+	const generateCroppedImage = () => {
+		if (completedCrop) {
+			// canvas to draw the cropped image
+			const canvas = document.createElement('canvas')
+			// current image
+			const image = imgRef.current
+
+			if (image) {
+				const crop = completedCrop
+				const scaleX = image.naturalWidth / image.width
+				const scaleY = image.naturalHeight / image.height
+				const ctx = canvas.getContext('2d')
+				const pixelRatio = window.devicePixelRatio
+				canvas.width = crop.width * pixelRatio * scaleX
+				canvas.height = crop.height * pixelRatio * scaleY
+
+				if (ctx) {
+					ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0)
+					ctx.imageSmoothingQuality = 'high'
+
+					ctx.drawImage(
+						image,
+						crop.x * scaleX,
+						crop.y * scaleY,
+						crop.width * scaleX,
+						crop.height * scaleY,
+						0,
+						0,
+						crop.width * scaleX,
+						crop.height * scaleY
+					)
+				}
+
+				canvas.toBlob(blob => {
+					if (blob) {
+						uploadCroppedImage(blob)
+					}
+				})
+			}
+		}
+	}
+
+	const uploadCroppedImage = (blob: Blob) => {
+		if (blob.size > 5000000) {
 			return toast.error('Image size cannot be more than 5MB')
 		}
 
 		const formdata = new FormData()
-		formdata.append('avatar', selectedImage as Blob, selectedImage?.name)
+		formdata.append('avatar', blob as Blob, 'user-image')
 
-		mutation.mutate(formdata)
+		mutation.mutate(formdata, {
+			onSuccess: () => {
+				setImgSrc('')
+			},
+		})
 	}
-
-	useEffect(() => {
-		if (mutation.isSuccess) {
-			setSelectedImage(undefined)
-		}
-	}, [mutation.isSuccess])
 
 	return (
 		<>
 			<div className='order-1 flex flex-col items-center md:order-none'>
-				<img
-					src={
-						data?.data.data?.profile.user.avatar
-							? data?.data.data?.profile.user.avatar
-							: emptyUserImg
-					}
-					alt={
-						data?.data.data?.profile.user.avatar
-							? `${data?.data.data?.profile.user.first_name} avatar`
-							: 'empty user data'
-					}
-					className='h-64 w-60 rounded-md bg-wustomers-main/20 object-cover shadow-lg'
-				/>
+				<div className='relative'>
+					<img
+						src={
+							data?.data.data?.profile.user.avatar
+								? data?.data.data?.profile.user.avatar
+								: emptyUserImg
+						}
+						alt={
+							data?.data.data?.profile.user.avatar
+								? `${data?.data.data?.profile.user.first_name} avatar`
+								: 'empty user data'
+						}
+						className={`h-64 w-60 rounded-md bg-wustomers-main/20 object-cover shadow-lg ${
+							isRefetching ? 'opacity-50' : 'opacity-100'
+						}`}
+					/>
+					{isRefetching ? (
+						<span className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2'>
+							<Spinner className='bg-main' />
+						</span>
+					) : null}
+				</div>
 
-				<div
-					// onSubmit={handleSubmit(onSubmit)}
-					className='mt-6 flex flex-col items-start gap-3'
-				>
+				<div className='mt-6 flex flex-col items-start gap-3'>
 					<label className='w-full cursor-pointer rounded-sm bg-wustomers-blue px-11 py-2 text-sm font-normal tracking-wider text-white transition hover:scale-[1.01] hover:bg-wustomers-blue/80 active:scale-95 md:text-base'>
 						<span>Choose Image</span>
 						<input
@@ -71,45 +154,53 @@ export const UserAvatar = () => {
 							id='user-avatar'
 							accept='image/png, image/jpeg'
 							className='sr-only'
-							onChange={e => setSelectedImage(e.target.files?.[0])}
-							// {...register('user-avatar')}
+							onChange={onSelectFile}
 						/>
 					</label>
-					{/* <Button
-						text='Upload Image'
-						variant='fill'
-						type='button'
-						className='font-medium capitalize'
-					/> */}
 				</div>
 			</div>
 
-			<Modal
-				modalOpen={!!selectedImage}
-				closeModal={() => setSelectedImage(undefined)}
-			>
+			<Modal modalOpen={!!imgSrc} closeModal={() => setImgSrc('')}>
 				<button
-					onClick={() => setSelectedImage(undefined)}
+					onClick={() => setImgSrc('')}
 					aria-label='close modal'
 					className='absolute right-4 top-2 mb-5 transition-opacity hover:opacity-70'
 				>
 					<CloseIcon />
 				</button>
 				<div className='mt-5'>
-					{selectedImage ? (
+					{imgSrc && (
+						<ReactCrop
+							crop={crop}
+							onChange={(_, percentCrop) => setCrop(percentCrop)}
+							onComplete={c => setCompletedCrop(c)}
+							aspect={aspect}
+							ruleOfThirds={true}
+							locked={true}
+						>
+							<img
+								ref={imgRef}
+								alt='Crop me'
+								src={imgSrc}
+								onLoad={onImageLoad}
+								// className='h-[500px] min-w-[400px] object-cover object-bottom'
+							/>
+						</ReactCrop>
+					)}
+					{/* {selectedImage ? (
 						<img
 							src={URL.createObjectURL(selectedImage)}
 							alt='user avatar'
 							className='aspect-square rounded object-cover'
 						/>
-					) : null}
+					) : null} */}
 				</div>
 				<Button
 					text={mutation.isLoading ? <Spinner /> : 'Set image as avatar'}
 					variant='fill'
 					type='button'
 					className='mt-6 w-full rounded font-medium capitalize'
-					onClick={uploadImage}
+					onClick={generateCroppedImage}
 					disabled={mutation.isLoading}
 				/>
 			</Modal>

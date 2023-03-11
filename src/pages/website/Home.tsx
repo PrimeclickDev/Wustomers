@@ -124,7 +124,7 @@ const Home = () => {
 							<Accordion>
 								{faqs.map(faq => (
 									<AccordionItem value={`item ${faq.id}`} key={faq.id}>
-										<AccordionTrigger className='text-left'>
+										<AccordionTrigger className='text-left leading-5'>
 											{faq.question}
 										</AccordionTrigger>
 										<AccordionContent>{faq.answer}</AccordionContent>

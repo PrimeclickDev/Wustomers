@@ -134,7 +134,7 @@ export const Header = () => {
 									text='Sign up'
 									variant='fill'
 									href='/signup'
-									className='bg-white py-3 text-center text-wustomers-blue hover:bg-white'
+									className='!bg-white py-3 text-center text-wustomers-blue hover:bg-white'
 								/>
 							</>
 						) : (
