@@ -100,7 +100,7 @@ export const UserAvatar = () => {
 					if (blob) {
 						uploadCroppedImage(blob)
 					}
-				})
+				}, 'image/png')
 			}
 		}
 	}
@@ -160,49 +160,55 @@ export const UserAvatar = () => {
 				</div>
 			</div>
 
-			<Modal modalOpen={!!imgSrc} closeModal={() => setImgSrc('')}>
-				<button
-					onClick={() => setImgSrc('')}
-					aria-label='close modal'
-					className='absolute right-4 top-2 mb-5 transition-opacity hover:opacity-70'
-				>
-					<CloseIcon />
-				</button>
-				<div className='mt-5'>
-					{imgSrc && (
+			<Modal
+				modalOpen={!!imgSrc}
+				closeModal={() => setImgSrc('')}
+				className='p-0'
+			>
+				<header className='mb-1 flex items-center justify-between overflow-hidden bg-wustomers-dark-gray px-6 py-2 text-sm font-medium'>
+					<h3>Crop your new profile picture</h3>
+					<button
+						onClick={() => setImgSrc('')}
+						aria-label='close modal'
+						className='transition-opacity hover:opacity-70'
+					>
+						<CloseIcon />
+					</button>
+				</header>
+				<div className='max-h-[500px] overflow-auto px-4 py-2'>
+					{!!imgSrc && (
 						<ReactCrop
 							crop={crop}
 							onChange={(_, percentCrop) => setCrop(percentCrop)}
 							onComplete={c => setCompletedCrop(c)}
 							aspect={aspect}
-							ruleOfThirds={true}
-							locked={true}
+							// ruleOfThirds={true}
 						>
 							<img
 								ref={imgRef}
 								alt='Crop me'
 								src={imgSrc}
 								onLoad={onImageLoad}
-								// className='h-[500px] min-w-[400px] object-cover object-bottom'
 							/>
 						</ReactCrop>
 					)}
-					{/* {selectedImage ? (
-						<img
-							src={URL.createObjectURL(selectedImage)}
-							alt='user avatar'
-							className='aspect-square rounded object-cover'
-						/>
-					) : null} */}
 				</div>
-				<Button
-					text={mutation.isLoading ? <Spinner /> : 'Set image as avatar'}
-					variant='fill'
-					type='button'
-					className='mt-6 w-full rounded font-medium capitalize'
-					onClick={generateCroppedImage}
-					disabled={mutation.isLoading}
-				/>
+				<footer className='px-6 py-2'>
+					<Button
+						text={
+							mutation.isLoading ? (
+								<Spinner />
+							) : (
+								'Set new profile picture'
+							)
+						}
+						variant='fill'
+						type='button'
+						className='w-full rounded font-medium normal-case'
+						onClick={generateCroppedImage}
+						disabled={mutation.isLoading}
+					/>
+				</footer>
 			</Modal>
 		</>
 	)

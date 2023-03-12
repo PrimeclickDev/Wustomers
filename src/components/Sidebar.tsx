@@ -146,7 +146,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 					<button
 						onClick={openModal}
 						type='button'
-						className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-5 capitalize text-wustomers-gray transition-all hover:text-red-600'
+						className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-6 capitalize text-wustomers-gray transition-all hover:text-red-600'
 					>
 						<LogoutIcon width={20} height={20} />
 						<p>Log out</p>

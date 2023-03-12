@@ -8,7 +8,6 @@ import { Outlet } from 'react-router-dom'
 export const WebsiteLayout = () => {
 	return (
 		<>
-			<ScrollToTop />
 			<Header />
 
 			<Suspense fallback={<PageLoader />}>
@@ -16,6 +15,7 @@ export const WebsiteLayout = () => {
 			</Suspense>
 
 			<Footer />
+			<ScrollToTop />
 		</>
 	)
 }

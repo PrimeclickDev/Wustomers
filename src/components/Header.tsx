@@ -76,7 +76,7 @@ export const Header = () => {
 						</>
 					) : (
 						<Button
-							text='Go to dashboard'
+							text='dashboard'
 							type='button'
 							variant='fill'
 							href='/dashboard'
@@ -94,7 +94,7 @@ export const Header = () => {
 				<div
 					aria-hidden='true'
 					onClick={toggle}
-					className={`absolute inset-0 z-50 min-h-screen w-full bg-wustomers-blue/50 transition-all backdrop:blur-sm ${
+					className={`absolute inset-0 z-50 min-h-screen w-full bg-[rgba(47,47,47,0.9)] transition-all backdrop:blur-sm ${
 						isOpen ? 'block' : 'hidden'
 					}`}
 				/>
@@ -139,10 +139,10 @@ export const Header = () => {
 							</>
 						) : (
 							<Button
-								text='Go to dashboard'
+								text='Dashboard'
 								variant='fill'
 								href='/dashboard'
-								className='bg-white py-3 px-1 text-center text-wustomers-blue hover:bg-white'
+								className='!bg-white py-3 px-1 text-center text-wustomers-blue hover:bg-white'
 							/>
 						)}
 					</div>
