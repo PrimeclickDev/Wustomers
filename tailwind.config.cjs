@@ -20,6 +20,8 @@ module.exports = {
 				'wustomers-dark-gray': '#D5D5D5',
 				'wustomers-blue-other': '#1E96FC',
 				'wustomers-neutral-dark': '#585858',
+				'wustomers-neutral': '#6D6D6D',
+				'wustomers-neutral-light': '#F5F5F5',
 			},
 			borderRadius: {
 				sx: '3px',

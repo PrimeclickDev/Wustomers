@@ -13,6 +13,8 @@ export const useGetIndustries = () => {
 	return useQuery({
 		queryKey: ['industry'],
 		queryFn: getAllIndustries,
+		cacheTime: Infinity,
+		staleTime: Infinity,
 		onError: error => {
 			if (error instanceof AxiosError) {
 				console.error(error.response?.data.message)

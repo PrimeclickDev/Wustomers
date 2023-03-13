@@ -64,7 +64,7 @@ const CampaignMetrics = () => {
 
 				<div className='mt-6 grid gap-7 xl:grid-cols-2'>
 					{/* campaign data */}
-					<div className='rounded bg-[#F5F5F5] p-3 md:p-6'>
+					<div className='rounded bg-wustomers-neutral-light p-3 md:p-6'>
 						<h3 className='text-center text-lg font-bold text-[#444444] lg:text-left'>
 							Campaign Data
 						</h3>
@@ -97,7 +97,7 @@ const CampaignMetrics = () => {
 					</div>
 
 					{/* campaign chart */}
-					<div className='rounded bg-[#F5F5F5] p-3 md:p-6'>
+					<div className='rounded bg-wustomers-neutral-light p-3 md:p-6'>
 						<h3 className='text-center text-lg font-bold text-[#444444] lg:text-left'>
 							Campaign Chart
 						</h3>

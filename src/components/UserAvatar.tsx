@@ -38,7 +38,7 @@ const centerAspectCrop = (
 const aspect = 1 / 1
 
 export const UserAvatar = () => {
-	const { data, isRefetching } = useGetProfile()
+	const { data, isFetching } = useGetProfile()
 	const mutation = useUpdateAvatar()
 	const [imgSrc, setImgSrc] = useState('')
 	const imgRef = useRef<HTMLImageElement>(null)
@@ -136,10 +136,10 @@ export const UserAvatar = () => {
 								: 'empty user data'
 						}
 						className={`h-64 w-60 rounded-md bg-wustomers-main/20 object-cover shadow-lg ${
-							isRefetching ? 'opacity-50' : 'opacity-100'
+							isFetching ? 'opacity-50' : 'opacity-100'
 						}`}
 					/>
-					{isRefetching ? (
+					{isFetching ? (
 						<span className='absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2'>
 							<Spinner className='bg-main' />
 						</span>

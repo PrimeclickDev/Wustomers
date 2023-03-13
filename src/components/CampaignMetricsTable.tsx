@@ -70,7 +70,7 @@ export const CampaignMetricsTable = () => {
 			<table
 				className={`flex-no-wrap flex w-full table-auto flex-row rounded text-left text-sm text-gray-500 md:table md:bg-white`}
 			>
-				<thead className='bg-[#F5F5F5]'>
+				<thead className='bg-wustomers-neutral-light'>
 					{tableBody?.map((_, index) => (
 						<tr
 							key={index}

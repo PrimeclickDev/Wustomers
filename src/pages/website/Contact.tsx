@@ -24,7 +24,10 @@ const Contact = () => {
 
 							<div className='mt-5 flex flex-col gap-5'>
 								<div className='flex flex-col gap-2'>
-									<label htmlFor='name' className='text-[#6D6D6D]'>
+									<label
+										htmlFor='name'
+										className='text-wustomers-neutral'
+									>
 										Name
 									</label>
 									<input
@@ -35,7 +38,10 @@ const Contact = () => {
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
-									<label htmlFor='email' className='text-[#6D6D6D]'>
+									<label
+										htmlFor='email'
+										className='text-wustomers-neutral'
+									>
 										Email
 									</label>
 									<input
@@ -46,7 +52,10 @@ const Contact = () => {
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
-									<label htmlFor='message' className='text-[#6D6D6D]'>
+									<label
+										htmlFor='message'
+										className='text-wustomers-neutral'
+									>
 										Message
 									</label>
 									<textarea

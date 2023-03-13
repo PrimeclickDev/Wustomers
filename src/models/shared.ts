@@ -16,3 +16,8 @@ type Industry = {
 	created_at: string
 	updated_at: string
 }
+
+export type CampaignProps = {
+	nextStep?: () => void
+	prevStep?: () => void
+}
