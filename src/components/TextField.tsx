@@ -57,10 +57,12 @@ export const TextField = <T extends FieldValues>({
 					{...register(name)}
 					name={name}
 					id={name}
-					className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ${
+					className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
 						type === 'password' && 'pr-14'
 					} ${prefixIcon && 'pl-12'} ${
-						error ? 'ring-red-600' : 'ring-wustomers-primary-light'
+						error
+							? 'bg-red-50 ring-red-600'
+							: 'bg-wustomers-primary ring-wustomers-primary-light'
 					}`}
 					{...inputProps}
 				/>

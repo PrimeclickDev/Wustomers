@@ -60,8 +60,12 @@ const NewCampaign = () => {
 			{/* progess bar */}
 			<div className='mt-7 flex flex-wrap items-center gap-1'>
 				{steps.map(num => (
-					<div key={num} className='flex-1'>
-						<p className='text-xs uppercase tracking-wider text-wustomers-neutral md:text-sm'>
+					<button
+						key={num}
+						className='flex-1'
+						onClick={() => setStep(num)}
+					>
+						<p className='text-left text-xs uppercase tracking-wider text-wustomers-neutral md:text-sm'>
 							Step {num}
 						</p>
 						<div
@@ -69,7 +73,7 @@ const NewCampaign = () => {
 								num === step ? 'bg-wustomers-blue' : 'bg-white'
 							}`}
 						/>
-					</div>
+					</button>
 				))}
 			</div>
 

@@ -55,7 +55,9 @@ const Campaigns = () => {
 						/>
 						<div
 							className={`flex items-center justify-between gap-2 px-4 py-3 text-white ${
-								campaign.active ? 'bg-wustomers-blue' : 'bg-[#6A7FDE]'
+								campaign.active
+									? 'bg-wustomers-blue'
+									: 'bg-wustomers-primary-lighter'
 							}`}
 						>
 							<p>{campaign.name}</p>
