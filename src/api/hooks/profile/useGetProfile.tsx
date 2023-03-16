@@ -13,9 +13,12 @@ export const useGetProfile = () => {
 	return useQuery<AxiosResponse<UserProfile>, AxiosError<ErrorResponse>>({
 		queryKey: ['profile'],
 		queryFn: getUserProfile,
+		cacheTime: Infinity,
+		staleTime: Infinity,
 		// onSuccess: () => {
 		// 	console.log('yh baby')
 		// },
 		onError: error => toast.error(error.response?.data.message),
+		refetchOnMount: false,
 	})
 }

@@ -14,7 +14,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 				<div>
 					<button
 						type='button'
-						className={`rounded-l-sm p-2 transition-colors ${
+						className={`rounded-l p-2 transition-colors ${
 							activeView === 'desktop'
 								? 'bg-wustomers-blue'
 								: 'bg-[#CDD4F4]'
@@ -26,7 +26,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 					</button>
 					<button
 						type='button'
-						className={`rounded-r-sm p-2 transition-colors ${
+						className={`rounded-r p-2 transition-colors ${
 							activeView === 'mobile'
 								? 'bg-wustomers-blue'
 								: 'bg-[#CDD4F4]'

@@ -102,13 +102,13 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 		},
 	})
 	const { data: industries } = useGetIndustries()
-	const mutation = useUpdateProfile()
+	const updateProfile = useUpdateProfile()
 
-	const updateProfile: SubmitHandler<AccountUpdateSchema> = data => {
+	const onUpdateProfile: SubmitHandler<AccountUpdateSchema> = data => {
 		const selectedIndustry = industries?.data?.data?.find(
 			option => data.industryType === option.name
 		)
-		mutation.mutate({
+		updateProfile.mutate({
 			business_email: data.businessMail,
 			business_name: data.businessName,
 			first_name: data.firstName,
@@ -126,7 +126,7 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 	return (
 		<form
 			className='order-2 mt-8 flex flex-1 flex-col gap-1 md:order-none md:mt-0'
-			onSubmit={handleSubmit(updateProfile)}
+			onSubmit={handleSubmit(onUpdateProfile)}
 		>
 			<Accordion>
 				<AccordionItem value='item-1' className='border-b-0'>
@@ -312,11 +312,11 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 				) : null}
 
 				<Button
-					text={mutation.isLoading ? <Spinner /> : 'Update account'}
+					text={updateProfile.isLoading ? <Spinner /> : 'Update account'}
 					variant='fill'
 					type='submit'
 					className='mt-3 normal-case md:ml-auto lg:mt-0'
-					disabled={mutation.isLoading}
+					disabled={updateProfile.isLoading}
 				/>
 			</div>
 		</form>

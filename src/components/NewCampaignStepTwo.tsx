@@ -28,6 +28,7 @@ const schema = z.object({
 		.trim(),
 	email: z
 		.string({ required_error: 'Email address is required' })
+		.min(1, { message: 'Email is required' })
 		.min(3, { message: 'Email address cannot be less than 3 characters' })
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),

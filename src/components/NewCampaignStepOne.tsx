@@ -12,10 +12,10 @@ const schema = z.object({
 		.string({ required_error: 'Campaign title is required' })
 		.min(1, { message: 'Campaign title is required' })
 		.trim(),
-	logoPosition: z
-		.string({ required_error: 'Logo Position is required' })
-		.min(1, { message: 'Please select one' })
-		.trim(),
+	logoPosition: z.enum(['left', 'center', 'right'], {
+		invalid_type_error: 'Please select one',
+		required_error: 'Logo position is required',
+	}),
 	headerContent: z
 		.string({ required_error: 'Header Content is required' })
 		.min(1, { message: 'Header Content is required' })
@@ -45,7 +45,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 		defaultValues: {
 			campaignTitle: '',
 			// productLogo: '',
-			logoPosition: '',
+			logoPosition: undefined,
 			headerContent: '',
 			subheadingContent: '',
 			// bgImage: '',
@@ -139,7 +139,6 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 									/>
 									<label
 										htmlFor={position}
-										title={`${position} position`}
 										className={`relative h-6 w-20 cursor-pointer rounded-sm border border-wustomers-primary-light bg-wustomers-primary transition-all after:absolute after:top-1/2 after:h-3 after:w-3 after:-translate-y-1/2 after:rounded-full after:bg-[#8394E3] peer-checked:bg-[#516AD9] peer-checked:after:bg-white ${
 											position === 'center'
 												? 'after:left-1/2 after:-translate-x-1/2'
@@ -252,7 +251,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 
 			<div className='mt-3 flex flex-col gap-4 md:flex-row md:items-center md:self-end'>
 				<Button
-					text='Cancel	'
+					text='Cancel'
 					variant='outline'
 					onClick={() => navigate(-1)}
 					className='!bg-white px-11 !font-normal capitalize'

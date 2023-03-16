@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 
-const contactOptions = ['Whatsapp', 'Email', 'Instagram', 'Phone']
 const schema = z.object({
 	addTestimonial: z.enum(['no', 'yes'], {
 		invalid_type_error: 'Please select one',
@@ -36,20 +35,16 @@ const schema = z.object({
 	whatsappNumber: z
 		.string()
 		.min(1, { message: 'Whatsapp number is required' })
+		.min(5, { message: 'Whatsapp number cannot be less than 5 characters' })
 		.or(z.literal('')),
 	instagram: z
 		.string()
 		.min(1, { message: 'Whatsapp number is required' })
 		.or(z.literal('')),
-	email: z
-		.string()
-		.min(1, { message: 'Email is required' })
-		.email()
-		.or(z.literal('')),
-	phone: z
-		.string()
-		.min(1, { message: 'Phone number is required' })
-		.or(z.literal('')),
+	btnStickyOption: z.enum(['no', 'yes'], {
+		invalid_type_error: 'Please select one',
+		required_error: 'Button sticky option is required',
+	}),
 })
 
 type StepThreeSchema = z.infer<typeof schema>
@@ -65,10 +60,9 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		defaultValues: {
 			addTestimonial: undefined,
 			testimonials: [{ comment: '', designation: '', name: '' }],
-			email: '',
 			instagram: '',
-			phone: '',
 			whatsappNumber: '',
+			btnStickyOption: undefined,
 		},
 		resolver: zodResolver(schema),
 		shouldUnregister: true,
@@ -85,8 +79,6 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		console.log(data)
 		nextStep?.()
 	}
-
-	console.log('errors', errors)
 
 	return (
 		<section className='mt-10 flex flex-col'>
@@ -222,71 +214,37 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 				{/* contact options */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Contact Option:</p>
-					<div className='md:col-span-4 '>
-						<div className='grid grid-cols-2 gap-x-5 gap-y-2'>
-							<div className='flex flex-col'>
-								<label className='flex items-center gap-2'>
-									<input
-										type='checkbox'
-										className='peer h-4 w-4 accent-wustomers-blue'
-									/>
-									<span>Whatsapp</span>
-									<input
-										type='tel'
-										inputMode='numeric'
-										{...register('whatsappNumber')}
-										placeholder='Whatsapp Number'
-										className='hidden flex-1 appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 text-sm ring-[1.5px] ring-[#CDD4F4] peer-checked:block'
-									/>
-								</label>
-							</div>
-							<div className='flex flex-col'>
-								<label className='flex items-center gap-2'>
-									<input
-										type='checkbox'
-										className='peer h-4 w-4 accent-wustomers-blue'
-									/>
-									<span>Instagram</span>
-									<input
-										type='text'
-										{...register('instagram')}
-										placeholder='Instagram username'
-										className='hidden flex-1 appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 text-sm ring-[1.5px] ring-[#CDD4F4] peer-checked:block'
-									/>
-								</label>
-							</div>
-							<div className='flex flex-col'>
-								<label className='flex items-center gap-2'>
-									<input
-										type='checkbox'
-										className='peer h-4 w-4 accent-wustomers-blue'
-									/>
-									<span>Email</span>
-									<input
-										type='email'
-										inputMode='email'
-										{...register('email')}
-										placeholder='Email address'
-										className='hidden flex-1 appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 text-sm ring-[1.5px] ring-[#CDD4F4] peer-checked:block'
-									/>
-								</label>
-							</div>
-							<div className='flex flex-col'>
-								<label className='flex items-center gap-2'>
-									<input
-										type='checkbox'
-										className='peer h-4 w-4 accent-wustomers-blue'
-									/>
-									<span>Phone</span>
-									<input
-										type='tel'
-										inputMode='numeric'
-										{...register('phone')}
-										placeholder='Phone number'
-										className='hidden flex-1 appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 text-sm ring-[1.5px] ring-[#CDD4F4] peer-checked:block'
-									/>
-								</label>
-							</div>
+					<div className='flex flex-col gap-3 md:col-span-4'>
+						<div className='flex flex-col'>
+							<input
+								type='tel'
+								inputMode='numeric'
+								{...register('whatsappNumber')}
+								placeholder='Whatsapp Number'
+								className={`flex-1 appearance-none rounded-sm px-4 py-2.5 text-sm ring-[1.5px] ${
+									errors.whatsappNumber
+										? 'bg-red-50 ring-red-600'
+										: 'bg-wustomers-primary ring-[#CDD4F4]'
+								}`}
+							/>
+							{errors.whatsappNumber ? (
+								<ErrorMessage message={errors.whatsappNumber.message} />
+							) : null}
+						</div>
+						<div className='flex flex-col'>
+							<input
+								type='text'
+								{...register('instagram')}
+								placeholder='Instagram username'
+								className={`flex-1 appearance-none rounded-sm px-4 py-2.5 text-sm ring-[1.5px] ${
+									errors.instagram
+										? 'bg-red-50 ring-red-600'
+										: 'bg-wustomers-primary ring-[#CDD4F4]'
+								}`}
+							/>
+							{errors.instagram ? (
+								<ErrorMessage message={errors.instagram.message} />
+							) : null}
 						</div>
 					</div>
 				</div>
@@ -294,15 +252,32 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 				{/* button sticky option */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Button sticky option:</p>
-					<div className='flex items-center gap-16 text-wustomers-main md:col-span-3'>
-						<label className='flex items-center gap-2'>
-							<input type='radio' name='btnStickyOption' />
-							<span>Yes</span>
-						</label>
-						<label className='flex items-center gap-2'>
-							<input type='radio' name='btnStickyOption' />
-							<span>No</span>
-						</label>
+
+					<div className='flex flex-col gap-1'>
+						<div
+							className={`flex items-center gap-16 text-wustomers-main md:col-span-3 ${
+								errors.btnStickyOption
+									? 'rounded-sm bg-red-50 p-2 ring-[1.5px] ring-red-600'
+									: 'bg-transparent'
+							}`}
+						>
+							{['yes', 'no'].map(value => (
+								<label
+									className='flex items-center gap-2 capitalize'
+									key={value}
+								>
+									<input
+										type='radio'
+										value={value}
+										{...register('btnStickyOption')}
+									/>
+									<span>{value}</span>
+								</label>
+							))}
+						</div>
+						{errors.btnStickyOption ? (
+							<ErrorMessage message={errors.btnStickyOption.message} />
+						) : null}
 					</div>
 				</div>
 			</form>

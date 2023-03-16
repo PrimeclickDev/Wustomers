@@ -2,11 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useGoogleLogin } from '@react-oauth/google'
 import { useRegister } from 'api/hooks/auth/useRegister'
 import { useSignupWithGoogle } from 'api/hooks/auth/useSignupWithGoogle'
-import { ReactComponent as Error } from 'assets/icons/danger.svg'
 import googleLogo from 'assets/images/google.png'
 import instagramLogo from 'assets/images/instagram.png'
 import axios from 'axios'
 import { Button } from 'components/Button'
+import { ErrorMessage } from 'components/ErrorMessage'
 import { Spinner } from 'components/Spinner'
 import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
@@ -61,7 +61,7 @@ const Signup = () => {
 		resolver: zodResolver(schema),
 	})
 	const { mutate, isLoading } = useRegister()
-	const mutation = useSignupWithGoogle()
+	const signUpWithGoogle = useSignupWithGoogle()
 
 	const registerUser: SubmitHandler<SignupSchema> = data => {
 		const { email, password } = data
@@ -88,7 +88,7 @@ const Signup = () => {
 				}
 			)
 
-			mutation.mutate(
+			signUpWithGoogle.mutate(
 				{
 					email: userInfo.data?.email,
 					first_name: userInfo.data?.given_name ?? 'user',
@@ -129,33 +129,29 @@ const Signup = () => {
 					type='password'
 				/>
 
-				<div className='mt-5 flex items-center gap-2 font-[#979797]'>
-					<input
-						type='checkbox'
-						id='acceptTerms'
-						className='border-3 h-4 w-4 cursor-pointer rounded-sm accent-wustomers-blue transition-colors hover:bg-gray-300'
-						{...register('acceptTerms')}
-					/>
-					<label htmlFor='acceptTerms' className='text-sm'>
-						I agree to{' '}
-						<a href='#' className='font-medium text-wustomers-blue'>
-							terms
-						</a>{' '}
-						and{' '}
-						<a href='#' className='font-medium text-wustomers-blue'>
-							conditions
-						</a>
-					</label>
-				</div>
-				{errors.acceptTerms ? (
-					<div
-						role='alert'
-						className='flex items-center gap-2 text-xs font-medium text-red-600'
-					>
-						<Error width={14} />
-						<span>{errors.acceptTerms.message}</span>
+				<div className='flex flex-col gap-1'>
+					<div className='mt-5 flex items-center gap-2 font-[#979797]'>
+						<input
+							type='checkbox'
+							id='acceptTerms'
+							className='border-3 h-4 w-4 cursor-pointer rounded-sm accent-wustomers-blue transition-colors hover:bg-gray-300'
+							{...register('acceptTerms')}
+						/>
+						<label htmlFor='acceptTerms' className='text-sm'>
+							I agree to{' '}
+							<a href='#' className='font-medium text-wustomers-blue'>
+								terms
+							</a>{' '}
+							and{' '}
+							<a href='#' className='font-medium text-wustomers-blue'>
+								conditions
+							</a>
+						</label>
 					</div>
-				) : null}
+					{errors.acceptTerms ? (
+						<ErrorMessage message={errors.acceptTerms.message} />
+					) : null}
+				</div>
 
 				<Button
 					text={isLoading ? <Spinner /> : 'Sign up'}
@@ -175,7 +171,7 @@ const Signup = () => {
 					onClick={() => registerWithGoogle()}
 					className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-[#C1C1C1]/20'
 				>
-					{mutation.isLoading ? (
+					{signUpWithGoogle.isLoading ? (
 						<Spinner />
 					) : (
 						<>
