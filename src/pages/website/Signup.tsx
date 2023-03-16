@@ -111,7 +111,7 @@ const Signup = () => {
 			<h2 className='text-4xl font-bold'>Sign up</h2>
 
 			<form
-				className='mt-8 flex flex-col gap-8'
+				className='mt-8 flex flex-col gap-5'
 				onSubmit={handleSubmit(registerUser)}
 			>
 				<TextField

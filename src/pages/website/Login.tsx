@@ -83,7 +83,7 @@ const Login = () => {
 			<h2 className='text-4xl font-bold'>Log in</h2>
 
 			<form
-				className='mt-8 flex flex-col gap-8'
+				className='mt-8 flex flex-col gap-5'
 				onSubmit={handleSubmit(loginUser)}
 			>
 				<TextField
