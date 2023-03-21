@@ -30,7 +30,7 @@ const Campaigns = () => {
 			<ul className='mt-9 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-center gap-7'>
 				{campaigns.map(campaign => (
 					<li key={campaign.id} className='relative rounded bg-white'>
-						<div className='campaign-badge-bg absolute top-3 right-3 flex items-center gap-3 rounded-sm px-3 py-1 backdrop:blur-sm'>
+						<div className='campaign-badge-bg absolute top-3 right-3 flex items-center gap-2 rounded-sm px-3 py-1 backdrop:blur-sm'>
 							<span
 								className={`h-3 w-3 rounded-full ${
 									campaign.active
@@ -39,7 +39,7 @@ const Campaigns = () => {
 								}`}
 							/>
 							<span
-								className={`text-sm ${
+								className={`text-sm font-medium ${
 									campaign.active
 										? 'text-[#24C97A]'
 										: 'text-[rgba(255,0,0,0.9)]'
@@ -51,7 +51,7 @@ const Campaigns = () => {
 						<img
 							src={campaign.img}
 							alt={`${campaign.name} banner`}
-							className='h-[200px] object-cover p-2'
+							className='h-[200px] w-full object-cover p-2'
 						/>
 						<div
 							className={`flex items-center justify-between gap-2 px-4 py-3 text-white ${

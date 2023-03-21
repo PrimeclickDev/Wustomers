@@ -9,9 +9,9 @@ export const getAllIndustries = async (): Promise<
 	return await axios.get(`${baseURL}/industries`)
 }
 
-export const useGetIndustries = () => {
+export const useFetchIndustries = () => {
 	return useQuery({
-		queryKey: ['industry'],
+		queryKey: ['industries'],
 		queryFn: getAllIndustries,
 		cacheTime: Infinity,
 		staleTime: Infinity,

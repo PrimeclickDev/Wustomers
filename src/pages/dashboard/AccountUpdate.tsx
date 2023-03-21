@@ -1,4 +1,4 @@
-import { useGetProfile } from 'api/hooks/profile/useGetProfile'
+import { useFetchProfile } from 'api/hooks/profile/useFetchProfile'
 import { ReactComponent as InformationIcon } from 'assets/icons/information.svg'
 import { AccountUpdateForm } from 'components/AccountUpdateForm'
 import { Spinner } from 'components/Spinner'
@@ -7,7 +7,7 @@ import { usePageTitle } from 'hooks/usePageTitle'
 
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
-	const { data: profile, isLoading } = useGetProfile()
+	const { data: profile, isLoading } = useFetchProfile()
 	console.log('profile', profile)
 
 	return (

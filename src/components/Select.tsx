@@ -39,7 +39,7 @@ export const Select = ({
 				</RadixSelect.Icon>
 			</RadixSelect.Trigger>
 			<RadixSelect.Portal>
-				<RadixSelect.Content className='overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
+				<RadixSelect.Content className='z-50 overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
 					<RadixSelect.Viewport className='p-[5px]'>
 						<RadixSelect.Group>{children}</RadixSelect.Group>
 					</RadixSelect.Viewport>

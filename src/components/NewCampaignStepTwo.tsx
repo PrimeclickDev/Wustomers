@@ -67,13 +67,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 					<p className='md:col-span-1'>Upload Option:</p>
 
 					<div className='flex flex-col gap-1 md:col-span-3'>
-						<label
-							className={`flex items-center gap-3 ${
-								errors.uploadOption
-									? 'rounded-sm bg-red-50 p-2 ring-[1.5px] ring-red-600'
-									: 'bg-transparent'
-							}`}
-						>
+						<label className='flex items-center gap-3'>
 							<input
 								type='radio'
 								{...register('uploadOption')}

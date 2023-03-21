@@ -23,6 +23,7 @@ module.exports = {
 				'wustomers-neutral': '#6D6D6D',
 				'wustomers-neutral-light': '#F5F5F5',
 				'wustomers-primary-lighter': '#6A7FDE',
+				'wustomers-neutral-lighter': '#C1C1C1',
 			},
 			borderRadius: {
 				sx: '3px',

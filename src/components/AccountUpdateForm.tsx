@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGetIndustries } from 'api/hooks/globals/useGetIndustries'
+import { useFetchIndustries } from 'api/hooks/globals/useFetchIndustries'
 import { useUpdateProfile } from 'api/hooks/profile/useUpdateProfile'
 import { ReactComponent as Facebook } from 'assets/icons/facebook.svg'
 import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
@@ -101,7 +101,7 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 			twitterLink: profile.twitter_url,
 		},
 	})
-	const { data: industries } = useGetIndustries()
+	const { data: industries } = useFetchIndustries()
 	const updateProfile = useUpdateProfile()
 
 	const onUpdateProfile: SubmitHandler<AccountUpdateSchema> = data => {

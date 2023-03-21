@@ -16,6 +16,30 @@ const schema = z.object({
 		invalid_type_error: 'Please select one',
 		required_error: 'Logo position is required',
 	}),
+	productLogo: z
+		.instanceof(FileList, {
+			message: 'Please select an image file not more than 150kb',
+		})
+		.superRefine((val, ctx) => {
+			if (val.length === 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Please select an image file not more than 300kb',
+				})
+			}
+			if (val[0]?.size > 150000) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Image cannot be larger than 150kb`,
+				})
+			}
+			if (!val[0]?.type.includes('image')) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `You can only upload image.`,
+				})
+			}
+		}),
 	headerContent: z
 		.string({ required_error: 'Header Content is required' })
 		.min(1, { message: 'Header Content is required' })
@@ -26,7 +50,32 @@ const schema = z.object({
 			message: 'Subheading Content is required',
 		})
 		.trim(),
-	// bgImage: z.string().trim().optional(),
+	bgImage: z
+		.instanceof(FileList, {
+			message: 'Please select an image file not more than 300kb',
+		})
+		.superRefine((val, ctx) => {
+			if (val.length === 0) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: 'Please select an image file not more than 300kb',
+				})
+			}
+			if (val[0]?.size > 300000) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Image cannot be larger than 300kb`,
+				})
+			}
+			if (!val[0]?.type.includes('image')) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `You can only upload image.`,
+				})
+			}
+		})
+		.optional()
+		.or(z.literal(undefined)),
 	buttonText: z
 		.string({ required_error: 'Button Text is required' })
 		.min(1, { message: 'Button Text is required' })
@@ -40,19 +89,25 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 	const {
 		handleSubmit,
 		register,
+		watch,
 		formState: { errors },
 	} = useForm<StepOneSchema>({
 		defaultValues: {
 			campaignTitle: '',
-			// productLogo: '',
+			productLogo: undefined,
 			logoPosition: undefined,
 			headerContent: '',
 			subheadingContent: '',
-			// bgImage: '',
+			bgImage: undefined,
 			buttonText: '',
 		},
 		resolver: zodResolver(schema),
 	})
+
+	// watch files
+	const selectedLogo = watch('productLogo')
+	const selectedBgImage = watch('bgImage')
+	console.log('logo', selectedLogo)
 
 	const onSubmit: SubmitHandler<StepOneSchema> = data => {
 		console.log('data', data)
@@ -99,16 +154,23 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 									id='productLogo'
 									className='sr-only'
 									accept='image/*'
-									// {...register('productLogo')}
+									{...register('productLogo')}
 								/>
 							</label>
 							<span className='text-wustomers-neutral-dark'>
 								Logo format is png., svg. (not more than 150kb)
 							</span>
 						</div>
-						{/* {errors.productLogo ? (
+						{errors.productLogo ? (
 							<ErrorMessage message={errors.productLogo.message} />
-						) : null} */}
+						) : null}
+						{selectedLogo?.length ? (
+							<img
+								src={URL.createObjectURL(selectedLogo[0])}
+								alt={selectedLogo[0].name}
+								className='mt-2 h-52 w-max object-cover'
+							/>
+						) : null}
 					</div>
 				</div>
 
@@ -117,13 +179,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					<label htmlFor='campaignTitle' className='md:col-span-1'>
 						Logo position:
 					</label>
-					<div
-						className={`flex flex-col gap-1 md:col-span-4 ${
-							errors.logoPosition
-								? 'rounded-sm bg-red-50 p-2 ring-[1.5px] ring-red-600'
-								: 'bg-transparent'
-						}`}
-					>
+					<div className='flex flex-col gap-1 md:col-span-4'>
 						<div className='flex flex-wrap items-center justify-between md:justify-start md:gap-20'>
 							{logoPositions.map(position => (
 								<div
@@ -206,23 +262,35 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 				{/* bg image */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Background Image:</p>
-					<div className='flex flex-wrap items-center text-sm md:col-span-4 md:gap-4'>
-						<label
-							htmlFor='backgroundImage'
-							className=' cursor-pointer bg-wustomers-main py-2 px-16 text-white transition-opacity hover:opacity-90'
-						>
-							Upload
-						</label>
-						<input
-							type='file'
-							// {...register('bgImage')}
-							id='backgroundImage'
-							className='sr-only'
-							accept='image/*'
-						/>
-						<span className='text-wustomers-neutral-dark'>
-							Logo format is png., svg. (not more than 150kb)
-						</span>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<div className='flex flex-wrap items-center text-sm md:col-span-4 md:gap-4'>
+							<label
+								htmlFor='backgroundImage'
+								className=' cursor-pointer bg-wustomers-main py-2 px-16 text-white transition-opacity hover:opacity-90'
+							>
+								Upload
+							</label>
+							<input
+								type='file'
+								{...register('bgImage')}
+								id='backgroundImage'
+								className='sr-only'
+								accept='image/*'
+							/>
+							<span className='text-wustomers-neutral-dark'>
+								Logo format is png, jpeg. (not more than 300kb)
+							</span>
+						</div>
+						{errors.bgImage ? (
+							<ErrorMessage message={errors.bgImage.message} />
+						) : null}
+						{selectedBgImage?.length ? (
+							<img
+								src={URL.createObjectURL(selectedBgImage[0])}
+								alt={selectedBgImage[0].name}
+								className='mt-2 h-52 w-max object-cover'
+							/>
+						) : null}
 					</div>
 				</div>
 

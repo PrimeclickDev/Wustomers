@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useGetProfile } from 'api/hooks/profile/useGetProfile'
-// import * as Switch from '@radix-ui/react-switch'
+import { useFetchProfile } from 'api/hooks/profile/useFetchProfile'
 import { useUpdatePassword } from 'api/hooks/profile/useUpdatePassword'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
@@ -71,7 +70,7 @@ const Settings = () => {
 			},
 		})
 	const { mutate, isLoading } = useUpdatePassword()
-	const { data: profile } = useGetProfile()
+	const { data: profile } = useFetchProfile()
 
 	const changePassword: SubmitHandler<ChangePasswordSchema> = data => {
 		mutate(

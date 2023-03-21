@@ -169,7 +169,7 @@ const Signup = () => {
 					type='button'
 					disabled={isLoading}
 					onClick={() => registerWithGoogle()}
-					className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-[#C1C1C1]/20'
+					className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-wustomers-neutral-lighter/20'
 				>
 					{signUpWithGoogle.isLoading ? (
 						<Spinner />
@@ -180,7 +180,7 @@ const Signup = () => {
 						</>
 					)}
 				</button>
-				<button className='flex w-full items-center justify-center gap-3 border border-[#C1C1C1] bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-[#C1C1C1]/20 active:scale-[0.98]'>
+				<button className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />
 					<span>Sign up with Instagram</span>
 				</button>

@@ -28,7 +28,7 @@ export const Button = ({
 						variant === 'fill'
 							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 hover:shadow-xl hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
-							? 'border-2 border-wustomers-blue py-[6px] hover:scale-[1.01] hover:bg-wustomers-blue/5'
+							? 'border-2 border-wustomers-blue py-[6.5px] hover:scale-[1.01] hover:bg-wustomers-blue/5'
 							: ''
 					} ${className}`}
 				>
@@ -42,7 +42,7 @@ export const Button = ({
 						variant === 'fill'
 							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 lg:hover:shadow-xl lg:hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
-							? 'border-2 border-wustomers-blue py-[7px] text-wustomers-blue hover:scale-[1.01] hover:bg-wustomers-blue/5'
+							? 'border-2 border-wustomers-blue py-[6.5px] text-wustomers-blue hover:scale-[1.01] hover:bg-wustomers-blue/5'
 							: ''
 					} ${className}`}
 					{...buttonProps}

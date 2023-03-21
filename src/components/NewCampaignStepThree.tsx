@@ -89,13 +89,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Testimonial:</p>
 					<div className='flex flex-col gap-1 md:col-span-4'>
-						<div
-							className={`flex flex-wrap items-center gap-2 text-wustomers-main md:gap-16 ${
-								errors.addTestimonial
-									? 'rounded-sm bg-red-50 p-2 ring-[1.5px] ring-red-600'
-									: 'bg-transparent'
-							}`}
-						>
+						<div className='flex flex-wrap items-center gap-2 text-wustomers-main md:gap-16'>
 							{['no', 'yes'].map((testimonial, index) => (
 								<label className='flex items-center gap-2' key={index}>
 									<input
@@ -254,13 +248,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 					<p className='md:col-span-1'>Button sticky option:</p>
 
 					<div className='flex flex-col gap-1'>
-						<div
-							className={`flex items-center gap-16 text-wustomers-main md:col-span-3 ${
-								errors.btnStickyOption
-									? 'rounded-sm bg-red-50 p-2 ring-[1.5px] ring-red-600'
-									: 'bg-transparent'
-							}`}
-						>
+						<div className='flex items-center gap-16 text-wustomers-main md:col-span-3'>
 							{['yes', 'no'].map(value => (
 								<label
 									className='flex items-center gap-2 capitalize'

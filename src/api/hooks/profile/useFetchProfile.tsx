@@ -9,7 +9,7 @@ export const getUserProfile = async (): Promise<AxiosResponse<UserProfile>> => {
 	return await instance.get(`${baseURL}/profile`)
 }
 
-export const useGetProfile = () => {
+export const useFetchProfile = () => {
 	return useQuery<AxiosResponse<UserProfile>, AxiosError<ErrorResponse>>({
 		queryKey: ['profile'],
 		queryFn: getUserProfile,

@@ -1,4 +1,4 @@
-import { useGetProfile } from 'api/hooks/profile/useGetProfile'
+import { useFetchProfile } from 'api/hooks/profile/useFetchProfile'
 import { ReactComponent as ChartSquareIcon } from 'assets/icons/chartsquare.svg'
 import { ReactComponent as Instagram } from 'assets/icons/instagram.svg'
 import { ReactComponent as Mail } from 'assets/icons/mail.svg'
@@ -55,7 +55,7 @@ const accounts = [
 ]
 const Overview = () => {
 	usePageTitle('Dashboard')
-	const { data: profile, isLoading } = useGetProfile()
+	const { data: profile, isLoading } = useFetchProfile()
 
 	return (
 		<>

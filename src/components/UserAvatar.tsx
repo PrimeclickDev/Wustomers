@@ -1,4 +1,4 @@
-import { useGetProfile } from 'api/hooks/profile/useGetProfile'
+import { useFetchProfile } from 'api/hooks/profile/useFetchProfile'
 import { useUpdateAvatar } from 'api/hooks/profile/useUpdateAvatar'
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import emptyUserImg from 'assets/images/empty.png'
@@ -38,7 +38,7 @@ const centerAspectCrop = (
 const aspect = 1 / 1
 
 export const UserAvatar = () => {
-	const { data, isFetching } = useGetProfile()
+	const { data, isFetching } = useFetchProfile()
 	const mutation = useUpdateAvatar()
 	const [imgSrc, setImgSrc] = useState('')
 	const imgRef = useRef<HTMLImageElement>(null)

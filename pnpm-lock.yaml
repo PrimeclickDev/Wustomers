@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@amraneze/react-instagram-login': ^3.0.3
   '@hookform/resolvers': ^2.9.10
   '@radix-ui/react-accordion': ^1.1.0
   '@radix-ui/react-dialog': ^1.0.2
@@ -15,6 +16,7 @@ specifiers:
   '@types/react-dom': ^18.0.9
   '@typescript-eslint/eslint-plugin': ^5.48.2
   '@typescript-eslint/parser': ^5.48.2
+  '@vitejs/plugin-basic-ssl': ^1.0.1
   '@vitejs/plugin-react-swc': ^3.0.0
   autoprefixer: ^10.4.13
   axios: ^1.2.3
@@ -45,6 +47,7 @@ specifiers:
   zustand: ^4.3.2
 
 dependencies:
+  '@amraneze/react-instagram-login': 3.0.3_react@18.2.0
   '@hookform/resolvers': 2.9.10_react-hook-form@7.42.1
   '@radix-ui/react-accordion': 1.1.0_biqbaboplfbrettd7655fr4n2y
   '@radix-ui/react-dialog': 1.0.2_5ndqzdd6t4rivxsukjv3i3ak2q
@@ -76,6 +79,7 @@ devDependencies:
   '@types/react-dom': 18.0.10
   '@typescript-eslint/eslint-plugin': 5.48.2_caon6io6stgpr7lz2rtbhekxqy
   '@typescript-eslint/parser': 5.48.2_7uibuqfxkfaozanbtbziikiqje
+  '@vitejs/plugin-basic-ssl': 1.0.1_vite@4.0.4
   '@vitejs/plugin-react-swc': 3.0.1_vite@4.0.4
   autoprefixer: 10.4.13_postcss@8.4.21
   eslint: 8.32.0
@@ -98,6 +102,14 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
+
+  /@amraneze/react-instagram-login/3.0.3_react@18.2.0:
+    resolution: {integrity: sha512-yjCq6sEIoiunx9WsIPcYLgPEHZh/k/eZtP4ET46HtU8yK8KouZchMlDa4L1eB3v3hneyiJCRVE2jIR1uYePclA==}
+    peerDependencies:
+      react: ^17.0.2
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /@apideck/better-ajv-errors/0.3.6_ajv@8.12.0:
     resolution: {integrity: sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==}
@@ -2566,6 +2578,15 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.48.2
       eslint-visitor-keys: 3.3.0
+    dev: true
+
+  /@vitejs/plugin-basic-ssl/1.0.1_vite@4.0.4:
+    resolution: {integrity: sha512-pcub+YbFtFhaGRTo1832FQHQSHvMrlb43974e2eS8EKleR3p1cDdkJFPci1UhwkEf1J9Bz+wKBSzqpKp7nNj2A==}
+    engines: {node: '>=14.6.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0
+    dependencies:
+      vite: 4.0.4_@types+node@18.11.18
     dev: true
 
   /@vitejs/plugin-react-swc/3.0.1_vite@4.0.4:
