@@ -1,12 +1,30 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAtom } from 'jotai'
 import { CampaignProps } from 'models/shared'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 
-const logoPositions = ['left', 'center', 'right']
+const logoPositions = [
+	{
+		id: 1,
+		value: 'left',
+		style: 'flex-start',
+	},
+	{
+		id: 2,
+		value: 'center',
+		style: 'center',
+	},
+	{
+		id: 3,
+		value: 'right',
+		style: 'flex-right',
+	},
+]
 const schema = z.object({
 	campaignTitle: z
 		.string({ required_error: 'Campaign title is required' })
@@ -82,10 +100,11 @@ const schema = z.object({
 		.trim(),
 })
 
-type StepOneSchema = z.infer<typeof schema>
+export type StepOneSchema = z.infer<typeof schema>
 
 export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 	const navigate = useNavigate()
+	const [campaign, setCampaign] = useAtom(campaignAtom)
 	const {
 		handleSubmit,
 		register,
@@ -93,13 +112,13 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 		formState: { errors },
 	} = useForm<StepOneSchema>({
 		defaultValues: {
-			campaignTitle: '',
-			productLogo: undefined,
-			logoPosition: undefined,
-			headerContent: '',
-			subheadingContent: '',
-			bgImage: undefined,
-			buttonText: '',
+			campaignTitle: campaign.campaignTitle ?? '',
+			productLogo: campaign.productLogo ?? undefined,
+			logoPosition: campaign.logoPosition ?? undefined,
+			headerContent: campaign.headerContent ?? '',
+			subheadingContent: campaign.subheadingContent ?? '',
+			bgImage: campaign.bgImage ?? undefined,
+			buttonText: campaign.buttonText ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
@@ -107,10 +126,9 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 	// watch files
 	const selectedLogo = watch('productLogo')
 	const selectedBgImage = watch('bgImage')
-	console.log('logo', selectedLogo)
 
 	const onSubmit: SubmitHandler<StepOneSchema> = data => {
-		console.log('data', data)
+		setCampaign(prev => ({ ...prev, ...data }))
 		nextStep?.()
 	}
 
@@ -119,7 +137,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 			<h3 className='bg-wustomers-neutral-light p-3 font-medium md:px-9'>
 				Above the fold section:
 			</h3>
-			<form className='flex flex-col gap-6 bg-white px-3 py-6 md:py-12 md:px-9'>
+			<form className='flex flex-col gap-5 bg-white px-3 py-6 md:py-12 md:px-9'>
 				{/* campaign title */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<label htmlFor='campaignTitle' className='md:col-span-1'>
@@ -184,29 +202,29 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 							{logoPositions.map(position => (
 								<div
 									className='flex flex-col items-center gap-1'
-									key={position}
+									key={position.id}
 								>
 									<input
 										type='radio'
-										id={position}
+										id={position.value}
 										className='peer sr-only'
-										value={position}
+										value={position.style}
 										{...register('logoPosition')}
 									/>
 									<label
-										htmlFor={position}
+										htmlFor={position.value}
 										className={`relative h-6 w-20 cursor-pointer rounded-sm border border-wustomers-primary-light bg-wustomers-primary transition-all after:absolute after:top-1/2 after:h-3 after:w-3 after:-translate-y-1/2 after:rounded-full after:bg-[#8394E3] peer-checked:bg-[#516AD9] peer-checked:after:bg-white ${
-											position === 'center'
+											position.value === 'center'
 												? 'after:left-1/2 after:-translate-x-1/2'
-												: position === 'right'
+												: position.value === 'right'
 												? 'after:right-2'
-												: position === 'left'
+												: position.value === 'left'
 												? 'after:left-2'
 												: ''
 										}`}
 									/>
 									<p className='text-center text-sm capitalize text-wustomers-gray'>
-										{position}
+										{position.value}
 									</p>
 								</div>
 							))}

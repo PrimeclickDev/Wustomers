@@ -3,6 +3,7 @@ import { AuthLayout } from 'layouts/AuthLayout'
 import { DashboardLayout } from 'layouts/DashboardLayout'
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
 import AccountUpdate from 'pages/dashboard/AccountUpdate'
+import Auth from 'pages/dashboard/Auth'
 import CampaignMetrics from 'pages/dashboard/CampaignMetrics'
 import Campaigns from 'pages/dashboard/Campaigns'
 import NewCampaign from 'pages/dashboard/NewCampaign'
@@ -45,6 +46,7 @@ const App = () => {
 				<Route path='settings' element={<Settings />} />
 				<Route path='support' element={<Support />} />
 				<Route path='notifications' element={<Notifications />} />
+				<Route path='auth' element={<Auth />} />
 			</Route>
 
 			{/* auth routes */}

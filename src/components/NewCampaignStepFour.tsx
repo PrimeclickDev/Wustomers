@@ -1,21 +1,26 @@
+import { ReactComponent as FullscreenIcon } from 'assets/icons/fullscreen.svg'
 import { ReactComponent as MobileIcon } from 'assets/icons/mobile-2.svg'
 import { ReactComponent as MonitorIcon } from 'assets/icons/monitor.svg'
 import { ReactComponent as MoonIcon } from 'assets/icons/moon.svg'
 import { ReactComponent as SunIcon } from 'assets/icons/sun.svg'
 import { ReactComponent as TickCircleIcon } from 'assets/icons/tickcircle.svg'
+import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { CampaignProps } from 'models/shared'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { campaignAtom } from 'store/atoms'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Preview } from './Preview'
 
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
+	const [campaign] = useAtom(campaignAtom)
 	const [activeView, setActiveView] = useState('desktop')
 	const [changeMode, setChangeMode] = useState(false)
 	const [openModal, setOpenModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
 	const [modalType, setModalType] = useState('setup')
+	const previewRef = useRef<HTMLIFrameElement | null>(null)
 
 	const closeModal = () => setOpenModal(false)
 
@@ -24,7 +29,16 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 		setOpenCampaginModal(true)
 		setModalType('setup')
 	}
-	const changeModalType = () => setModalType('checkout')
+
+	const previewFullscreen = () => {
+		console.log('preview', previewRef)
+		const elem = previewRef.current
+		if (elem?.requestFullscreen) {
+			elem?.requestFullscreen()
+		}
+	}
+
+	console.log('campaign form data', campaign)
 
 	return (
 		<>
@@ -32,35 +46,49 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 				<header className='flex items-center justify-between bg-wustomers-neutral-light p-3 font-medium md:px-9'>
 					<h3>Preview Campaign:</h3>
 
-					<div>
+					<div className='flex items-center gap-4 text-sm'>
 						<button
-							type='button'
-							className={`rounded-l p-2 transition-colors ${
-								activeView === 'desktop'
-									? 'bg-wustomers-blue'
-									: 'bg-[#CDD4F4]'
-							}`}
-							onClick={() => setActiveView('desktop')}
+							aria-label='full screen preview'
+							title='Full screen preview'
+							onClick={previewFullscreen}
+							className='hidden rounded-sm bg-wustomers-dark-gray p-2 transition-all hover:bg-wustomers-main hover:text-white md:block'
 						>
-							<MonitorIcon />
-							<span className='sr-only'>desktop view</span>
+							<FullscreenIcon />
 						</button>
-						<button
-							type='button'
-							className={`rounded-r p-2 transition-colors ${
-								activeView === 'mobile'
-									? 'bg-wustomers-blue'
-									: 'bg-[#CDD4F4]'
-							}`}
-							onClick={() => setActiveView('mobile')}
-						>
-							<MobileIcon />
-							<span className='sr-only'>mobile view</span>
-						</button>
+						<div>
+							<button
+								type='button'
+								className={`rounded-l p-2 transition-colors ${
+									activeView === 'desktop'
+										? 'bg-wustomers-blue'
+										: 'bg-[#CDD4F4]'
+								}`}
+								onClick={() => setActiveView('desktop')}
+							>
+								<MonitorIcon />
+								<span className='sr-only'>desktop view</span>
+							</button>
+							<button
+								type='button'
+								className={`rounded-r p-2 transition-colors ${
+									activeView === 'mobile'
+										? 'bg-wustomers-blue'
+										: 'bg-[#CDD4F4]'
+								}`}
+								onClick={() => setActiveView('mobile')}
+							>
+								<MobileIcon />
+								<span className='sr-only'>mobile view</span>
+							</button>
+						</div>
 					</div>
 				</header>
 				<div className='flex flex-col gap-6 bg-white px-3 py-6 md:py-12 md:px-9'>
-					<Preview activeView={activeView} />
+					<Preview
+						activeView={activeView}
+						campaign={campaign}
+						ref={previewRef}
+					/>
 
 					{/* switch */}
 					<label className='relative mt-10 inline-flex cursor-pointer items-center'>

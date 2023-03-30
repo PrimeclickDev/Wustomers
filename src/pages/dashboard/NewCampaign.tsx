@@ -3,16 +3,18 @@ import { NewCampaignStepFour } from 'components/NewCampaignStepFour'
 import { NewCampaignStepOne } from 'components/NewCampaignStepOne'
 import { NewCampaignStepThree } from 'components/NewCampaignStepThree'
 import { NewCampaignStepTwo } from 'components/NewCampaignStepTwo'
+import { useAtom } from 'jotai'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import { campaignAtom } from 'store/atoms'
 
 const numOfStep = 4
 /* generates array that contains 'numOfStep' */
 const steps = [...Array(numOfStep).keys()].map(i => i + 1)
 
 const NewCampaign = () => {
-	const navigate = useNavigate()
 	const [step, setStep] = useState(1)
+	const [campaign] = useAtom(campaignAtom)
 
 	const nextStep = () => {
 		if (step >= numOfStep) return
@@ -44,14 +46,14 @@ const NewCampaign = () => {
 	return (
 		<>
 			<header className='flex items-center gap-3'>
-				<button
-					onClick={() => navigate(-1)}
+				<Link
+					to='/campaigns'
 					aria-label='go back'
 					type='button'
 					className='transition-opacity hover:opacity-70 active:scale-95'
 				>
 					<CircleArrowIcon width={32} />
-				</button>
+				</Link>
 				<h2 className='text-2xl font-bold text-wustomers-gray'>
 					New Campaign
 				</h2>

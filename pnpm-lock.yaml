@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@amraneze/react-instagram-login': ^3.0.3
   '@hookform/resolvers': ^2.9.10
   '@radix-ui/react-accordion': ^1.1.0
   '@radix-ui/react-dialog': ^1.0.2
@@ -23,6 +22,7 @@ specifiers:
   eslint: ^8.32.0
   eslint-plugin-react: ^7.32.1
   husky: ^8.0.3
+  jotai: ^2.0.3
   js-cookie: ^3.0.1
   lint-staged: ^13.1.0
   postcss: ^8.4.21
@@ -44,10 +44,8 @@ specifiers:
   vite-plugin-svgr: ^2.4.0
   vite-tsconfig-paths: ^4.0.5
   zod: ^3.20.2
-  zustand: ^4.3.2
 
 dependencies:
-  '@amraneze/react-instagram-login': 3.0.3_react@18.2.0
   '@hookform/resolvers': 2.9.10_react-hook-form@7.42.1
   '@radix-ui/react-accordion': 1.1.0_biqbaboplfbrettd7655fr4n2y
   '@radix-ui/react-dialog': 1.0.2_5ndqzdd6t4rivxsukjv3i3ak2q
@@ -57,6 +55,7 @@ dependencies:
   '@tanstack/react-query': 4.22.4_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.22.4_nuvt6iw2zzunisurt5cxfst6qu
   axios: 1.2.3
+  jotai: 2.0.3_react@18.2.0
   js-cookie: 3.0.1
   react: 18.2.0
   react-cookie: 4.1.1_react@18.2.0
@@ -70,7 +69,6 @@ dependencies:
   vite-plugin-svgr: 2.4.0_rollup@2.79.1+vite@4.0.4
   vite-tsconfig-paths: 4.0.5_typescript@4.9.4
   zod: 3.20.2
-  zustand: 4.3.2_react@18.2.0
 
 devDependencies:
   '@types/js-cookie': 3.0.2
@@ -102,14 +100,6 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
-
-  /@amraneze/react-instagram-login/3.0.3_react@18.2.0:
-    resolution: {integrity: sha512-yjCq6sEIoiunx9WsIPcYLgPEHZh/k/eZtP4ET46HtU8yK8KouZchMlDa4L1eB3v3hneyiJCRVE2jIR1uYePclA==}
-    peerDependencies:
-      react: ^17.0.2
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /@apideck/better-ajv-errors/0.3.6_ajv@8.12.0:
     resolution: {integrity: sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==}
@@ -4118,6 +4108,18 @@ packages:
       supports-color: 7.2.0
     dev: true
 
+  /jotai/2.0.3_react@18.2.0:
+    resolution: {integrity: sha512-MMjhSPAL3RoeZD9WbObufRT2quThEAEknHHridf2ma8Ml7ZVQmUiHk0ssdbR3F0h3kcwhYqSGJ59OjhPge7RRg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /js-cookie/3.0.1:
     resolution: {integrity: sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==}
     engines: {node: '>=12'}
@@ -5961,20 +5963,4 @@ packages:
 
   /zod/3.20.2:
     resolution: {integrity: sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==}
-    dev: false
-
-  /zustand/4.3.2_react@18.2.0:
-    resolution: {integrity: sha512-rd4haDmlwMTVWVqwvgy00ny8rtti/klRoZjFbL/MAcDnmD5qSw/RZc+Vddstdv90M5Lv6RPgWvm1Hivyn0QgJw==}
-    engines: {node: '>=12.7.0'}
-    peerDependencies:
-      immer: '>=9.0'
-      react: '>=16.8'
-    peerDependenciesMeta:
-      immer:
-        optional: true
-      react:
-        optional: true
-    dependencies:
-      react: 18.2.0
-      use-sync-external-store: 1.2.0_react@18.2.0
     dev: false

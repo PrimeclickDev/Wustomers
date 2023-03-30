@@ -1,3 +1,7 @@
+import { StepOneSchema } from 'components/NewCampaignStepOne'
+import { StepThreeSchema } from 'components/NewCampaignStepThree'
+import { StepTwoSchema } from 'components/NewCampaignStepTwo'
+
 export type ResponseType = {
 	success: boolean
 	message: string
@@ -43,4 +47,33 @@ type Budget = {
 export type CampaignProps = {
 	nextStep?: () => void
 	prevStep?: () => void
+}
+
+export type CampaignFormData = StepOneSchema & StepTwoSchema & StepThreeSchema
+
+export type IGAccessTokenType = {
+	access_token: string
+	user_id: number
+}
+
+export interface IGResponse {
+	data: Daum[]
+	paging: Paging
+}
+
+export interface Daum {
+	id: string
+	media_type: string
+	media_url: string
+	caption: string
+}
+
+export interface Paging {
+	cursors: Cursors
+	next: string
+}
+
+export interface Cursors {
+	before: string
+	after: string
 }

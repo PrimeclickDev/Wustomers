@@ -8,7 +8,6 @@ import { usePageTitle } from 'hooks/usePageTitle'
 const AccountUpdate = () => {
 	usePageTitle('Account Update')
 	const { data: profile, isLoading } = useFetchProfile()
-	console.log('profile', profile)
 
 	return (
 		<>

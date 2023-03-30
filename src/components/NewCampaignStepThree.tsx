@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
+import { useAtom } from 'jotai'
 import { CampaignProps } from 'models/shared'
 import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
@@ -37,19 +39,16 @@ const schema = z.object({
 		.min(1, { message: 'Whatsapp number is required' })
 		.min(5, { message: 'Whatsapp number cannot be less than 5 characters' })
 		.or(z.literal('')),
-	instagram: z
-		.string()
-		.min(1, { message: 'Whatsapp number is required' })
-		.or(z.literal('')),
 	btnStickyOption: z.enum(['no', 'yes'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Button sticky option is required',
 	}),
 })
 
-type StepThreeSchema = z.infer<typeof schema>
+export type StepThreeSchema = z.infer<typeof schema>
 
 export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
+	const [campaign, setCampaign] = useAtom(campaignAtom)
 	const {
 		register,
 		handleSubmit,
@@ -58,11 +57,11 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		control,
 	} = useForm<StepThreeSchema>({
 		defaultValues: {
-			addTestimonial: undefined,
-			testimonials: [{ comment: '', designation: '', name: '' }],
-			instagram: '',
-			whatsappNumber: '',
-			btnStickyOption: undefined,
+			addTestimonial: campaign.addTestimonial ?? undefined,
+			testimonials: campaign.testimonials ?? [
+				{ comment: '', designation: '', name: '' },
+			],
+			btnStickyOption: campaign.btnStickyOption ?? undefined,
 		},
 		resolver: zodResolver(schema),
 		shouldUnregister: true,
@@ -76,7 +75,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 	const showAddTestimonial = watch('addTestimonial')
 
 	const onSubmit: SubmitHandler<StepThreeSchema> = data => {
-		console.log(data)
+		setCampaign(prev => ({ ...prev, ...data }))
 		nextStep?.()
 	}
 
@@ -96,6 +95,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 										type='radio'
 										value={testimonial}
 										{...register('addTestimonial')}
+										className='h-4 w-4 accent-wustomers-blue'
 									/>
 									<span>
 										{testimonial === 'no'
@@ -205,44 +205,6 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 					</div>
 				) : null}
 
-				{/* contact options */}
-				<div className='grid gap-2 md:grid-cols-5'>
-					<p className='md:col-span-1'>Contact Option:</p>
-					<div className='flex flex-col gap-3 md:col-span-4'>
-						<div className='flex flex-col'>
-							<input
-								type='tel'
-								inputMode='numeric'
-								{...register('whatsappNumber')}
-								placeholder='Whatsapp Number'
-								className={`flex-1 appearance-none rounded-sm px-4 py-2.5 text-sm ring-[1.5px] ${
-									errors.whatsappNumber
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-[#CDD4F4]'
-								}`}
-							/>
-							{errors.whatsappNumber ? (
-								<ErrorMessage message={errors.whatsappNumber.message} />
-							) : null}
-						</div>
-						<div className='flex flex-col'>
-							<input
-								type='text'
-								{...register('instagram')}
-								placeholder='Instagram username'
-								className={`flex-1 appearance-none rounded-sm px-4 py-2.5 text-sm ring-[1.5px] ${
-									errors.instagram
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-[#CDD4F4]'
-								}`}
-							/>
-							{errors.instagram ? (
-								<ErrorMessage message={errors.instagram.message} />
-							) : null}
-						</div>
-					</div>
-				</div>
-
 				{/* button sticky option */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Button sticky option:</p>
@@ -258,6 +220,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 										type='radio'
 										value={value}
 										{...register('btnStickyOption')}
+										className='h-4 w-4 accent-wustomers-blue'
 									/>
 									<span>{value}</span>
 								</label>

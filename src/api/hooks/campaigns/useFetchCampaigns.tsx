@@ -1,21 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
 import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
-import { Locations } from 'models/shared'
+import { Campaigns } from 'models/campagins'
 
-export const getAllCampaigns = async (): Promise<AxiosResponse<Locations>> => {
+export const getAllCampaigns = async (): Promise<AxiosResponse<Campaigns>> => {
 	return await instance.get(`${baseURL}/campaign`)
 }
 
-export const useFetcchCampaigns = () => {
+export const useFetchCampaigns = () => {
 	return useQuery({
 		queryKey: ['campaings'],
 		queryFn: getAllCampaigns,
-		refetchOnMount: false,
+		refetchOnMount: import.meta.env.PROD,
 		onError: error => {
 			if (error instanceof AxiosError) {
 				console.error(error.response?.data.message)
 			}
 		},
+		select: data => data.data.data,
 	})
 }

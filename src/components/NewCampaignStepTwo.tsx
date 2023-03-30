@@ -1,20 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAtom } from 'jotai'
 import { CampaignProps } from 'models/shared'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 
 const schema = z.object({
-	uploadOption: z
-		.string({ required_error: 'Please select one' })
-		.min(3, { message: 'Please select one' })
-		.trim(),
-	instagramLink: z
-		.string({ required_error: 'Instagram link is required' })
-		.min(1, { message: 'Instagram link is required' })
-		.url({ message: 'Instagram link must be a url' })
-		.trim(),
 	officeAddress: z
 		.string({ required_error: 'Office address is required' })
 		.min(1, { message: 'Office address is required' })
@@ -22,6 +15,7 @@ const schema = z.object({
 	phoneNumber: z
 		.string({ required_error: 'Phone number is required' })
 		.min(1, { message: 'Phone number is required' })
+		.min(11, { message: 'Phone number cannot be less than 11 characters' })
 		// .regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
 		// 	message: 'Please enter a valid phone number',
 		// })
@@ -32,135 +26,162 @@ const schema = z.object({
 		.min(3, { message: 'Email address cannot be less than 3 characters' })
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
+	whatsappNumber: z
+		.string()
+		.min(1, { message: 'Whatsapp number is required' })
+		.min(11, {
+			message: 'Whatsapp number cannot be less than 11 characters',
+		}),
+	instagramLink: z
+		.string({ required_error: 'Instagram link is required' })
+		.min(1, { message: 'Instagram link is required' })
+		.url({ message: 'Instagram link must be a url' })
+		.trim(),
 })
 
-type StepTwoSchema = z.infer<typeof schema>
+export type StepTwoSchema = z.infer<typeof schema>
 
 export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
+	const [campaign, setCampaign] = useAtom(campaignAtom)
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<StepTwoSchema>({
 		defaultValues: {
-			uploadOption: '',
-			instagramLink: '',
-			officeAddress: '',
-			phoneNumber: '',
-			email: '',
+			officeAddress: campaign.officeAddress ?? '',
+			phoneNumber: campaign.phoneNumber ?? '',
+			email: campaign.email ?? '',
+			whatsappNumber: campaign.whatsappNumber ?? '',
+			instagramLink: campaign.instagramLink ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {
-		console.log(data)
+		setCampaign(prev => ({ ...prev, ...data }))
 		nextStep?.()
 	}
+
+	// const fetchUserIGPost = async () => {
+	// 	const posts = await axios.get(
+	// 		`https://graph.instagram.com/me/media?fields=id,media_type,media_url,caption&access_token=${token.access_token}`
+	// 	)
+
+	// 	console.log('posts', posts.data)
+	// }
+
+	// useEffect(() => {
+	// 	fetchUserIGPost()
+	// }, [token])
 
 	return (
 		<section className='mt-10 flex flex-col'>
 			<h3 className='bg-wustomers-neutral-light p-3 font-medium md:px-9'>
 				Body section:
 			</h3>
-			<form className='flex flex-col gap-6 bg-white px-3 py-6 md:py-12 md:px-9'>
-				<div className='grid gap-1 md:grid-cols-5'>
-					<p className='md:col-span-1'>Upload Option:</p>
-
-					<div className='flex flex-col gap-1 md:col-span-3'>
-						<label className='flex items-center gap-3'>
-							<input
-								type='radio'
-								{...register('uploadOption')}
-								value='connectToIG'
-							/>
-							<span>Connect to IG</span>
-						</label>
-						{errors.uploadOption ? (
-							<ErrorMessage message={errors.uploadOption.message} />
+			<form className='flex flex-col gap-5 bg-white px-3 py-6 md:py-12 md:px-9'>
+				<div className='grid gap-2 md:grid-cols-5'>
+					<label htmlFor='officeAddress' className='md:col-span-1'>
+						Office address:
+					</label>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<input
+							type='text'
+							id='officeAddress'
+							{...register('officeAddress')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.officeAddress
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
+						{errors.officeAddress ? (
+							<ErrorMessage message={errors.officeAddress.message} />
 						) : null}
 					</div>
 				</div>
-
 				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='instagramLink' className='md:col-span-1'>
-						Instagram link:
+					<label htmlFor='phoneNumber' className='md:col-span-1'>
+						Phone number:
 					</label>
 					<div className='flex flex-col gap-1 md:col-span-4'>
-						<div className='flex flex-wrap items-center'>
-							<input
-								type='text'
-								inputMode='url'
-								{...register('instagramLink')}
-								className={`flex-1 appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-									errors.instagramLink
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-wustomers-primary-light'
-								}`}
-							/>
-							<button
-								type='button'
-								className='bg-wustomers-primary-lighter px-7 py-3 text-white transition-colors hover:bg-wustomers-blue-light'
-							>
-								Link to IG
-							</button>
-						</div>
-
+						<input
+							type='tel'
+							id='phoneNumber'
+							inputMode='numeric'
+							{...register('phoneNumber')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.phoneNumber
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
+						{errors.phoneNumber ? (
+							<ErrorMessage message={errors.phoneNumber.message} />
+						) : null}
+					</div>
+				</div>
+				<div className='grid gap-2 md:grid-cols-5'>
+					<label htmlFor='email' className='md:col-span-1'>
+						Email address:
+					</label>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<input
+							type='email'
+							id='email'
+							{...register('email')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.email
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
+						{errors.email ? (
+							<ErrorMessage message={errors.email.message} />
+						) : null}
+					</div>
+				</div>
+				<div className='grid gap-2 md:grid-cols-5'>
+					<label htmlFor='whatsappNumber' className='md:col-span-1'>
+						Whatsapp number:
+					</label>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<input
+							type='tel'
+							id='whatsappNumber'
+							inputMode='numeric'
+							{...register('whatsappNumber')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.whatsappNumber
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
+						{errors.whatsappNumber ? (
+							<ErrorMessage message={errors.whatsappNumber.message} />
+						) : null}
+					</div>
+				</div>
+				<div className='grid gap-2 md:grid-cols-5'>
+					<label htmlFor='instagram' className='md:col-span-1'>
+						Insatgram link:
+					</label>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<input
+							type='url'
+							id='instagram'
+							inputMode='url'
+							{...register('instagramLink')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.instagramLink
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
 						{errors.instagramLink ? (
 							<ErrorMessage message={errors.instagramLink.message} />
 						) : null}
-					</div>
-				</div>
-
-				<div className='grid gap-2 md:grid-cols-5'>
-					<p className='md:col-span-1'>Contact info:</p>
-
-					<div className='flex flex-col gap-3 md:col-span-4'>
-						<div className='flex flex-col gap-1'>
-							<input
-								type='text'
-								placeholder='Office Address'
-								{...register('officeAddress')}
-								className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-									errors.officeAddress
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-wustomers-primary-light'
-								}`}
-							/>
-							{errors.officeAddress ? (
-								<ErrorMessage message={errors.officeAddress.message} />
-							) : null}
-						</div>
-						<div className='flex flex-col gap-1'>
-							<input
-								type='tel'
-								inputMode='numeric'
-								placeholder='Phone number'
-								{...register('phoneNumber')}
-								className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-									errors.phoneNumber
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-wustomers-primary-light'
-								}`}
-							/>
-							{errors.phoneNumber ? (
-								<ErrorMessage message={errors.phoneNumber.message} />
-							) : null}
-						</div>
-						<div className='flex flex-col gap-1'>
-							<input
-								type='email'
-								placeholder='Email address'
-								{...register('email')}
-								className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-									errors.email
-										? 'bg-red-50 ring-red-600'
-										: 'bg-wustomers-primary ring-wustomers-primary-light'
-								}`}
-							/>
-							{errors.email ? (
-								<ErrorMessage message={errors.email.message} />
-							) : null}
-						</div>
 					</div>
 				</div>
 			</form>
