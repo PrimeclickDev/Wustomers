@@ -34,11 +34,6 @@ const schema = z.object({
 			})
 		)
 		.default([]),
-	whatsappNumber: z
-		.string()
-		.min(1, { message: 'Whatsapp number is required' })
-		.min(5, { message: 'Whatsapp number cannot be less than 5 characters' })
-		.or(z.literal('')),
 	btnStickyOption: z.enum(['no', 'yes'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Button sticky option is required',

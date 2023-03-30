@@ -49,7 +49,12 @@ export type CampaignProps = {
 	prevStep?: () => void
 }
 
-export type CampaignFormData = StepOneSchema & StepTwoSchema & StepThreeSchema
+export interface CampaignFormData
+	extends StepOneSchema,
+		StepTwoSchema,
+		StepThreeSchema {
+	socials: IGPost[]
+}
 
 export type IGAccessTokenType = {
 	access_token: string
@@ -76,4 +81,17 @@ export interface Paging {
 export interface Cursors {
 	before: string
 	after: string
+}
+
+export type IGPosts = {
+	data: IGPost[]
+	paging: any
+}
+
+export type IGPost = {
+	id: string
+	media_type: string
+	media_url: string
+	caption: string
+	timestamp: Date
 }

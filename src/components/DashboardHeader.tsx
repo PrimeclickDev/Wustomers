@@ -24,7 +24,7 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 				</button>
 			</div>
 			<Link
-				to='/dashboard'
+				to='/overview'
 				className='flex items-center gap-2 self-center lg:hidden'
 			>
 				<Logo width={24} height={22} className='text-wustomers-blue' />

@@ -31,9 +31,8 @@ const Campaigns = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitted },
 		reset,
-		watch,
 	} = useForm<NewCampaignSchema>({
 		defaultValues: {
 			uploadOption: '',
@@ -135,12 +134,16 @@ const Campaigns = () => {
 							<div key={value} className='flex items-center gap-3'>
 								<input
 									type='radio'
-									className='h-4 w-4 accent-wustomers-blue'
+									className='peer h-4 w-4 accent-wustomers-blue disabled:cursor-not-allowed disabled:opacity-50'
+									disabled={value === 'manual'}
 									id={value}
 									value={value}
 									{...register('uploadOption')}
 								/>
-								<label htmlFor={value}>
+								<label
+									htmlFor={value}
+									className='peer-disabled:cursor-not-allowed peer-disabled:opacity-50'
+								>
 									{value === 'manual'
 										? 'Manual Upload'
 										: 'Connect to IG'}
@@ -154,7 +157,8 @@ const Campaigns = () => {
 
 					<div className='flex items-center justify-between gap-4'>
 						<Button
-							text='Continue'
+							text={isSubmitted ? <Spinner /> : 'Continue'}
+							disabled={isSubmitted}
 							variant='fill'
 							className='mt-6 w-full normal-case'
 							type='submit'

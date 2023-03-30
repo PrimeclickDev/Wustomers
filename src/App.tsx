@@ -36,7 +36,7 @@ const App = () => {
 			</Route>
 
 			<Route element={<DashboardLayout />}>
-				<Route path='dashboard' element={<Overview />} />
+				<Route path='overview' element={<Overview />} />
 				<Route path='campaigns'>
 					<Route index element={<Campaigns />} />
 					<Route path='new' element={<NewCampaign />} />

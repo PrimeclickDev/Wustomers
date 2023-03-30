@@ -33,7 +33,7 @@ const dashboardNavs = [
 		routes: [
 			{
 				name: 'Overview',
-				link: 'dashboard',
+				link: 'overview',
 				icon: <OverviewIcon />,
 				activeIcon: <OverviewFillIcon />,
 			},

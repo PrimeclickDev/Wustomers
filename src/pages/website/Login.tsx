@@ -42,7 +42,7 @@ const Login = () => {
 
 	const loginUser: SubmitHandler<LoginSchema> = data => {
 		mutate(data, {
-			onSuccess: () => navigate('/dashboard'),
+			onSuccess: () => navigate('/overview'),
 			onError: error => {
 				setError('email', { message: error.response?.data.errors.email[0] })
 				setError('password', {
@@ -68,7 +68,7 @@ const Login = () => {
 					email: userInfo.data?.email,
 				},
 				{
-					onSuccess: () => navigate('/dashboard'),
+					onSuccess: () => navigate('/overview'),
 				}
 			)
 		},

@@ -1,8 +1,8 @@
-import { baseURL } from 'api/requests'
-import axios from 'axios'
+import { baseURL, instance } from 'api/requests'
+import { Spinner } from 'components/Spinner'
 import { useAtom } from 'jotai'
 import { useEffect } from 'react'
-import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { igAccessToken } from 'store/atoms'
 
 const Auth = () => {
@@ -12,8 +12,8 @@ const Auth = () => {
 	const code = location.search.slice(6)
 
 	const generateAccessToken = async () => {
-		const accessToken = await axios.post(
-			`${baseURL}campaign/instagram/token`,
+		const accessToken = await instance.post(
+			`${baseURL}/campaign/instagram/token`,
 			{
 				code,
 			},
@@ -24,19 +24,23 @@ const Auth = () => {
 			}
 		)
 
-		console.log('access_token', accessToken.data)
+		console.log('access_token', accessToken.data?.data?.token)
 
 		if (accessToken.data) {
-			setToken(accessToken.data)
+			setToken(accessToken.data?.data?.token)
 			navigate('/campaigns/new')
 		}
 	}
 
 	useEffect(() => {
-		generateAccessToken()
-	}, [])
+		if (code) {
+			generateAccessToken()
+		} else {
+			navigate('/campaigns')
+		}
+	}, [code])
 
-	return <Navigate replace to='/campaigns/new' />
+	return <Spinner />
 }
 
 export default Auth

@@ -21,15 +21,11 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 			<>
 				<header className='header'>
 					<div className='container'>
-						{logo ? (
-							<img
-								src={logo}
-								alt={`${campaign.campaignTitle} logo`}
-								width='200'
-							/>
-						) : (
-							<h1>{campaign.campaignTitle}</h1>
-						)}
+						<img
+							src={logo}
+							alt={`${campaign.campaignTitle} logo`}
+							width='200'
+						/>
 					</div>
 				</header>
 				<main>
@@ -57,53 +53,20 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 
 					<section className='posts-section'>
 						<div className='container'>
-							<ul className='posts'>
-								<li className='post'>
-									<img
-										src='https://images.pexels.com/photos/15883131/pexels-photo-15883131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-										alt=''
-										className='post-img'
-									/>
-									<div>
-										<h3>Posts</h3>
-										<p>
-											“Editable templates with innovative design and
-											very good use of color.”
-										</p>
-										<p>N20,000</p>
-									</div>
-								</li>
-								<li className='post'>
-									<img
-										src='https://images.pexels.com/photos/15883131/pexels-photo-15883131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-										alt=''
-										className='post-img'
-									/>
-									<div>
-										<h3>Posts</h3>
-										<p className='paragraph'>
-											“Editable templates with innovative design and
-											very good use of color.”
-										</p>
-										<p className='amount'>N20,000</p>
-									</div>
-								</li>
-								<li className='post'>
-									<img
-										src='https://images.pexels.com/photos/15883131/pexels-photo-15883131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'
-										alt=''
-										className='post-img'
-									/>
-									<div>
-										<h3>Posts</h3>
-										<p>
-											“Editable templates with innovative design and
-											very good use of color.”
-										</p>
-										<p>N20,000</p>
-									</div>
-								</li>
-							</ul>
+							{campaign?.socials.length > 0 ? (
+								<ul className='posts'>
+									{campaign?.socials.map(social => (
+										<li className='post' key={social.id}>
+											<img
+												src={social.media_url}
+												alt=''
+												className='post-img'
+											/>
+											<p>{social.caption}</p>
+										</li>
+									))}
+								</ul>
+							) : null}
 						</div>
 					</section>
 
@@ -243,6 +206,9 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						justify-content: ${campaign.logoPosition};
 						padding: 1rem 0;
 					}
+					.header img {
+						width: 40px;
+					}
 					.hero {
 						text-align: center;
 						padding: 10rem 2rem;
@@ -252,7 +218,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						background-size: cover;
 						background-blend-mode: multiply;
 						color: var(--netural-clr);
-						min-height: 500px;
+						min-height: 600px;
 						display: flex;
 						flex-direction: column;
 						align-items: center;
@@ -318,21 +284,18 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						margin-top: 3rem;
 					}
 					.post {
-						border: 2px solid #bdbdbd;
-						border-radius: 4px;
-						padding: 0.5rem;
-					}
-					.post div {
-						padding: 2rem;
 						background: var(--main-clr);
 						color: var(--netural-clr);
-					}
-					.post h3 {
-						font-weight: 600;
-						font-size: 2rem;
+						border-radius: 4px;
+						overflow: hidden;
 					}
 					.post p {
-						padding-top: 1rem;
+						padding: 1.5rem;
+					}
+					.post-img {
+						width: 100%;
+						height: 250px;
+						object-fit: cover;
 					}
 					.testimonials-section {
 						padding: 10rem 0;
@@ -408,7 +371,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 					}
 					@media screen and (max-width: 767px) {
 						.hero {
-							min-height: 50vh;
+							min-height: 300px;
 						}
 						.hero .title {
 							font-size: 4rem;

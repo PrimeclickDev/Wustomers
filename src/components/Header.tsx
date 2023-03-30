@@ -79,7 +79,7 @@ export const Header = () => {
 							text='dashboard'
 							type='button'
 							variant='fill'
-							href='/dashboard'
+							href='/overview'
 						/>
 					)}
 				</div>
@@ -141,7 +141,7 @@ export const Header = () => {
 							<Button
 								text='Dashboard'
 								variant='fill'
-								href='/dashboard'
+								href='/overview'
 								className='!bg-white py-3 px-1 text-center text-wustomers-blue hover:bg-white'
 							/>
 						)}
