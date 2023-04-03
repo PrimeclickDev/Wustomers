@@ -2,6 +2,7 @@ import * as Switch from '@radix-ui/react-switch'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
 import { Button } from 'components/Button'
 import { useAtom } from 'jotai'
+import { IGPosts } from 'models/shared'
 import {
 	Controller,
 	FieldValues,
@@ -10,18 +11,18 @@ import {
 } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { campaignAtom } from 'store/atoms'
-import { posts } from 'utils/constants'
 
 type InstagramPostsModalProps = {
 	closeModal: () => void
-	// posts: IGPosts
+	posts: IGPosts
 }
 
-const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
+const InstagramPostsModal = ({
+	closeModal,
+	posts,
+}: InstagramPostsModalProps) => {
 	const { handleSubmit, control } = useForm()
 	const [, setCampaign] = useAtom(campaignAtom)
-
-	console.log(posts)
 
 	const addPosts: SubmitHandler<FieldValues> = data => {
 		// map through data and remove properties with undefiend and false values
@@ -32,10 +33,12 @@ const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
 		}
 		// get selected posts
 		const postSelected = Object.keys(data).map(id => {
-			return posts?.data.find(post => post.id === id)
+			return posts?.data.find(post => post?.id === id)
 		})
 
-		setCampaign(prev => ({ ...prev, socials: [...postSelected] }))
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		setCampaign(prev => ({ ...prev, socials: postSelected }))
 		closeModal()
 		toast('Post added successfully!')
 	}
@@ -56,7 +59,7 @@ const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
 					<p className='col-span-1 text-center'>Date</p>
 				</div>
 				<>
-					{posts?.data.length > 0 ? (
+					{posts?.data?.length > 0 ? (
 						<ul className='h-96 overflow-y-auto'>
 							{posts?.data
 								?.filter(

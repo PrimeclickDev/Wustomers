@@ -31,7 +31,7 @@ const Campaigns = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitted },
+		formState: { errors, isSubmitted, isValid },
 		reset,
 	} = useForm<NewCampaignSchema>({
 		defaultValues: {
@@ -157,8 +157,8 @@ const Campaigns = () => {
 
 					<div className='flex items-center justify-between gap-4'>
 						<Button
-							text={isSubmitted ? <Spinner /> : 'Continue'}
-							disabled={isSubmitted}
+							text={isSubmitted && isValid ? <Spinner /> : 'Continue'}
+							disabled={isSubmitted && isValid}
 							variant='fill'
 							className='mt-6 w-full normal-case'
 							type='submit'

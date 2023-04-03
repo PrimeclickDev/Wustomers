@@ -30,7 +30,7 @@ const schema = z.object({
 		.string({ required_error: 'Campaign title is required' })
 		.min(1, { message: 'Campaign title is required' })
 		.trim(),
-	logoPosition: z.enum(['left', 'center', 'right'], {
+	logoPosition: z.enum(['flex-start', 'center', 'flex-end'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Logo position is required',
 	}),

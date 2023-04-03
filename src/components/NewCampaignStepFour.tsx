@@ -1,8 +1,6 @@
 import { ReactComponent as FullscreenIcon } from 'assets/icons/fullscreen.svg'
 import { ReactComponent as MobileIcon } from 'assets/icons/mobile-2.svg'
 import { ReactComponent as MonitorIcon } from 'assets/icons/monitor.svg'
-import { ReactComponent as MoonIcon } from 'assets/icons/moon.svg'
-import { ReactComponent as SunIcon } from 'assets/icons/sun.svg'
 import { ReactComponent as TickCircleIcon } from 'assets/icons/tickcircle.svg'
 import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
@@ -16,7 +14,7 @@ import { Preview } from './Preview'
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const [campaign] = useAtom(campaignAtom)
 	const [activeView, setActiveView] = useState('desktop')
-	const [changeMode, setChangeMode] = useState(false)
+	// const [changeMode, setChangeMode] = useState(false)
 	const [openModal, setOpenModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
 	const [modalType, setModalType] = useState('setup')
@@ -55,7 +53,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 						>
 							<FullscreenIcon />
 						</button>
-						<div>
+						<div className='hidden md:block'>
 							<button
 								type='button'
 								className={`rounded-l p-2 transition-colors ${
@@ -91,7 +89,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 					/>
 
 					{/* switch */}
-					<label className='relative mt-10 inline-flex cursor-pointer items-center'>
+					{/* <label className='relative mt-10 inline-flex cursor-pointer items-center'>
 						<input
 							type='checkbox'
 							value=''
@@ -118,7 +116,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 							</span>
 						</div>
 						<span className='sr-only'>toggle theme</span>
-					</label>
+					</label> */}
 				</div>
 
 				<div className='mt-3 flex flex-col gap-4 md:flex-row md:items-center md:self-end'>

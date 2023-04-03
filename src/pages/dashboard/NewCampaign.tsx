@@ -3,21 +3,17 @@ import { NewCampaignStepFour } from 'components/NewCampaignStepFour'
 import { NewCampaignStepOne } from 'components/NewCampaignStepOne'
 import { NewCampaignStepThree } from 'components/NewCampaignStepThree'
 import { NewCampaignStepTwo } from 'components/NewCampaignStepTwo'
-import { useAtom } from 'jotai'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { campaignAtom } from 'store/atoms'
 
-const numOfStep = 4
-/* generates array that contains 'numOfStep' */
-const steps = [...Array(numOfStep).keys()].map(i => i + 1)
+const steps = [1, 2, 3, 4]
 
 const NewCampaign = () => {
 	const [step, setStep] = useState(1)
-	const [campaign] = useAtom(campaignAtom)
 
+	// const [steps, setSteps] = useAtom(stepsAtom)
 	const nextStep = () => {
-		if (step >= numOfStep) return
+		if (step >= 4) return
 		setStep(step + 1)
 	}
 	const prevStep = () => {
@@ -60,34 +56,29 @@ const NewCampaign = () => {
 			</header>
 
 			{/* progess bar */}
-			<div className='mt-7 flex flex-wrap items-center gap-1'>
-				{steps.map(num => (
-					<button
-						key={num}
-						className='flex-1'
-						onClick={() => setStep(num)}
-					>
+			<div className='mt-7 flex flex-wrap items-center gap-10'>
+				{steps.map(step => (
+					<div key={step} className='flex-1'>
 						<p className='text-left text-xs uppercase tracking-wider text-wustomers-neutral md:text-sm'>
-							Step {num}
+							Step {step}
 						</p>
-						<div
-							className={`mt-1 h-3 w-full rounded-sm ${
-								num === step ? 'bg-wustomers-blue' : 'bg-white'
-							}`}
-						/>
-					</button>
+					</div>
 				))}
 			</div>
+			<div
+				className={`relative mt-1 h-3 w-full rounded-sm bg-white after:absolute after:top-0 after:left-0 after:h-full after:bg-wustomers-blue ${
+					step === 1
+						? 'after:w-1/4'
+						: step === 2
+						? 'after:w-1/2'
+						: step === 3
+						? 'after:w-3/4'
+						: step === 4
+						? 'after:w-full'
+						: ''
+				}`}
+			/>
 
-			{/* {step === 1 ? (
-				<NewCampaignStepOne />
-			) : step === 2 ? (
-				<NewCampaignStepTwo />
-			) : step === 3 ? (
-				<NewCampaignStepThree />
-			) : step === 4 ? (
-				<NewCampaignStepFour />
-			) : null} */}
 			{changeStep()}
 		</>
 	)
