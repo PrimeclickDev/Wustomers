@@ -148,8 +148,8 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 						<Button
 							variant='outline'
 							text='Go back'
-							onClick={closeModal}
-							className='!px-8 normal-case'
+							className='!px-8 normal-case text-wustomers-blue'
+							href='/campaigns'
 						/>
 						<Button
 							variant='fill'

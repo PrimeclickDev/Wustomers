@@ -1,11 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios, { AxiosResponse } from 'axios'
 import { useAtom } from 'jotai'
 import InstagramPostsModal from 'modals/InstagramPostsModal'
-import { CampaignProps, IGPosts } from 'models/shared'
-import { useEffect, useState } from 'react'
+import { CampaignProps } from 'models/shared'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { campaignAtom, igAccessToken } from 'store/atoms'
+import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
@@ -47,8 +46,8 @@ export type StepTwoSchema = z.infer<typeof schema>
 
 export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
-	const [token] = useAtom(igAccessToken)
-	const [posts, setPosts] = useState<IGPosts>({} as IGPosts)
+	// const [token] = useAtom(igAccessToken)
+	// const [posts, setPosts] = useState<IGPosts>({} as IGPosts)
 	const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
 	const {
@@ -78,18 +77,18 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 
 	const closeModal = () => setIsOpen(false)
 
-	const fetchUserIGPost = async () => {
-		const posts: AxiosResponse<IGPosts> = await axios.get(
-			`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
-		)
-		setPosts(posts.data)
-	}
+	// const fetchUserIGPost = async () => {
+	// 	const posts: AxiosResponse<IGPosts> = await axios.get(
+	// 		`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
+	// 	)
+	// 	setPosts(posts.data)
+	// }
 
-	useEffect(() => {
-		if (token) {
-			fetchUserIGPost()
-		}
-	}, [token])
+	// useEffect(() => {
+	// 	if (token) {
+	// 		fetchUserIGPost()
+	// 	}
+	// }, [token])
 
 	return (
 		<>
@@ -275,7 +274,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				closeModal={closeModal}
 				className='max-w-3xl'
 			>
-				<InstagramPostsModal closeModal={closeModal} posts={posts} />
+				<InstagramPostsModal closeModal={closeModal} />
 			</Modal>
 		</>
 	)

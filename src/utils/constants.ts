@@ -74,7 +74,8 @@ export const posts = {
 			media_type: 'IMAGE',
 			media_url:
 				'https://scontent.cdninstagram.com/v/t51.2885-15/38251014_1728020677247815_3557391832113479680_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=fsNF1HaxtcwAX82ajWQ&_nc_oc=AQnTWxNFHy1ILTK06HwyzrIStX5f5Y8lIKMHZoYAd734tMNtwnFKzyfwo1OFoMSzx0Q&_nc_ht=scontent.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfAi_BessvDkVpeFP3nK2PKm95jQUsX8M-W0OsKESFHWNw&oe=642A24B6',
-			caption: 'Fine boyz lyk us... Na dem dey rush us..... 😂 😂 😂',
+			caption:
+				'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique temporibus incidunt totam, itaque quisquam unde natus maxime maiores assumenda at facilis praesentium fugit consectetur deserunt sint exercitationem placeat fugiat corporis?',
 			timestamp: '2018-08-15T08:51:52+0000',
 		},
 		{
