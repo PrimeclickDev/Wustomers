@@ -3,6 +3,7 @@ import { ReactComponent as Close } from 'assets/icons/close-square.svg'
 import { Button } from 'components/Button'
 import { format } from 'date-fns'
 import { useAtom } from 'jotai'
+import { IGPosts } from 'models/shared'
 import {
 	Controller,
 	FieldValues,
