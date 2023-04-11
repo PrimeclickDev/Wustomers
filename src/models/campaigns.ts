@@ -1,4 +1,26 @@
+import { StepOneSchema } from 'components/NewCampaignStepOne'
+import { StepThreeSchema } from 'components/NewCampaignStepThree'
+import { StepTwoSchema } from 'components/NewCampaignStepTwo'
+import { NewCampaignSchema } from 'pages/dashboard/Campaigns'
 import { ResponseType } from './shared'
+
+type Social = {
+	title: string
+	image_url: string
+	posted_date: string
+}
+
+export interface CampaignFormData
+	extends NewCampaignSchema,
+		StepOneSchema,
+		StepTwoSchema,
+		StepThreeSchema {
+	social_posts: Social[]
+}
+
+// export interface Campaign extends ResponseType {
+// 	data: Data
+// }
 
 export interface Campaigns extends ResponseType {
 	data: Campaign[]
@@ -25,15 +47,15 @@ export type Campaign = {
 	contact_option_link: string
 	is_button_sticky: boolean
 	is_light_mode: boolean
-	start_date: string
-	end_date: string
+	start_date: Date
+	end_date: Date
 	testimonials: Testimonial[]
 	social_posts: SocialPost[]
 	created_at: string
 	updated_at: string
 }
 
-type Testimonial = {
+export type Testimonial = {
 	id: number
 	campaign_id: number
 	comment: string
@@ -43,7 +65,7 @@ type Testimonial = {
 	updated_at: string
 }
 
-type SocialPost = {
+export type SocialPost = {
 	id: number
 	campaign_id: number
 	title: string

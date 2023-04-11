@@ -1,7 +1,3 @@
-import { StepOneSchema } from 'components/NewCampaignStepOne'
-import { StepThreeSchema } from 'components/NewCampaignStepThree'
-import { StepTwoSchema } from 'components/NewCampaignStepTwo'
-
 export type ResponseType = {
 	success: boolean
 	message: string
@@ -47,13 +43,6 @@ type Budget = {
 export type CampaignProps = {
 	nextStep?: () => void
 	prevStep?: () => void
-}
-
-export interface CampaignFormData
-	extends StepOneSchema,
-		StepTwoSchema,
-		StepThreeSchema {
-	socials: IGPost[]
 }
 
 export type IGAccessTokenType = {

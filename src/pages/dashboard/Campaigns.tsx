@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import * as Popover from '@radix-ui/react-popover'
 import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as MoreIcon } from 'assets/icons/more-horizontal.svg'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
@@ -10,12 +11,12 @@ import { usePageTitle } from 'hooks/usePageTitle'
 import { useAtom } from 'jotai'
 import { useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 
 const schema = z.object({
-	uploadOption: z
+	upload_option: z
 		.string({
 			invalid_type_error: 'To continue, select of the above upload options',
 		})
@@ -23,7 +24,7 @@ const schema = z.object({
 		.trim(),
 })
 
-type NewCampaignSchema = z.infer<typeof schema>
+export type NewCampaignSchema = z.infer<typeof schema>
 
 const Campaigns = () => {
 	usePageTitle('Campaigns')
@@ -35,12 +36,13 @@ const Campaigns = () => {
 		reset,
 	} = useForm<NewCampaignSchema>({
 		defaultValues: {
-			uploadOption: '',
+			upload_option: '',
 		},
 		resolver: zodResolver(schema),
 	})
 	const { data: campaigns, isLoading } = useFetchCampaigns()
 	const [isOpen, setIsOpen] = useState(false)
+	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 	const [, setCampaign] = useAtom(campaignAtom)
 	const navigate = useNavigate()
 
@@ -49,21 +51,39 @@ const Campaigns = () => {
 
 	const onSubmit: SubmitHandler<NewCampaignSchema> = data => {
 		setCampaign(prev => ({ ...prev, ...data }))
-		if (data.uploadOption === 'manual') {
+		if (data.upload_option === 'manual') {
 			navigate('/campaigns/new')
 		} else {
 			linkToIGRef.current?.click()
 		}
 	}
 
+	console.log('campaigns', campaigns)
+
 	return (
 		<>
 			<h2 className='text-3xl font-black'>My Campaigns</h2>
 
+			{/* <div
+				role='alert'
+				className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 text-sm font-medium lg:text-base'
+			>
+				<div className='bg-wustomers-blue py-2 px-4 text-white'>
+					<InformationIcon />
+				</div>
+				<span>
+					Note: Inactive campaigns will be automatically deleted after
+					60days
+				</span>
+			</div> */}
+
 			{!isLoading ? (
-				<ul className='mt-9 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] items-center justify-items-start gap-7'>
+				<ul className='mt-9 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-center gap-7'>
 					{campaigns?.map(campaign => (
-						<li key={campaign.id} className='relative rounded bg-white'>
+						<li
+							key={campaign.id}
+							className='relative w-full rounded bg-white'
+						>
 							<div className='campaign-badge-bg absolute top-3 right-3 flex items-center gap-2 rounded-sm px-3 py-1 backdrop:blur-sm'>
 								<span
 									className={`h-3 w-3 rounded-full ${
@@ -95,13 +115,52 @@ const Campaigns = () => {
 								}`}
 							>
 								<p>{campaign.title}</p>
-								<button type='button' aria-label='view more'>
-									<MoreIcon />
-								</button>
+
+								<Popover.Root>
+									<Popover.Trigger asChild>
+										<button type='button' aria-label='view more'>
+											<MoreIcon />
+										</button>
+										{/* <button
+											aria-label='show more options'
+											className='text-primary flex w-max p-1 underline transition-all'
+										>
+											<MoreIcon />
+										</button> */}
+									</Popover.Trigger>
+									<Popover.Portal>
+										<Popover.Content
+											className='flex w-max flex-col rounded border border-gray-200 bg-white p-1 text-xs shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
+											sideOffset={5}
+										>
+											<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+												Renew
+											</button>
+											<Link
+												to='/campaigns-metrics'
+												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+											>
+												Show metrics
+											</Link>
+											<button className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+												Start
+											</button>
+											<button
+												onClick={() =>
+													setOpenConfirmationModal(true)
+												}
+												className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
+											>
+												Delete
+											</button>
+											<Popover.Arrow className='fill-gray-300' />
+										</Popover.Content>
+									</Popover.Portal>
+								</Popover.Root>
 							</div>
 						</li>
 					))}
-					<li className='w-[300px]'>
+					<li className='w-full justify-self-start'>
 						<button
 							type='button'
 							onClick={openModal}
@@ -138,7 +197,7 @@ const Campaigns = () => {
 									disabled={value === 'manual'}
 									id={value}
 									value={value}
-									{...register('uploadOption')}
+									{...register('upload_option')}
 								/>
 								<label
 									htmlFor={value}
@@ -150,8 +209,8 @@ const Campaigns = () => {
 								</label>
 							</div>
 						))}
-						{errors.uploadOption ? (
-							<ErrorMessage message={errors.uploadOption.message} />
+						{errors.upload_option ? (
+							<ErrorMessage message={errors.upload_option.message} />
 						) : null}
 					</div>
 
@@ -187,6 +246,39 @@ const Campaigns = () => {
 						}&scope=user_profile,user_media&response_type=code`}
 					/>
 				</form>
+			</Modal>
+
+			<Modal
+				modalOpen={openConfirmationModal}
+				closeModal={() => setOpenConfirmationModal(false)}
+			>
+				<div className='flex flex-col items-center text-center'>
+					<h3 className='max-w-[20ch] pt-2 text-xl font-medium'>
+						Are you sure you delete campaign?
+					</h3>
+
+					<div className='mt-6 flex items-center gap-5 md:mx-8'>
+						<Button
+							variant='outline'
+							onClick={() => setOpenConfirmationModal(false)}
+							text='No, Cancel'
+							className='px-8 normal-case hover:shadow-none'
+						/>
+						<Button
+							disabled={isLoading}
+							text={
+								isLoading ? (
+									<Spinner className='text-white' />
+								) : (
+									'Yes, Delete'
+								)
+							}
+							variant='fill'
+							className='py-2 px-8 normal-case hover:shadow-none'
+							// onClick={logout}
+						/>
+					</div>
+				</div>
 			</Modal>
 		</>
 	)

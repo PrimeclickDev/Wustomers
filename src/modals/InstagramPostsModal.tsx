@@ -1,6 +1,7 @@
 import * as Switch from '@radix-ui/react-switch'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
 import { Button } from 'components/Button'
+import { format } from 'date-fns'
 import { useAtom } from 'jotai'
 import {
 	Controller,
@@ -10,14 +11,16 @@ import {
 } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { campaignAtom } from 'store/atoms'
-import { posts } from 'utils/constants'
 
 type InstagramPostsModalProps = {
 	closeModal: () => void
-	// posts: IGPosts
+	posts: IGPosts
 }
 
-const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
+const InstagramPostsModal = ({
+	closeModal,
+	posts,
+}: InstagramPostsModalProps) => {
 	const { handleSubmit, control } = useForm()
 	const [, setCampaign] = useAtom(campaignAtom)
 
@@ -30,12 +33,18 @@ const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
 		}
 		// get selected posts
 		const postSelected = Object.keys(data).map(id => {
-			return posts?.data.find(post => post?.id === id)
+			return posts.data.find(post => post.id === id)
 		})
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		setCampaign(prev => ({ ...prev, socials: postSelected }))
+		const selectedPost = postSelected.map(post => ({
+			title: post?.caption ? post.caption : '',
+			image_url: post?.media_url ? post.media_url : '',
+			posted_date: post?.timestamp
+				? format(new Date(post.timestamp), 'yyyy-MM-dd hh:mm:ss')
+				: '',
+		}))
+
+		setCampaign(prev => ({ ...prev, social_posts: selectedPost }))
 		closeModal()
 		toast('Post added successfully!')
 	}
@@ -116,7 +125,7 @@ const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
 
 			<div className='mt-4 flex flex-col items-center justify-between gap-2 md:flex-row'>
 				<p className='text-xs'>Showing: {posts?.data.length} posts</p>
-				<div className='flex flex-col items-center gap-2 md:flex-row md:gap-5'>
+				<div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-5'>
 					<Button
 						text='Cancel'
 						variant='outline'

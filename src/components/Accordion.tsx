@@ -3,6 +3,8 @@ import * as RadixAccordion from '@radix-ui/react-accordion'
 import { ReactComponent as ArrowIcon } from 'assets/icons/chevron-left.svg'
 import React, { PropsWithChildren } from 'react'
 
+// type AccordionProps = PropsWithChildren & RadixAccordion.
+
 export const AccordionItem: React.ForwardRefExoticComponent<
 	RadixAccordion.AccordionItemProps & React.RefAttributes<HTMLDivElement>
 > = React.forwardRef(({ children, className, ...props }, forwardedRef) => (

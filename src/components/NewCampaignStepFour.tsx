@@ -1,3 +1,4 @@
+import { useCreateCampaign } from 'api/hooks/campaigns/useCreateCampaign'
 import { ReactComponent as FullscreenIcon } from 'assets/icons/fullscreen.svg'
 import { ReactComponent as MobileIcon } from 'assets/icons/mobile-2.svg'
 import { ReactComponent as MonitorIcon } from 'assets/icons/monitor.svg'
@@ -10,6 +11,7 @@ import { campaignAtom } from 'store/atoms'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Preview } from './Preview'
+import { Spinner } from './Spinner'
 
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const [campaign] = useAtom(campaignAtom)
@@ -21,22 +23,36 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const previewRef = useRef<HTMLIFrameElement | null>(null)
 
 	const closeModal = () => setOpenModal(false)
+	const publish = useCreateCampaign()
 
 	const publishCampaign = () => {
+		const campaignToPublish = {
+			...campaign,
+			product_logo: Object.values(campaign.product_logo)[0],
+			background_image: Object.values(campaign.background_image)[0],
+			upload_option: 'instagram',
+			upload_option_link: 'instagram',
+		}
+
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
+		publish.mutate(campaignToPublish, {
+			onSuccess: () => setOpenModal(true),
+		})
+	}
+
+	const setupCampaign = () => {
 		setOpenModal(false)
 		setOpenCampaginModal(true)
 		setModalType('setup')
 	}
 
 	const previewFullscreen = () => {
-		console.log('preview', previewRef)
 		const elem = previewRef.current
 		if (elem?.requestFullscreen) {
 			elem?.requestFullscreen()
 		}
 	}
-
-	console.log('campaign form data', campaign)
 
 	return (
 		<>
@@ -123,14 +139,17 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 					<Button
 						text='Previous'
 						variant='outline'
+						disabled={publish.isLoading}
 						onClick={prevStep}
 						className='!bg-white px-11 !font-normal capitalize'
 					/>
 					<Button
-						text='Publish'
+						text={publish.isLoading ? <Spinner /> : 'Publish'}
+						disabled={publish.isLoading}
 						variant='fill'
 						className='px-14 !font-normal capitalize'
-						onClick={() => setOpenModal(true)}
+						onClick={publishCampaign}
+						// onClick={() => }
 					/>
 				</div>
 			</section>
@@ -155,7 +174,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 							variant='fill'
 							text='Setup campaign'
 							className='!px-5 normal-case'
-							onClick={publishCampaign}
+							onClick={setupCampaign}
 						/>
 					</div>
 				</div>

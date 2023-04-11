@@ -1,21 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios, { AxiosResponse } from 'axios'
 import { useAtom } from 'jotai'
 import InstagramPostsModal from 'modals/InstagramPostsModal'
-import { CampaignProps } from 'models/shared'
-import { useState } from 'react'
+import { CampaignProps, IGPosts } from 'models/shared'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { campaignAtom } from 'store/atoms'
+import { campaignAtom, igAccessToken } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 import { Modal } from './Modal'
 
 const schema = z.object({
-	officeAddress: z
+	office_address: z
 		.string({ required_error: 'Office address is required' })
 		.min(1, { message: 'Office address is required' })
 		.trim(),
-	phoneNumber: z
+	phone: z
 		.string({ required_error: 'Phone number is required' })
 		.min(1, { message: 'Phone number is required' })
 		.min(11, { message: 'Phone number cannot be less than 11 characters' })
@@ -29,25 +30,14 @@ const schema = z.object({
 		.min(3, { message: 'Email address cannot be less than 3 characters' })
 		.email({ message: 'Please enter a valid email address' })
 		.trim(),
-	whatsappNumber: z
-		.string()
-		.min(1, { message: 'Whatsapp number is required' })
-		.min(11, {
-			message: 'Whatsapp number cannot be less than 11 characters',
-		}),
-	instagramLink: z
-		.string({ required_error: 'Instagram link is required' })
-		.min(1, { message: 'Instagram link is required' })
-		.url({ message: 'Instagram link must be a url' })
-		.trim(),
 })
 
 export type StepTwoSchema = z.infer<typeof schema>
 
 export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
-	// const [token] = useAtom(igAccessToken)
-	// const [posts, setPosts] = useState<IGPosts>({} as IGPosts)
+	const [token] = useAtom(igAccessToken)
+	const [posts, setPosts] = useState<IGPosts>({} as IGPosts)
 	const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
 	const {
@@ -56,17 +46,15 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 		formState: { errors },
 	} = useForm<StepTwoSchema>({
 		defaultValues: {
-			officeAddress: campaign.officeAddress ?? '',
-			phoneNumber: campaign.phoneNumber ?? '',
+			office_address: campaign.office_address ?? '',
+			phone: campaign.phone ?? '',
 			email: campaign.email ?? '',
-			whatsappNumber: campaign.whatsappNumber ?? '',
-			instagramLink: campaign.instagramLink ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {
-		if (campaign?.socials?.length === 0) {
+		if (!campaign?.social_posts) {
 			setNoPostError(true)
 			return
 		}
@@ -77,18 +65,18 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 
 	const closeModal = () => setIsOpen(false)
 
-	// const fetchUserIGPost = async () => {
-	// 	const posts: AxiosResponse<IGPosts> = await axios.get(
-	// 		`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
-	// 	)
-	// 	setPosts(posts.data)
-	// }
+	const fetchUserIGPost = async () => {
+		const posts: AxiosResponse<IGPosts> = await axios.get(
+			`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
+		)
+		setPosts(posts.data)
+	}
 
-	// useEffect(() => {
-	// 	if (token) {
-	// 		fetchUserIGPost()
-	// 	}
-	// }, [token])
+	useEffect(() => {
+		if (token) {
+			fetchUserIGPost()
+		}
+	}, [token])
 
 	return (
 		<>
@@ -99,45 +87,45 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				<div className='bg-white px-3 py-6 md:py-12 md:px-9'>
 					<form className='flex flex-col gap-5'>
 						<div className='grid gap-2 md:grid-cols-5'>
-							<label htmlFor='officeAddress' className='md:col-span-1'>
+							<label htmlFor='office_address' className='md:col-span-1'>
 								Office address:
 							</label>
 							<div className='flex flex-col gap-1 md:col-span-4'>
 								<input
 									type='text'
-									id='officeAddress'
-									{...register('officeAddress')}
+									id='office_address'
+									{...register('office_address')}
 									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.officeAddress
+										errors.office_address
 											? 'bg-red-50 ring-red-600'
 											: 'bg-wustomers-primary ring-wustomers-primary-light'
 									}`}
 								/>
-								{errors.officeAddress ? (
+								{errors.office_address ? (
 									<ErrorMessage
-										message={errors.officeAddress.message}
+										message={errors.office_address.message}
 									/>
 								) : null}
 							</div>
 						</div>
 						<div className='grid gap-2 md:grid-cols-5'>
-							<label htmlFor='phoneNumber' className='md:col-span-1'>
+							<label htmlFor='phone' className='md:col-span-1'>
 								Phone number:
 							</label>
 							<div className='flex flex-col gap-1 md:col-span-4'>
 								<input
 									type='tel'
-									id='phoneNumber'
+									id='phone'
 									inputMode='numeric'
-									{...register('phoneNumber')}
+									{...register('phone')}
 									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.phoneNumber
+										errors.phone
 											? 'bg-red-50 ring-red-600'
 											: 'bg-wustomers-primary ring-wustomers-primary-light'
 									}`}
 								/>
-								{errors.phoneNumber ? (
-									<ErrorMessage message={errors.phoneNumber.message} />
+								{errors.phone ? (
+									<ErrorMessage message={errors.phone.message} />
 								) : null}
 							</div>
 						</div>
@@ -161,52 +149,54 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 								) : null}
 							</div>
 						</div>
-						<div className='grid gap-2 md:grid-cols-5'>
-							<label htmlFor='whatsappNumber' className='md:col-span-1'>
+						{/* <div className='grid gap-2 md:grid-cols-5'>
+							<label htmlFor='whatsapp_number' className='md:col-span-1'>
 								Whatsapp number:
 							</label>
 							<div className='flex flex-col gap-1 md:col-span-4'>
 								<input
 									type='tel'
-									id='whatsappNumber'
+									id='whatsapp_number'
 									inputMode='numeric'
-									{...register('whatsappNumber')}
+									{...register('whatsapp_number')}
 									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.whatsappNumber
+										errors.whatsapp_number
 											? 'bg-red-50 ring-red-600'
 											: 'bg-wustomers-primary ring-wustomers-primary-light'
 									}`}
 								/>
-								{errors.whatsappNumber ? (
+								{errors.whatsapp_number ? (
 									<ErrorMessage
-										message={errors.whatsappNumber.message}
+										message={errors.whatsapp_number.message}
 									/>
 								) : null}
 							</div>
 						</div>
 						<div className='grid gap-2 md:grid-cols-5'>
-							<label htmlFor='instagram' className='md:col-span-1'>
-								Instagram link:
+							<label
+								htmlFor='instagram_username'
+								className='md:col-span-1'
+							>
+								Instagram username:
 							</label>
 							<div className='flex flex-col gap-1 md:col-span-4'>
 								<input
-									type='url'
-									id='instagram'
-									inputMode='url'
-									{...register('instagramLink')}
+									type='text'
+									id='instagram_username'
+									{...register('instagram_username')}
 									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.instagramLink
+										errors.instagram_username
 											? 'bg-red-50 ring-red-600'
 											: 'bg-wustomers-primary ring-wustomers-primary-light'
 									}`}
 								/>
-								{errors.instagramLink ? (
+								{errors.instagram_username ? (
 									<ErrorMessage
-										message={errors.instagramLink.message}
+										message={errors.instagram_username.message}
 									/>
 								) : null}
 							</div>
-						</div>
+						</div> */}
 						<div className='grid place-items-center self-center'>
 							<Button
 								text='Select IG posts'
@@ -215,34 +205,34 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 								className='mt-5 px-11 capitalize'
 							/>
 							{noPostError ? (
-								<ErrorMessage message='Plese select post before you can continue' />
+								<ErrorMessage message='Plese select post(s) before you can continue' />
 							) : null}
 						</div>
 					</form>
 
 					{/* selected posts preview */}
-					{campaign?.socials?.length > 0 ? (
+					{campaign?.social_posts?.length > 0 ? (
 						<div className='mx-auto mt-5 bg-wustomers-blue/10 px-6 py-4 text-sm'>
 							<h4 className='pb-3 font-bold uppercase'>
 								Selected Posts:
 							</h4>
 							<ul className='grid gap-4 md:grid-cols-2'>
-								{campaign.socials.map(post => (
+								{campaign.social_posts.map(post => (
 									<li
 										className='flex items-center gap-4 pt-3'
-										key={post.id}
+										key={post.posted_date}
 									>
 										<img
-											src={post.media_url}
+											src={post.image_url}
 											alt='woman walkign to a store'
 											width={72}
 											height={72}
 											className='h-20 object-cover'
 										/>
 										<div className='flex flex-col gap-1'>
-											<p className='pt-1'>{post.caption}</p>
+											<p className='pt-1'>{post.title}</p>
 											<p className='text-xs italic'>
-												{new Date(post.timestamp).toDateString()}
+												{new Date(post.posted_date).toDateString()}
 											</p>
 										</div>
 									</li>
@@ -274,7 +264,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				closeModal={closeModal}
 				className='max-w-3xl'
 			>
-				<InstagramPostsModal closeModal={closeModal} />
+				<InstagramPostsModal closeModal={closeModal} posts={posts} />
 			</Modal>
 		</>
 	)

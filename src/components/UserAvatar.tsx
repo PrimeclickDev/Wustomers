@@ -4,10 +4,10 @@ import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import emptyUserImg from 'assets/images/empty.png'
 import { useRef, useState } from 'react'
 import ReactCrop, {
-	centerCrop,
 	Crop,
-	makeAspectCrop,
 	PixelCrop,
+	centerCrop,
+	makeAspectCrop,
 } from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import { toast } from 'react-toastify'
@@ -39,7 +39,7 @@ const aspect = 1 / 1
 
 export const UserAvatar = () => {
 	const { data, isFetching } = useFetchProfile()
-	const mutation = useUpdateAvatar()
+	const uploadAvatar = useUpdateAvatar()
 	const [imgSrc, setImgSrc] = useState('')
 	const imgRef = useRef<HTMLImageElement>(null)
 	const [crop, setCrop] = useState<Crop>()
@@ -113,7 +113,7 @@ export const UserAvatar = () => {
 		const formdata = new FormData()
 		formdata.append('avatar', blob as Blob, 'user-image')
 
-		mutation.mutate(formdata, {
+		uploadAvatar.mutate(formdata, {
 			onSuccess: () => {
 				setImgSrc('')
 			},
@@ -196,7 +196,7 @@ export const UserAvatar = () => {
 				<footer className='px-6 py-2'>
 					<Button
 						text={
-							mutation.isLoading ? (
+							uploadAvatar.isLoading ? (
 								<Spinner />
 							) : (
 								'Set new profile picture'
@@ -206,7 +206,7 @@ export const UserAvatar = () => {
 						type='button'
 						className='w-full rounded font-medium normal-case'
 						onClick={generateCroppedImage}
-						disabled={mutation.isLoading}
+						disabled={uploadAvatar.isLoading}
 					/>
 				</footer>
 			</Modal>

@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { CampaignFormData } from 'models/shared'
+import { CampaignFormData } from 'models/campaigns'
 import { forwardRef } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 
@@ -12,57 +12,59 @@ type Ref = HTMLIFrameElement
 
 export const Preview = forwardRef<Ref, PreviewProps>(
 	({ activeView, campaign }, ref) => {
-		const logo = URL.createObjectURL(campaign.productLogo[0])
-		const bgImg = campaign.bgImage
-			? URL.createObjectURL(campaign.bgImage[0])
-			: null
+		const logo = URL.createObjectURL(campaign?.product_logo[0])
+		const bgImg = URL.createObjectURL(campaign?.background_image[0])
 
 		const renderHTML = renderToStaticMarkup(
 			<>
 				<header className='header'>
 					<div className='container'>
-						<img
-							src={logo}
-							alt={`${campaign.campaignTitle} logo`}
-							width='200'
-						/>
+						<img src={logo} alt={`${campaign?.title} logo`} width='200' />
 					</div>
 				</header>
 				<main>
 					<section className='hero'>
 						<div className='container'>
-							<p className='subtitle'></p>
-							<h2 className='title'>{campaign.headerContent}</h2>
-							<p className='paragraph'>{campaign.subheadingContent}</p>
-							<button className='hero-btn'>{campaign.buttonText}</button>
+							<p className='subtitle'>{campaign?.title}</p>
+							<h2 className='title'>{campaign?.header_content}</h2>
+							<p className='paragraph'>{campaign?.subheading_content}</p>
+							<a
+								href={
+									campaign.contact_option === 'email'
+										? `mailto:${campaign.contact_option_link}`
+										: campaign.contact_option === 'phone'
+										? `tel:${campaign.contact_option_link}`
+										: campaign.contact_option === 'whatsapp'
+										? `https://wa.me/${campaign.contact_option_link}`
+										: `https://www.instagram.com/${campaign.contact_option_link}/`
+								}
+								className='hero-btn'
+							>
+								{campaign?.button_text}
+							</a>
 						</div>
 					</section>
 
 					<section className='why-section'>
 						<div className='container'>
 							<h2 className='why-title'>Why you should choose us</h2>
-							<ul className='why-lists'>
-								<li>Access to thousands of Infographics template.</li>
-								<li>Saves time and energy</li>
-								<li>Unlimited Access to Templates</li>
-								<li>Easy to Use - No Design Skill Needed</li>
-								<li>Access to Monthly News Update</li>
-							</ul>
+							<p className='why-lists'>{campaign?.about_campaign}</p>
 						</div>
 					</section>
 
 					<section className='posts-section'>
 						<div className='container'>
-							{campaign?.socials.length > 0 ? (
+							<h3>Posts</h3>
+							{campaign?.social_posts.length > 0 ? (
 								<ul className='posts'>
-									{campaign?.socials.map(social => (
-										<li className='post' key={social.id}>
+									{campaign?.social_posts.map((post, index) => (
+										<li className='post' key={index}>
 											<img
-												src={social.media_url}
+												src={post.image_url}
 												alt=''
 												className='post-img'
 											/>
-											<p>{social.caption}</p>
+											<p>{post.title}</p>
 										</li>
 									))}
 								</ul>
@@ -92,21 +94,30 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 
 				<footer className='footer'>
 					<div className='container'>
-						<h3>{campaign.campaignTitle}</h3>
+						<h3>{campaign?.title}</h3>
 
 						<div className='contact-info'>
 							<h4>Contact information</h4>
-							<div className='contact'>
-								<i className='bx bxs-map'></i>
-								<p>{campaign.officeAddress}</p>
-							</div>
-							<div className='contact'>
-								<i className='bx bxs-phone'></i>
-								<a href='tel:+2348076119515'>{campaign.phoneNumber}</a>
-							</div>
-							<div className='contact'>
-								<i className='bx bxs-envelope'></i>
-								<a href='mail:wustoemers@gmail.com'>{campaign.email}</a>
+							<div className='contacts'>
+								<div className='contact'>
+									<p className='contact-title'>Address</p>
+									<p>
+										Plot M, Unit A, Samuel Ajiboye, Megamound Estate,
+										Lekki-Epe Expressway, Lagos State, Nigeria.
+									</p>
+								</div>
+								<div className='contact'>
+									<p className='contact-title'>Phone Number</p>
+									<a href={`tel:${campaign?.phone}`}>
+										{campaign?.phone}
+									</a>
+								</div>
+								<div className='contact'>
+									<p className='contact-title'>Email address</p>
+									<a href={`mail:${campaign?.email}`}>
+										{campaign?.email}
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -123,10 +134,6 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 				<meta
 					name="viewport"
 					content="width=device-width, initial-scale=1.0"
-				/>
-				<link
-					href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-					rel="stylesheet"
 				/>
 				<link rel="preconnect" href="https://fonts.googleapis.com" />
 				<link
@@ -203,7 +210,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 					.header .container {
 						display: flex;
 						align-items: center;
-						justify-content: ${campaign.logoPosition};
+						justify-content: ${campaign?.logo_position};
 						padding: 1rem 0;
 					}
 					.header img {
@@ -250,6 +257,8 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						margin-top: 5rem;
 						cursor: pointer;
 						transition: opacity 0.5s ease-in-out;
+						text-transform: uppercase;
+						display: inline-block;
 					}
 					.hero-btn:hover {
 						opacity: 0.8;
@@ -259,6 +268,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						display: grid;
 						place-items: center;
 						text-align: center;
+						max-width: 70ch;
 					}
 					.why-section .why-title {
 						font-size: 3rem;
@@ -271,11 +281,15 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						margin-top: 2rem;
 					}
 					.posts-section {
-						padding-bottom: 10rem;
-						/* padding-top: 5rem; */
+						padding: 5rem 0 10rem 0;
 					}
 					.posts-section .container {
 						max-width: 1200px;
+					}
+					.posts-section h3 {
+						text-align: center;
+						font-weight: 600;
+						font-size: 3rem;
 					}
 					.posts {
 						display: grid;
@@ -288,6 +302,8 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						color: var(--netural-clr);
 						border-radius: 4px;
 						overflow: hidden;
+						max-width: 400px;
+						justify-self: center;
 					}
 					.post p {
 						padding: 1.5rem;
@@ -318,6 +334,8 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						padding: 2rem 3rem;
 						border-radius: 2px;
 						box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+						max-width: 400px;
+						justify-self: center;
 					}
 					.testimonials p {
 						line-height: 1.8;
@@ -327,48 +345,58 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						font-weight: 600;
 					}
 					.footer {
-						background: var(--main-clr);
-						color: var(--netural-clr);
-						padding: 10rem 2rem;
-					}
-					.footer .container {
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						justify-content: center;
-					}
-					.footer h3 {
-						font-size: 3rem;
-						font-weight: 900;
-					}
-					.footer .contact-info {
-						max-width: 40ch;
-						display: grid;
-						place-items: center;
-						gap: 3rem;
-						margin-top: 2rem;
-					}
-					.footer h4 {
-						text-transform: uppercase;
-						letter-spacing: 2px;
-					}
-					.footer .contact {
-						display: flex;
-						flex-direction: column;
-						align-items: center;
-						text-align: center;
-						gap: 1.5rem;
-					}
-					.footer i {
-						background: var(--netural-clr);
-						padding: 0.5rem;
-						border-radius: 2px;
-						color: var(--main-clr);
-						font-size: 2.5rem;
-					}
-					.footer a:hover {
-						text-decoration: underline;
-					}
+				background: var(--main-clr);
+				color: var(--netural-clr);
+				padding: 10rem 2rem;
+			}
+			.footer .container {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+			}
+			.footer h3 {
+				font-size: 3rem;
+				font-weight: 900;
+			}
+			.footer .contact-info {
+				display: grid;
+				place-items: center;
+				gap: 3rem;
+				margin-top: 2rem;
+			}
+			.footer .contacts {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				max-width: 50ch;
+				gap: 3.5rem;
+				margin-top: 1rem;
+			}
+			.footer h4 {
+				text-transform: uppercase;
+				letter-spacing: 2px;
+			}
+			.footer .contact {
+				display: flex;
+				align-items: center;
+				flex-direction: column;
+				flex: 1;
+				font-size: 1.4rem;
+				gap: 0.5rem;
+			}
+			.footer .contact-title {
+				text-transform: uppercase;
+				font-size: 1rem;
+				letter-spacing: 2px;
+				font-weight: 600;
+			}
+			.footer a:hover {
+				text-decoration: underline;
+			}
 					@media screen and (max-width: 767px) {
 						.hero {
 							min-height: 300px;

@@ -26,15 +26,19 @@ const logoPositions = [
 	},
 ]
 const schema = z.object({
-	campaignTitle: z
+	title: z
 		.string({ required_error: 'Campaign title is required' })
 		.min(1, { message: 'Campaign title is required' })
 		.trim(),
-	logoPosition: z.enum(['flex-start', 'center', 'flex-end'], {
+	about_campaign: z
+		.string({ required_error: 'About campaign is required' })
+		.min(1, { message: 'About campaign is required' })
+		.trim(),
+	logo_position: z.enum(['flex-start', 'center', 'flex-end'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Logo position is required',
 	}),
-	productLogo: z
+	product_logo: z
 		.instanceof(FileList, {
 			message: 'Please select an image file not more than 150kb',
 		})
@@ -58,17 +62,17 @@ const schema = z.object({
 				})
 			}
 		}),
-	headerContent: z
+	header_content: z
 		.string({ required_error: 'Header Content is required' })
 		.min(1, { message: 'Header Content is required' })
 		.trim(),
-	subheadingContent: z
+	subheading_content: z
 		.string({ required_error: 'Subheading Content is required' })
 		.min(1, {
 			message: 'Subheading Content is required',
 		})
 		.trim(),
-	bgImage: z
+	background_image: z
 		.instanceof(FileList, {
 			message: 'Please select an image file not more than 300kb',
 		})
@@ -79,10 +83,10 @@ const schema = z.object({
 					message: 'Please select an image file not more than 300kb',
 				})
 			}
-			if (val[0]?.size > 300000) {
+			if (val[0]?.size > 400000) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Image cannot be larger than 300kb`,
+					message: `Image cannot be larger than 500kb`,
 				})
 			}
 			if (!val[0]?.type.includes('image')) {
@@ -91,10 +95,8 @@ const schema = z.object({
 					message: `You can only upload image.`,
 				})
 			}
-		})
-		.optional()
-		.or(z.literal(undefined)),
-	buttonText: z
+		}),
+	button_text: z
 		.string({ required_error: 'Button Text is required' })
 		.min(1, { message: 'Button Text is required' })
 		.trim(),
@@ -112,20 +114,21 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 		formState: { errors },
 	} = useForm<StepOneSchema>({
 		defaultValues: {
-			campaignTitle: campaign.campaignTitle ?? '',
-			productLogo: campaign.productLogo ?? undefined,
-			logoPosition: campaign.logoPosition ?? undefined,
-			headerContent: campaign.headerContent ?? '',
-			subheadingContent: campaign.subheadingContent ?? '',
-			bgImage: campaign.bgImage ?? undefined,
-			buttonText: campaign.buttonText ?? '',
+			title: campaign.title ?? '',
+			product_logo: campaign.product_logo ?? undefined,
+			logo_position: campaign.logo_position ?? undefined,
+			header_content: campaign.header_content ?? '',
+			subheading_content: campaign.subheading_content ?? '',
+			background_image: campaign.background_image ?? undefined,
+			button_text: campaign.button_text ?? '',
+			about_campaign: campaign.about_campaign ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
 
 	// watch files
-	const selectedLogo = watch('productLogo')
-	const selectedBgImage = watch('bgImage')
+	const selectedLogo = watch('product_logo')
+	const selectedBgImage = watch('background_image')
 
 	const onSubmit: SubmitHandler<StepOneSchema> = data => {
 		setCampaign(prev => ({ ...prev, ...data }))
@@ -140,22 +143,43 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 			<form className='flex flex-col gap-5 bg-white px-3 py-6 md:py-12 md:px-9'>
 				{/* campaign title */}
 				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='campaignTitle' className='md:col-span-1'>
+					<label htmlFor='title' className='md:col-span-1'>
 						Campaign title:
 					</label>
 					<div className='flex flex-col gap-1 md:col-span-4'>
 						<input
 							type='text'
-							id='campaignTitle'
-							{...register('campaignTitle')}
+							id='title'
+							{...register('title')}
 							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.campaignTitle
+								errors.title
 									? 'bg-red-50 ring-red-600'
 									: 'bg-wustomers-primary ring-wustomers-primary-light'
 							}`}
 						/>
-						{errors.campaignTitle ? (
-							<ErrorMessage message={errors.campaignTitle.message} />
+						{errors.title ? (
+							<ErrorMessage message={errors.title.message} />
+						) : null}
+					</div>
+				</div>
+
+				{/* about campaign */}
+				<div className='grid gap-2 md:grid-cols-5'>
+					<label htmlFor='about_campaign' className='md:col-span-1'>
+						About campaign:
+					</label>
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<textarea
+							id='about_campaign'
+							{...register('about_campaign')}
+							className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.about_campaign
+									? 'bg-red-50 ring-red-600'
+									: 'bg-wustomers-primary ring-wustomers-primary-light'
+							}`}
+						/>
+						{errors.about_campaign ? (
+							<ErrorMessage message={errors.about_campaign.message} />
 						) : null}
 					</div>
 				</div>
@@ -169,18 +193,18 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 								Upload
 								<input
 									type='file'
-									id='productLogo'
+									id='product_logo'
 									className='sr-only'
 									accept='image/*'
-									{...register('productLogo')}
+									{...register('product_logo')}
 								/>
 							</label>
 							<span className='text-wustomers-neutral-dark'>
 								Logo format is png., svg. (not more than 150kb)
 							</span>
 						</div>
-						{errors.productLogo ? (
-							<ErrorMessage message={errors.productLogo.message} />
+						{errors.product_logo ? (
+							<ErrorMessage message={errors.product_logo.message} />
 						) : null}
 						{selectedLogo?.length ? (
 							<img
@@ -194,7 +218,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 
 				{/* logo position */}
 				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='campaignTitle' className='md:col-span-1'>
+					<label htmlFor='title' className='md:col-span-1'>
 						Logo position:
 					</label>
 					<div className='flex flex-col gap-1 md:col-span-4'>
@@ -209,7 +233,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 										id={position.value}
 										className='peer sr-only'
 										value={position.style}
-										{...register('logoPosition')}
+										{...register('logo_position')}
 									/>
 									<label
 										htmlFor={position.value}
@@ -229,29 +253,30 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 								</div>
 							))}
 						</div>
-						{errors.logoPosition ? (
-							<ErrorMessage message={errors.logoPosition.message} />
+						{errors.logo_position ? (
+							<ErrorMessage message={errors.logo_position.message} />
 						) : null}
 					</div>
 				</div>
 
 				{/* header content */}
 				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='header' className='md:col-span-1'>
+					<label htmlFor='header_content' className='md:col-span-1'>
 						Header content:
 					</label>
 					<div className='flex flex-col gap-1 md:col-span-4'>
-						<textarea
-							id='header'
-							{...register('headerContent')}
-							className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.headerContent
+						<input
+							type='text'
+							id='header_content'
+							{...register('header_content')}
+							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+								errors.header_content
 									? 'bg-red-50 ring-red-600'
 									: 'bg-wustomers-primary ring-wustomers-primary-light'
 							}`}
 						/>
-						{errors.headerContent ? (
-							<ErrorMessage message={errors.headerContent.message} />
+						{errors.header_content ? (
+							<ErrorMessage message={errors.header_content.message} />
 						) : null}
 					</div>
 				</div>
@@ -264,15 +289,17 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					<div className='flex flex-col gap-1 md:col-span-4'>
 						<textarea
 							id='header'
-							{...register('subheadingContent')}
+							{...register('subheading_content')}
 							className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.subheadingContent
+								errors.subheading_content
 									? 'bg-red-50 ring-red-600'
 									: 'bg-wustomers-primary ring-wustomers-primary-light'
 							}`}
 						/>
-						{errors.subheadingContent ? (
-							<ErrorMessage message={errors.subheadingContent.message} />
+						{errors.subheading_content ? (
+							<ErrorMessage
+								message={errors.subheading_content.message}
+							/>
 						) : null}
 					</div>
 				</div>
@@ -290,17 +317,18 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 							</label>
 							<input
 								type='file'
-								{...register('bgImage')}
+								{...register('background_image')}
 								id='backgroundImage'
 								className='sr-only'
 								accept='image/*'
 							/>
 							<span className='text-wustomers-neutral-dark'>
-								Logo format is png, jpeg. (not more than 300kb)
+								Background image format is png, jpeg. (not more than
+								500kb)
 							</span>
 						</div>
-						{errors.bgImage ? (
-							<ErrorMessage message={errors.bgImage.message} />
+						{errors.background_image ? (
+							<ErrorMessage message={errors.background_image.message} />
 						) : null}
 						{selectedBgImage?.length ? (
 							<img
@@ -314,22 +342,22 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 
 				{/* button text */}
 				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='buttonText' className='md:col-span-1'>
+					<label htmlFor='button_text' className='md:col-span-1'>
 						Button text:
 					</label>
 					<div className='flex flex-col gap-1 md:col-span-4'>
 						<input
 							type='text'
-							id='campaignTitle'
-							{...register('buttonText')}
+							id='button_text'
+							{...register('button_text')}
 							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.buttonText
+								errors.button_text
 									? 'bg-red-50 ring-red-600'
 									: 'bg-wustomers-primary ring-wustomers-primary-light'
 							}`}
 						/>
-						{errors.buttonText ? (
-							<ErrorMessage message={errors.buttonText.message} />
+						{errors.button_text ? (
+							<ErrorMessage message={errors.button_text.message} />
 						) : null}
 					</div>
 				</div>

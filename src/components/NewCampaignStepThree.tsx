@@ -2,14 +2,19 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
 import { useAtom } from 'jotai'
 import { CampaignProps } from 'models/shared'
-import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
+import {
+	SubmitHandler,
+	useFieldArray,
+	useForm,
+	useWatch,
+} from 'react-hook-form'
 import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 
 const schema = z.object({
-	addTestimonial: z.enum(['no', 'yes'], {
+	is_testimonial: z.enum(['0', '1'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Add testimonial is required',
 	}),
@@ -34,13 +39,29 @@ const schema = z.object({
 			})
 		)
 		.default([]),
-	btnStickyOption: z.enum(['no', 'yes'], {
+	contact_option: z.enum(['whatsapp', 'email', 'instagram', 'phone'], {
+		invalid_type_error: 'Please select one',
+		required_error: 'Contact option is required',
+	}),
+	contact_option_link: z
+		.string({ required_error: 'Please fill this field' })
+		.min(1, { message: 'Please fill this field' })
+		.trim(),
+	is_button_sticky: z.enum(['0', '1'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Button sticky option is required',
 	}),
 })
 
 export type StepThreeSchema = z.infer<typeof schema>
+
+const contactOptions = ['whatsapp', 'email', 'instagram', 'phone']
+const option = {
+	whatsapp: 'Whatsapp number',
+	email: 'Email address',
+	instagram: 'Instagram username',
+	phone: 'Phone number',
+}
 
 export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
@@ -52,14 +73,20 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		control,
 	} = useForm<StepThreeSchema>({
 		defaultValues: {
-			addTestimonial: campaign.addTestimonial ?? undefined,
+			is_testimonial: campaign.is_testimonial ?? undefined,
 			testimonials: campaign.testimonials ?? [
 				{ comment: '', designation: '', name: '' },
 			],
-			btnStickyOption: campaign.btnStickyOption ?? undefined,
+			is_button_sticky: campaign.is_button_sticky ?? undefined,
+			contact_option: campaign.contact_option ?? undefined,
+			contact_option_link: campaign.contact_option ?? '',
 		},
 		resolver: zodResolver(schema),
 		shouldUnregister: true,
+	})
+	const contactOption = useWatch({
+		control,
+		name: 'contact_option',
 	})
 
 	const { fields, append } = useFieldArray({
@@ -67,7 +94,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		name: 'testimonials',
 	})
 
-	const showAddTestimonial = watch('addTestimonial')
+	const showAddTestimonial = watch('is_testimonial')
 
 	const onSubmit: SubmitHandler<StepThreeSchema> = data => {
 		setCampaign(prev => ({ ...prev, ...data }))
@@ -84,30 +111,30 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 					<p className='md:col-span-1'>Testimonial:</p>
 					<div className='flex flex-col gap-1 md:col-span-4'>
 						<div className='flex flex-wrap items-center gap-2 text-wustomers-main md:gap-16'>
-							{['no', 'yes'].map((testimonial, index) => (
+							{['0', '1'].map((testimonial, index) => (
 								<label className='flex items-center gap-2' key={index}>
 									<input
 										type='radio'
 										value={testimonial}
-										{...register('addTestimonial')}
+										{...register('is_testimonial')}
 										className='h-4 w-4 accent-wustomers-blue'
 									/>
 									<span>
-										{testimonial === 'no'
+										{testimonial === '0'
 											? 'No, not adding testimonial'
 											: 'Yes, add testimonial'}
 									</span>
 								</label>
 							))}
 						</div>
-						{errors.addTestimonial ? (
-							<ErrorMessage message={errors.addTestimonial.message} />
+						{errors.is_testimonial ? (
+							<ErrorMessage message={errors.is_testimonial.message} />
 						) : null}
 					</div>
 				</div>
 
 				{/* testimonial field */}
-				{showAddTestimonial === 'yes' ? (
+				{showAddTestimonial === '1' ? (
 					<div className='grid gap-2 md:grid-cols-5'>
 						<p className='md:col-span-1'></p>
 						<div className='text-sm md:col-span-4'>
@@ -200,13 +227,64 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 					</div>
 				) : null}
 
+				{/* contact option */}
+				<div className='grid gap-2 md:grid-cols-5'>
+					<p className='md:col-span-1'>Contact option:</p>
+
+					<div className='flex flex-col gap-1 md:col-span-4'>
+						<div>
+							<div className='flex items-center gap-10'>
+								{contactOptions.map(option => (
+									<label
+										key={option}
+										className='flex items-center gap-2 capitalize'
+									>
+										<input
+											type='radio'
+											value={option}
+											{...register('contact_option')}
+										/>
+										<span>{option}</span>
+									</label>
+								))}
+							</div>
+							{errors.contact_option ? (
+								<ErrorMessage message={errors.contact_option.message} />
+							) : null}
+						</div>
+
+						{/* show this depending on what was selected */}
+						{contactOption ? (
+							<div className='mt-2 flex w-full items-center gap-5 bg-[#EAEAEA] py-3 px-5'>
+								<label htmlFor='input'>{option[contactOption]}</label>
+								<div className='flex flex-1 flex-col'>
+									<input
+										type='text'
+										{...register('contact_option_link')}
+										className={`appearance-none rounded-sm bg-white px-4 py-2 ${
+											errors?.contact_option_link
+												? 'bg-red-50 ring-[1.5px] ring-red-600'
+												: 'bg-white'
+										}`}
+									/>
+									{errors.contact_option_link ? (
+										<ErrorMessage
+											message={errors.contact_option_link.message}
+										/>
+									) : null}
+								</div>
+							</div>
+						) : null}
+					</div>
+				</div>
+
 				{/* button sticky option */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Button sticky option:</p>
 
 					<div className='flex flex-col gap-1'>
 						<div className='flex items-center gap-16 text-wustomers-main md:col-span-3'>
-							{['yes', 'no'].map(value => (
+							{['1', '0'].map(value => (
 								<label
 									className='flex items-center gap-2 capitalize'
 									key={value}
@@ -214,15 +292,14 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 									<input
 										type='radio'
 										value={value}
-										{...register('btnStickyOption')}
-										className='h-4 w-4 accent-wustomers-blue'
+										{...register('is_button_sticky')}
 									/>
-									<span>{value}</span>
+									<span>{value === '1' ? 'Yes' : 'No'}</span>
 								</label>
 							))}
 						</div>
-						{errors.btnStickyOption ? (
-							<ErrorMessage message={errors.btnStickyOption.message} />
+						{errors.is_button_sticky ? (
+							<ErrorMessage message={errors.is_button_sticky.message} />
 						) : null}
 					</div>
 				</div>
