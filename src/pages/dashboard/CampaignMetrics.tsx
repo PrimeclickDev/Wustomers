@@ -1,11 +1,9 @@
 import { ReactComponent as ActivityIcon } from 'assets/icons/activity-outline.svg'
 import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg'
+import CampaignChart from 'components/CampaignChart'
 import { CampaignMetricsTable } from 'components/CampaignMetricsTable'
 import { Select, SelectItem } from 'components/Select'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { lazy, Suspense } from 'react'
-
-const CampaignChart = lazy(() => import('components/CampaignChart'))
 
 const durations = [
 	{
@@ -102,9 +100,7 @@ const CampaignMetrics = () => {
 							Campaign Chart
 						</h3>
 
-						<Suspense fallback={<p>Loading....</p>}>
-							<CampaignChart />
-						</Suspense>
+						<CampaignChart />
 					</div>
 				</div>
 			</div>
