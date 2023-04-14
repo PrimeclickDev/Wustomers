@@ -38,6 +38,8 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 										? `https://wa.me/${campaign.contact_option_link}`
 										: `https://www.instagram.com/${campaign.contact_option_link}/`
 								}
+								target='_blank'
+								rel='noopener noreferrer'
 								className='hero-btn'
 							>
 								{campaign?.button_text}

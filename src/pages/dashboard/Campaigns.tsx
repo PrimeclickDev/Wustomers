@@ -173,16 +173,17 @@ const Campaigns = () => {
 													Pause
 												</button>
 											) : null}
-											<button
-												onClick={() => {
-													setOpenConfirmationModal(true)
-													setCampaignId(campaign.id)
-												}}
-												className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
-											>
-												Delete
-											</button>
-											{/* ) : null} */}
+											{campaign?.campaign_status === 'Active' ? (
+												<button
+													onClick={() => {
+														setOpenConfirmationModal(true)
+														setCampaignId(campaign.id)
+													}}
+													className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
+												>
+													Delete
+												</button>
+											) : null}
 											<Popover.Arrow className='fill-gray-300' />
 										</Popover.Content>
 									</Popover.Portal>

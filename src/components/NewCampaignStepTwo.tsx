@@ -247,54 +247,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 								) : null}
 							</div>
 						</div>
-						{/* <div className='grid gap-2 md:grid-cols-5'>
-							<label htmlFor='whatsapp_number' className='md:col-span-1'>
-								Whatsapp number:
-							</label>
-							<div className='flex flex-col gap-1 md:col-span-4'>
-								<input
-									type='tel'
-									id='whatsapp_number'
-									inputMode='numeric'
-									{...register('whatsapp_number')}
-									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.whatsapp_number
-											? 'bg-red-50 ring-red-600'
-											: 'bg-wustomers-primary ring-wustomers-primary-light'
-									}`}
-								/>
-								{errors.whatsapp_number ? (
-									<ErrorMessage
-										message={errors.whatsapp_number.message}
-									/>
-								) : null}
-							</div>
-						</div>
-						<div className='grid gap-2 md:grid-cols-5'>
-							<label
-								htmlFor='instagram_username'
-								className='md:col-span-1'
-							>
-								Instagram username:
-							</label>
-							<div className='flex flex-col gap-1 md:col-span-4'>
-								<input
-									type='text'
-									id='instagram_username'
-									{...register('instagram_username')}
-									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-										errors.instagram_username
-											? 'bg-red-50 ring-red-600'
-											: 'bg-wustomers-primary ring-wustomers-primary-light'
-									}`}
-								/>
-								{errors.instagram_username ? (
-									<ErrorMessage
-										message={errors.instagram_username.message}
-									/>
-								) : null}
-							</div>
-						</div> */}
+
 						<div className='w-full'>
 							<Button
 								text='Select IG posts'

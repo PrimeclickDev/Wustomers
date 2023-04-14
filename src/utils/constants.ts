@@ -82,8 +82,9 @@ export const posts = {
 			id: '17969461474021411',
 			media_type: 'IMAGE',
 			media_url:
-				'https://scontent.cdninstagram.com/v/t51.2885-15/39069151_572601159824422_967496505034276864_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=Vo7elRGwGugAX9hkLRa&_nc_ht=scontent.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfDaBxdlchJGamN_UaKgKemWTXka2PrblC5uDvlzHc5L7w&oe=642AFA39',
-			caption: 'Someone saw it coming #ifuknowuknow',
+				'https://scontent.cdninstagram.com/v/t51.2885-15/31702846_2088685464746595_5499190634474373120_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=8ae9d6&_nc_ohc=MAa1uf3LL-AAX_8TFlf&_nc_ht=scontent.cdninstagram.com&edm=ANo9K5cEAAAA&oh=00_AfBl3YQdpnkQ6NzNvid1vtiuU0tgkpBJUErwFv0RX3vIuQ&oe=643DB9C6',
+			caption:
+				"Hi everyone, The year 2021 has been a very busy year filled with failures, rejections, and setbacks. Amidst all were growth, experiences, professionalism, maturity, lessons, and lots of wins. I'm really grateful for all the happenings in 2021 because they shaped me into a better person. I worked on multiple projects, some were extremely appreciated and some were rejected, but still, we move. A few of them are what I've posted here, and I pray for more growth and wins come 2022. Happy New Year in advance to everyone who played a part in my growth. Thank you and God bless. #logodesigner #logodesigns #branding #brandidentitydesign #brandidentity #entrepreneurship #design #dribbble #behance #design #webdesign #uidesign #thedesigntip #graphicdesignuiweb #casestudy#creative #webdesigner #branding #ui #website #shopping #commerce #marketing #websitedesign  #homebuying #homebuyers #websitedesign#trendydesign #business #marketing #smallbusiness #branding",
 			timestamp: '2018-08-15T08:47:55+0000',
 		},
 		{
