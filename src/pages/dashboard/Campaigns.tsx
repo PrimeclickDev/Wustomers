@@ -80,7 +80,8 @@ const Campaigns = () => {
 		})
 	}
 
-	// console.log('campaigns', campaigns)
+	console.log('campaigns', campaigns)
+	// console.log(isDateInPast())
 
 	return (
 		<>
@@ -173,7 +174,7 @@ const Campaigns = () => {
 													Pause
 												</button>
 											) : null}
-											{campaign?.campaign_status === 'Active' ? (
+											{campaign?.campaign_status !== 'Active' ? (
 												<button
 													onClick={() => {
 														setOpenConfirmationModal(true)

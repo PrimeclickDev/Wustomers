@@ -4,7 +4,17 @@ import { ReactComponent as MoreIcon } from 'assets/icons/more.svg'
 import { ReactComponent as RightChevron } from 'assets/icons/right-chevron.svg'
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg'
 
-const tableHeaders = ['Title', 'Date', 'Status', 'Duration', 'Action']
+const tableHeaders = [
+	'Title',
+	'Date',
+	'Status',
+	'Duration',
+	'Impression',
+	'Clicks',
+	'Conversion',
+	'Conversion rate',
+	'Action',
+]
 const tableBody = [
 	{
 		id: 1,
@@ -12,6 +22,10 @@ const tableBody = [
 		date: '12, Nov. 2022',
 		status: 'active',
 		duration: '2 weeks',
+		impression: 10,
+		clicks: 5,
+		conversion: 8,
+		conversionRate: '25%',
 	},
 	{
 		id: 2,
@@ -19,6 +33,10 @@ const tableBody = [
 		date: '12, Nov. 2022',
 		status: 'complete',
 		duration: '1 week',
+		impression: 25,
+		clicks: 50,
+		conversion: 0,
+		conversionRate: '0%',
 	},
 	{
 		id: 3,
@@ -26,6 +44,10 @@ const tableBody = [
 		date: '12, Nov. 2022',
 		status: 'pending',
 		duration: '1 week',
+		impression: 20,
+		clicks: 25,
+		conversion: 28,
+		conversionRate: '50%',
 	},
 ]
 
@@ -68,7 +90,7 @@ export const CampaignMetricsTable = () => {
 			</div>
 
 			<table
-				className={`flex-no-wrap flex w-full table-auto flex-row rounded text-left text-sm text-gray-500 md:table md:bg-white`}
+				className={`flex-no-wrap flex w-full table-auto flex-row rounded text-left text-sm text-gray-500 md:block md:overflow-auto md:whitespace-nowrap md:bg-white`}
 			>
 				<thead className='bg-wustomers-neutral-light'>
 					{tableBody?.map((_, index) => (
@@ -146,6 +168,18 @@ export const CampaignMetricsTable = () => {
 							</td>
 							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0'>
 								{data.duration}
+							</td>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+								{data.impression}
+							</td>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+								{data.clicks}
+							</td>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+								{data.conversion}
+							</td>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+								{data.conversionRate}
 							</td>
 							<td className='border border-slate-50 px-6 py-4 text-right md:border-0'>
 								<Popover.Root>
