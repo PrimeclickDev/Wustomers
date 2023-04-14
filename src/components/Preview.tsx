@@ -47,8 +47,8 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 
 					<section className='why-section'>
 						<div className='container'>
-							<h2 className='why-title'>Why you should choose us</h2>
-							<p className='why-lists'>{campaign?.about_campaign}</p>
+							<h2 className='why-title'>{campaign.body_heading}</h2>
+							<p className='why-lists'>{campaign.body_description}</p>
 						</div>
 					</section>
 
@@ -101,10 +101,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 							<div className='contacts'>
 								<div className='contact'>
 									<p className='contact-title'>Address</p>
-									<p>
-										Plot M, Unit A, Samuel Ajiboye, Megamound Estate,
-										Lekki-Epe Expressway, Lagos State, Nigeria.
-									</p>
+									<p>{campaign.office_address}</p>
 								</div>
 								<div className='contact'>
 									<p className='contact-title'>Phone Number</p>

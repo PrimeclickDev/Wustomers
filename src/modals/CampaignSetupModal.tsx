@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useSetupCampaign } from 'api/hooks/campaigns/useSetupCampaign'
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import { Button } from 'components/Button'
 import { ErrorMessage } from 'components/ErrorMessage'
 import { Select, SelectItem } from 'components/Select'
+import { Spinner } from 'components/Spinner'
 import { states } from 'constants/state'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { useAtom } from 'jotai'
+import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form'
+import { paymentModalType } from 'store/atoms'
 import { formatCurrency } from 'utils/formatCurrency'
 import { z } from 'zod'
 import { Modal } from '../components/Modal'
@@ -12,8 +17,7 @@ import { Modal } from '../components/Modal'
 type CampaignSetupModalProps = {
 	closeModal: () => void
 	openModal: boolean
-	modalType: string
-	setModalType: React.Dispatch<React.SetStateAction<string>>
+	campaignId: number
 }
 
 const durations = [
@@ -35,7 +39,7 @@ const durations = [
 ]
 
 const schema = z.object({
-	camapaignDuration: z
+	duration: z
 		.string({ required_error: 'Please select a duration' })
 		.min(1, { message: 'Campaign duration is required' }),
 	location: z
@@ -53,29 +57,53 @@ export type CampaignSetupSchema = z.infer<typeof schema>
 export const CampaignSetupModal = ({
 	closeModal,
 	openModal,
-	modalType,
-	setModalType,
+	campaignId,
 }: CampaignSetupModalProps) => {
+	const [modalType, setModalType] = useAtom(paymentModalType)
 	const {
 		control,
 		register,
-		watch,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<CampaignSetupSchema>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			acceptTerms: undefined,
-			camapaignDuration: '',
+			duration: '',
 			location: '',
 		},
 	})
+	const durationValue = useWatch({
+		control,
+		name: 'duration',
+	})
 
-	// const duration = watch('camapaignDuration')
+	const setupCampaign = useSetupCampaign()
 
 	const onSubmit: SubmitHandler<CampaignSetupSchema> = data => {
-		console.log('data', data)
-		setModalType('checkout')
+		const payload = {
+			duration: durations.find(item => item.duration === data.duration)!.id,
+			budget: durations.find(item => item.duration === data.duration)!.id,
+			location: states.find(item => item.name === data.location)!.id,
+		}
+		setupCampaign.mutate(
+			{
+				id: campaignId,
+				payload,
+			},
+			{
+				onSuccess: ({ data }) => {
+					setModalType('checkout')
+					console.log(data)
+				},
+			}
+		)
+		// setModalType('checkout')
+	}
+
+	const closeCampaignModal = () => {
+		setModalType('setup')
+		closeModal()
 	}
 
 	return (
@@ -92,7 +120,7 @@ export const CampaignSetupModal = ({
 					<button
 						aria-label='close modal'
 						className='transition-opacity hover:opacity-70'
-						onClick={closeModal}
+						onClick={closeCampaignModal}
 					>
 						<CloseIcon />
 					</button>
@@ -105,7 +133,7 @@ export const CampaignSetupModal = ({
 								Campaign duration:
 							</label>
 							<Controller
-								name='camapaignDuration'
+								name='duration'
 								control={control}
 								render={({
 									field: { onChange, value },
@@ -132,9 +160,9 @@ export const CampaignSetupModal = ({
 												</SelectItem>
 											))}
 										</Select>
-										{errors.camapaignDuration ? (
+										{errors.duration ? (
 											<ErrorMessage
-												message={errors.camapaignDuration.message}
+												message={errors.duration.message}
 											/>
 										) : null}
 									</div>
@@ -212,8 +240,11 @@ export const CampaignSetupModal = ({
 								onClick={closeModal}
 							/>
 							<Button
+								disabled={setupCampaign.isLoading}
 								variant='fill'
-								text='Checkout'
+								text={
+									setupCampaign.isLoading ? <Spinner /> : 'Checkout'
+								}
 								className='normal-case'
 								onClick={handleSubmit(onSubmit)}
 							/>
@@ -224,11 +255,13 @@ export const CampaignSetupModal = ({
 						<div className='flex flex-col gap-3 border-b-[1.5px] border-b-wustomers-neutral-lighter pb-3'>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>Campaign title:</p>
-								<p className='text-right'>Whatever the name is page</p>
+								<p className='text-right'>
+									{setupCampaign.data?.data?.data?.campaign?.title}
+								</p>
 							</div>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>Campaign duration:</p>
-								<p className='text-right'>3 weeks</p>
+								<p className='text-right'>{durationValue}</p>
 							</div>
 						</div>
 						<div className='flex flex-col gap-3 border-b-[1.5px] border-b-wustomers-neutral-lighter pb-3'>
@@ -237,21 +270,37 @@ export const CampaignSetupModal = ({
 							</h4>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>Campaign cost:</p>
-								<p className='text-right'>NGN 500.00</p>
+								<p className='text-right'>
+									{formatCurrency(
+										setupCampaign.data?.data?.data?.campaign?.amount
+									)}
+								</p>
 							</div>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>Service charge:</p>
-								<p className='text-right'>NGN 500.00</p>
+								<p className='text-right'>
+									{formatCurrency(
+										setupCampaign.data?.data?.data?.service_charge
+									)}
+								</p>
 							</div>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>VAT:</p>
-								<p className='text-right'>NGN 50.00</p>
+								<p className='text-right'>
+									{formatCurrency(setupCampaign.data?.data?.data?.vat)}
+								</p>
 							</div>
 						</div>
 
-						<div className='flex items-center justify-between gap-2 border-b-[1.5px] border-b-wustomers-neutral-lighter pb-3 font-black'>
+						<div className='flex items-center justify-between gap-2 border-b-[1.5px] border-b-wustomers-neutral-lighter pb-3 font-bold'>
 							<h4>Total price:</h4>
-							<p className='text-right'>NGN 5000.00</p>
+							<p className='text-right'>
+								{formatCurrency(
+									setupCampaign.data?.data?.data?.campaign?.amount +
+										setupCampaign.data?.data?.data?.vat +
+										setupCampaign.data?.data?.data?.service_charge
+								)}
+							</p>
 						</div>
 
 						<div className='mt-3 flex flex-col gap-3'>
@@ -259,13 +308,16 @@ export const CampaignSetupModal = ({
 								variant='fill'
 								text='Make payment'
 								className='normal-case'
-								// onClick={checkout}
+								onClick={() => {
+									window.location.href =
+										setupCampaign.data?.data?.data?.redirecturl
+								}}
 							/>
 							<Button
 								variant='outline'
 								text='Cancel'
 								className='normal-case'
-								onClick={closeModal}
+								onClick={closeCampaignModal}
 							/>
 						</div>
 					</div>

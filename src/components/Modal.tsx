@@ -1,4 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
+import { useAtom } from 'jotai'
+import { paymentModalType } from 'store/atoms'
 
 type ModalProps = {
 	modalOpen: boolean
@@ -13,8 +15,15 @@ export const Modal = ({
 	closeModal,
 	className,
 }: ModalProps) => {
+	const [, setModalType] = useAtom(paymentModalType)
+
+	const modalClose = () => {
+		setModalType('setup')
+		closeModal()
+	}
+
 	return (
-		<Dialog.Root open={modalOpen} onOpenChange={closeModal}>
+		<Dialog.Root open={modalOpen} onOpenChange={modalClose}>
 			<Dialog.Portal>
 				<Dialog.Overlay className='fixed inset-0 z-50 animate-overlayShow bg-[rgba(47,47,47,0.8)] backdrop:blur-sm' />
 				<div className='p-4'>

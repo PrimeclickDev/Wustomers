@@ -1,57 +1,92 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios, { AxiosResponse } from 'axios'
+import { useFetchIGPosts } from 'api/hooks/useFetchIGPosts'
 import { useAtom } from 'jotai'
 import InstagramPostsModal from 'modals/InstagramPostsModal'
-import { CampaignProps, IGPosts } from 'models/shared'
-import { useEffect, useState } from 'react'
+import { CampaignProps } from 'models/shared'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { campaignAtom, igAccessToken } from 'store/atoms'
+import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 import { Modal } from './Modal'
 
-const schema = z.object({
-	office_address: z
-		.string({ required_error: 'Office address is required' })
-		.min(1, { message: 'Office address is required' })
-		.trim(),
-	phone: z
-		.string({ required_error: 'Phone number is required' })
-		.min(1, { message: 'Phone number is required' })
-		.min(11, { message: 'Phone number cannot be less than 11 characters' })
-		// .regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
-		// 	message: 'Please enter a valid phone number',
-		// })
-		.trim(),
-	email: z
-		.string({ required_error: 'Email address is required' })
-		.min(1, { message: 'Email is required' })
-		.min(3, { message: 'Email address cannot be less than 3 characters' })
-		.email({ message: 'Please enter a valid email address' })
-		.trim(),
-})
+const schema = z
+	.object({
+		office_address: z
+			.string({ required_error: 'Office address is required' })
+			.min(1, { message: 'Office address is required' })
+			.trim(),
+		phone: z
+			.string({ required_error: 'Phone number is required' })
+			.min(1, { message: 'Phone number is required' })
+			.min(11, { message: 'Phone number cannot be less than 11 characters' })
+			// .regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
+			// 	message: 'Please enter a valid phone number',
+			// })
+			.trim(),
+		email: z
+			.string({ required_error: 'Email address is required' })
+			.min(1, { message: 'Email address is required' })
+			.min(3, { message: 'Email address cannot be less than 3 characters' })
+			.email({ message: 'Please enter a valid email address' })
+			.trim(),
+		is_body_content: z.enum(['0', '1'], {
+			invalid_type_error: 'Please select one',
+			required_error: 'Add body content is required',
+		}),
+		body_heading: z
+			.string({ required_error: 'Body heading is required' })
+			.optional(),
+		body_description: z
+			.string({
+				required_error: 'Body description is required',
+			})
+			.optional(),
+	})
+	.superRefine((input, ctx) => {
+		if (input.is_body_content === '1' && input.body_heading === '') {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Body heading is required',
+				path: ['body_heading'],
+			})
+		}
+
+		if (input.is_body_content === '1' && input.body_description === '') {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: 'Body description is required',
+				path: ['body_description'],
+			})
+		}
+	})
 
 export type StepTwoSchema = z.infer<typeof schema>
 
 export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
-	const [token] = useAtom(igAccessToken)
-	const [posts, setPosts] = useState<IGPosts>({} as IGPosts)
 	const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors },
 	} = useForm<StepTwoSchema>({
 		defaultValues: {
-			office_address: campaign.office_address ?? '',
 			phone: campaign.phone ?? '',
+			office_address: campaign.office_address ?? '',
 			email: campaign.email ?? '',
+			is_body_content: campaign.is_body_content ?? undefined,
+			body_description: campaign.body_description ?? '',
+			body_heading: campaign.body_heading ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
+	const { posts } = useFetchIGPosts()
+
+	const addBodyContent = watch('is_body_content')
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {
 		if (!campaign?.social_posts) {
@@ -65,19 +100,6 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 
 	const closeModal = () => setIsOpen(false)
 
-	const fetchUserIGPost = async () => {
-		const posts: AxiosResponse<IGPosts> = await axios.get(
-			`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
-		)
-		setPosts(posts.data)
-	}
-
-	useEffect(() => {
-		if (token) {
-			fetchUserIGPost()
-		}
-	}, [token])
-
 	return (
 		<>
 			<section className='mt-10 flex flex-col'>
@@ -86,6 +108,82 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				</h3>
 				<div className='bg-white px-3 py-6 md:py-12 md:px-9'>
 					<form className='flex flex-col gap-5'>
+						{/* Body content */}
+						<div className='grid gap-2 md:grid-cols-5'>
+							<p className='md:col-span-1'>Add body content:</p>
+							<div className='flex flex-col gap-1 md:col-span-4'>
+								<div className='flex items-center gap-16 text-wustomers-main md:col-span-3'>
+									{['0', '1'].map(value => (
+										<label
+											className='flex items-center gap-2 capitalize'
+											key={value}
+										>
+											<input
+												type='radio'
+												value={value}
+												{...register('is_body_content')}
+											/>
+											<span>
+												{value === '1'
+													? 'Yes, add body content'
+													: "No, don't add body content"}
+											</span>
+										</label>
+									))}
+								</div>
+								{errors.is_body_content ? (
+									<ErrorMessage
+										message={errors.is_body_content.message}
+									/>
+								) : null}
+							</div>
+						</div>
+
+						{/* body header and body description */}
+						{addBodyContent === '1' ? (
+							<div className='grid gap-2 md:grid-cols-5'>
+								<p className='md:col-span-1'></p>
+								<div className='flex flex-col gap-4 text-sm md:col-span-4'>
+									<div className='flex flex-col gap-1 md:col-span-4'>
+										<input
+											type='text'
+											id='body_heading'
+											placeholder='Body heading'
+											{...register('body_heading')}
+											className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+												errors.body_heading
+													? 'bg-red-50 ring-red-600'
+													: 'bg-wustomers-primary ring-wustomers-primary-light'
+											}`}
+										/>
+										{errors.body_heading ? (
+											<ErrorMessage
+												message={errors.body_heading.message}
+											/>
+										) : null}
+									</div>
+
+									<div className='flex flex-col gap-1 md:col-span-4'>
+										<textarea
+											id='body_description'
+											{...register('body_description')}
+											placeholder='Body description'
+											className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+												errors.body_description
+													? 'bg-red-50 ring-red-600'
+													: 'bg-wustomers-primary ring-wustomers-primary-light'
+											}`}
+										/>
+										{errors.body_description ? (
+											<ErrorMessage
+												message={errors.body_description.message}
+											/>
+										) : null}
+									</div>
+								</div>
+							</div>
+						) : null}
+
 						<div className='grid gap-2 md:grid-cols-5'>
 							<label htmlFor='office_address' className='md:col-span-1'>
 								Office address:
@@ -197,12 +295,12 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 								) : null}
 							</div>
 						</div> */}
-						<div className='grid place-items-center self-center'>
+						<div className='w-full'>
 							<Button
 								text='Select IG posts'
-								variant='fill'
+								variant='outline'
 								onClick={() => setIsOpen(true)}
-								className='mt-5 px-11 capitalize'
+								className='mt-5 w-full px-11 capitalize'
 							/>
 							{noPostError ? (
 								<ErrorMessage message='Plese select post(s) before you can continue' />

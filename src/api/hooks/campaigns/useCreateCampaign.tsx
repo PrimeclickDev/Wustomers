@@ -2,12 +2,12 @@ import { useMutation } from '@tanstack/react-query'
 import { baseURL, instance } from 'api/requests'
 import { AxiosError, AxiosResponse } from 'axios'
 import { ErrorResponse } from 'models/auth-models'
-import { CampaignFormData, Campaigns } from 'models/campaigns'
+import { CampaignFormData, CreateCampaign } from 'models/campaigns'
 import { toast } from 'react-toastify'
 
 export const createCampaign = async (
 	payload: CampaignFormData
-): Promise<AxiosResponse<Campaigns>> => {
+): Promise<AxiosResponse<CreateCampaign>> => {
 	return await instance.post(`${baseURL}/campaign/create`, payload, {
 		headers: {
 			Accept: 'application/json',
@@ -18,7 +18,7 @@ export const createCampaign = async (
 
 export const useCreateCampaign = () => {
 	return useMutation<
-		AxiosResponse<Campaigns>,
+		AxiosResponse<CreateCampaign>,
 		AxiosError<ErrorResponse>,
 		CampaignFormData
 	>({

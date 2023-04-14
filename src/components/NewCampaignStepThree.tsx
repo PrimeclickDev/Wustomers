@@ -27,6 +27,10 @@ const schema = z.object({
 					.min(5, {
 						message: 'Customer comment cannot be less than 5 characters',
 					})
+					.max(250, {
+						message:
+							'Customer comment cannot be greater than 250 characters',
+					})
 					.trim(),
 				name: z
 					.string()
@@ -79,7 +83,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 			],
 			is_button_sticky: campaign.is_button_sticky ?? undefined,
 			contact_option: campaign.contact_option ?? undefined,
-			contact_option_link: campaign.contact_option ?? '',
+			contact_option_link: campaign.contact_option_link ?? '',
 		},
 		resolver: zodResolver(schema),
 		shouldUnregister: true,

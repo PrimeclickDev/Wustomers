@@ -30,17 +30,13 @@ const schema = z.object({
 		.string({ required_error: 'Campaign title is required' })
 		.min(1, { message: 'Campaign title is required' })
 		.trim(),
-	about_campaign: z
-		.string({ required_error: 'About campaign is required' })
-		.min(1, { message: 'About campaign is required' })
-		.trim(),
 	logo_position: z.enum(['flex-start', 'center', 'flex-end'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Logo position is required',
 	}),
 	product_logo: z
 		.instanceof(FileList, {
-			message: 'Please select an image file not more than 150kb',
+			message: 'Please select an image file not more than 300kb',
 		})
 		.superRefine((val, ctx) => {
 			if (val.length === 0) {
@@ -49,10 +45,10 @@ const schema = z.object({
 					message: 'Please select an image file not more than 300kb',
 				})
 			}
-			if (val[0]?.size > 150000) {
+			if (val[0]?.size > 300000) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Image cannot be larger than 150kb`,
+					message: `Image cannot be larger than 300kb`,
 				})
 			}
 			if (!val[0]?.type.includes('image')) {
@@ -63,13 +59,20 @@ const schema = z.object({
 			}
 		}),
 	header_content: z
-		.string({ required_error: 'Header Content is required' })
-		.min(1, { message: 'Header Content is required' })
+		.string({ required_error: 'Header content is required' })
+		.min(1, { message: 'Header content is required' })
+		.min(5, { message: 'Header content cannot be less than 5 characters' })
 		.trim(),
 	subheading_content: z
-		.string({ required_error: 'Subheading Content is required' })
+		.string({ required_error: 'Subheading content is required' })
 		.min(1, {
-			message: 'Subheading Content is required',
+			message: 'Subheading content is required',
+		})
+		.min(10, {
+			message: 'Subheading content cannot be less than 10 characters',
+		})
+		.max(245, {
+			message: 'Subheading content cannot be greater than 250 characters',
 		})
 		.trim(),
 	background_image: z
@@ -83,10 +86,10 @@ const schema = z.object({
 					message: 'Please select an image file not more than 300kb',
 				})
 			}
-			if (val[0]?.size > 400000) {
+			if (val[0]?.size > 1500000) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: `Image cannot be larger than 500kb`,
+					message: `Image cannot be larger than 1.5mb`,
 				})
 			}
 			if (!val[0]?.type.includes('image')) {
@@ -121,7 +124,6 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 			subheading_content: campaign.subheading_content ?? '',
 			background_image: campaign.background_image ?? undefined,
 			button_text: campaign.button_text ?? '',
-			about_campaign: campaign.about_campaign ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
@@ -163,27 +165,6 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					</div>
 				</div>
 
-				{/* about campaign */}
-				<div className='grid gap-2 md:grid-cols-5'>
-					<label htmlFor='about_campaign' className='md:col-span-1'>
-						About campaign:
-					</label>
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<textarea
-							id='about_campaign'
-							{...register('about_campaign')}
-							className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.about_campaign
-									? 'bg-red-50 ring-red-600'
-									: 'bg-wustomers-primary ring-wustomers-primary-light'
-							}`}
-						/>
-						{errors.about_campaign ? (
-							<ErrorMessage message={errors.about_campaign.message} />
-						) : null}
-					</div>
-				</div>
-
 				{/* product logo */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<p className='md:col-span-1'>Product logo:</p>
@@ -200,7 +181,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 								/>
 							</label>
 							<span className='text-wustomers-neutral-dark'>
-								Logo format is png., svg. (not more than 150kb)
+								Logo format is png., svg. (not more than 300kb)
 							</span>
 						</div>
 						{errors.product_logo ? (
@@ -324,7 +305,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 							/>
 							<span className='text-wustomers-neutral-dark'>
 								Background image format is png, jpeg. (not more than
-								500kb)
+								1.5mb)
 							</span>
 						</div>
 						{errors.background_image ? (

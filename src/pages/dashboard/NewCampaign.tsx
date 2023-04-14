@@ -10,8 +10,6 @@ const steps = [1, 2, 3, 4]
 
 const NewCampaign = () => {
 	const [step, setStep] = useState(1)
-
-	// const [steps, setSteps] = useAtom(stepsAtom)
 	const nextStep = () => {
 		if (step >= 4) return
 		setStep(step + 1)

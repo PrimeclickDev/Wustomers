@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as Popover from '@radix-ui/react-popover'
+import { useDeleteCampaign } from 'api/hooks/campaigns/useDeleteCampaign'
 import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as MoreIcon } from 'assets/icons/more-horizontal.svg'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
@@ -9,7 +10,8 @@ import { Modal } from 'components/Modal'
 import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { useAtom } from 'jotai'
-import { useRef, useState } from 'react'
+import { CampaignSetupModal } from 'modals/CampaignSetupModal'
+import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { campaignAtom } from 'store/atoms'
@@ -26,9 +28,14 @@ const schema = z.object({
 
 export type NewCampaignSchema = z.infer<typeof schema>
 
+const campaignStatus = {
+	Active: 'Active',
+	Inactive: 'Inactive',
+	Paused: 'Paused',
+}
+
 const Campaigns = () => {
 	usePageTitle('Campaigns')
-	const linkToIGRef = useRef<HTMLAnchorElement | null>(null)
 	const {
 		register,
 		handleSubmit,
@@ -40,11 +47,14 @@ const Campaigns = () => {
 		},
 		resolver: zodResolver(schema),
 	})
-	const { data: campaigns, isLoading } = useFetchCampaigns()
 	const [isOpen, setIsOpen] = useState(false)
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
+	const [openCampaginModal, setOpenCampaginModal] = useState(false)
+	const [campaignId, setCampaignId] = useState(0)
 	const [, setCampaign] = useAtom(campaignAtom)
 	const navigate = useNavigate()
+	const { data: campaigns, isLoading } = useFetchCampaigns()
+	const deleteCampaign = useDeleteCampaign()
 
 	const closeModal = () => setIsOpen(false)
 	const openModal = () => setIsOpen(true)
@@ -53,29 +63,28 @@ const Campaigns = () => {
 		setCampaign(prev => ({ ...prev, ...data }))
 		if (data.upload_option === 'manual') {
 			navigate('/campaigns/new')
-		} else {
-			linkToIGRef.current?.click()
 		}
+
+		window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${
+			import.meta.env.VITE_IG_CLIENT_ID
+		}&redirect_uri=${
+			import.meta.env.PROD
+				? import.meta.env.VITE_PROD_REDIRECT_URL
+				: import.meta.env.VITE_DEV_REDIRECT_URL
+		}&scope=user_profile,user_media&response_type=code`
 	}
 
-	console.log('campaigns', campaigns)
+	const campaignDelete = () => {
+		deleteCampaign.mutate(campaignId, {
+			onSuccess: () => setOpenConfirmationModal(false),
+		})
+	}
+
+	// console.log('campaigns', campaigns)
 
 	return (
 		<>
 			<h2 className='text-3xl font-black'>My Campaigns</h2>
-
-			{/* <div
-				role='alert'
-				className='mt-5 flex items-center gap-4 rounded-sx bg-white py-1 text-sm font-medium lg:text-base'
-			>
-				<div className='bg-wustomers-blue py-2 px-4 text-white'>
-					<InformationIcon />
-				</div>
-				<span>
-					Note: Inactive campaigns will be automatically deleted after
-					60days
-				</span>
-			</div> */}
 
 			{!isLoading ? (
 				<ul className='mt-9 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-center gap-7'>
@@ -87,19 +96,23 @@ const Campaigns = () => {
 							<div className='campaign-badge-bg absolute top-3 right-3 flex items-center gap-2 rounded-sm px-3 py-1 backdrop:blur-sm'>
 								<span
 									className={`h-3 w-3 rounded-full ${
-										campaign.status_id === 1
+										campaign.campaign_status === 'Active'
 											? 'bg-[#24C97A]'
 											: 'bg-[rgba(255,0,0,0.9)]'
 									}`}
 								/>
 								<span
 									className={`text-sm font-medium ${
-										campaign.status_id === 1
+										campaign.campaign_status === 'Active'
 											? 'text-[#24C97A]'
 											: 'text-[rgba(255,0,0,0.9)]'
 									}`}
 								>
-									{campaign.status_id === 1 ? 'Active' : 'Paused'}
+									{
+										campaignStatus[
+											campaign?.campaign_status as keyof typeof campaignStatus
+										]
+									}
 								</span>
 							</div>
 							<img
@@ -109,7 +122,7 @@ const Campaigns = () => {
 							/>
 							<div
 								className={`flex items-center justify-between gap-2 px-4 py-3 text-white ${
-									campaign.status_id === 1
+									campaign.campaign_status === 'Active'
 										? 'bg-wustomers-blue'
 										: 'bg-wustomers-primary-lighter'
 								}`}
@@ -118,41 +131,58 @@ const Campaigns = () => {
 
 								<Popover.Root>
 									<Popover.Trigger asChild>
-										<button type='button' aria-label='view more'>
-											<MoreIcon />
-										</button>
-										{/* <button
+										<button
+											type='button'
 											aria-label='show more options'
-											className='text-primary flex w-max p-1 underline transition-all'
 										>
 											<MoreIcon />
-										</button> */}
+										</button>
 									</Popover.Trigger>
 									<Popover.Portal>
 										<Popover.Content
 											className='flex w-max flex-col rounded border border-gray-200 bg-white p-1 text-xs shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
 											sideOffset={5}
 										>
-											<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
-												Renew
-											</button>
+											{campaign?.payment_status === 'Paid' &&
+											campaign?.campaign_status === 'Paused' ? (
+												<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+													Resume
+												</button>
+											) : null}
+											{campaign?.payment_status === 'Unpaid' &&
+											campaign?.campaign_status === 'Inactive' ? (
+												<button
+													onClick={() => {
+														setOpenCampaginModal(true)
+														setCampaignId(campaign.id)
+													}}
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
+													Activate
+												</button>
+											) : null}
 											<Link
 												to='/campaigns-metrics'
 												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 											>
 												Show metrics
 											</Link>
-											<button className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
-												Start
-											</button>
+											{campaign?.payment_status === 'Paid' &&
+											campaign?.campaign_status === 'Active' ? (
+												<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+													Pause
+												</button>
+											) : null}
 											<button
-												onClick={() =>
+												onClick={() => {
 													setOpenConfirmationModal(true)
-												}
+													setCampaignId(campaign.id)
+												}}
 												className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
 											>
 												Delete
 											</button>
+											{/* ) : null} */}
 											<Popover.Arrow className='fill-gray-300' />
 										</Popover.Content>
 									</Popover.Portal>
@@ -232,19 +262,6 @@ const Campaigns = () => {
 							}}
 						/>
 					</div>
-
-					<a
-						aria-hidden='true'
-						ref={linkToIGRef}
-						className='invisible'
-						href={`https://api.instagram.com/oauth/authorize?client_id=${
-							import.meta.env.VITE_IG_CLIENT_ID
-						}&redirect_uri=${
-							import.meta.env.PROD
-								? import.meta.env.VITE_PROD_REDIRECT_URL
-								: import.meta.env.VITE_DEV_REDIRECT_URL
-						}&scope=user_profile,user_media&response_type=code`}
-					/>
 				</form>
 			</Modal>
 
@@ -265,9 +282,9 @@ const Campaigns = () => {
 							className='px-8 normal-case hover:shadow-none'
 						/>
 						<Button
-							disabled={isLoading}
+							disabled={deleteCampaign.isLoading}
 							text={
-								isLoading ? (
+								deleteCampaign.isLoading ? (
 									<Spinner className='text-white' />
 								) : (
 									'Yes, Delete'
@@ -275,11 +292,17 @@ const Campaigns = () => {
 							}
 							variant='fill'
 							className='py-2 px-8 normal-case hover:shadow-none'
-							// onClick={logout}
+							onClick={campaignDelete}
 						/>
 					</div>
 				</div>
 			</Modal>
+
+			<CampaignSetupModal
+				openModal={openCampaginModal}
+				campaignId={campaignId}
+				closeModal={() => setOpenCampaginModal(false)}
+			/>
 		</>
 	)
 }

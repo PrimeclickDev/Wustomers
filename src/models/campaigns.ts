@@ -26,10 +26,17 @@ export interface Campaigns extends ResponseType {
 	data: Campaign[]
 }
 
+export interface CreateCampaign extends ResponseType {
+	data: Campaign
+}
+
 export type Campaign = {
 	id: number
+	campaign_code: string
+	amount: number
 	user_id: number
-	status_id: number
+	campaign_status: string
+	payment_status: string
 	title: string
 	product_logo: string
 	logo_position: string
@@ -44,13 +51,18 @@ export type Campaign = {
 	email: string
 	is_testimonial: boolean
 	contact_option: string
-	contact_option_link: string
+	contact_option_medium: string
+	body_heading: string
+	body_description: string
 	is_button_sticky: boolean
-	is_light_mode: boolean
 	start_date: Date
 	end_date: Date
+	location: string
+	budget: string
 	testimonials: Testimonial[]
 	social_posts: SocialPost[]
+	paused_at: string
+	resumed_at: string
 	created_at: string
 	updated_at: string
 }

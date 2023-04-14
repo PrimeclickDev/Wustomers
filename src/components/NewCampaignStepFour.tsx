@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useCreateCampaign } from 'api/hooks/campaigns/useCreateCampaign'
 import { ReactComponent as FullscreenIcon } from 'assets/icons/fullscreen.svg'
 import { ReactComponent as MobileIcon } from 'assets/icons/mobile-2.svg'
@@ -7,7 +8,7 @@ import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { CampaignProps } from 'models/shared'
 import { useRef, useState } from 'react'
-import { campaignAtom } from 'store/atoms'
+import { campaignAtom, paymentModalType } from 'store/atoms'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { Preview } from './Preview'
@@ -16,10 +17,10 @@ import { Spinner } from './Spinner'
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const [campaign] = useAtom(campaignAtom)
 	const [activeView, setActiveView] = useState('desktop')
-	// const [changeMode, setChangeMode] = useState(false)
+	const [campaignId, setCampaignId] = useState(0)
 	const [openModal, setOpenModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
-	const [modalType, setModalType] = useState('setup')
+	const [, setModalType] = useAtom(paymentModalType)
 	const previewRef = useRef<HTMLIFrameElement | null>(null)
 
 	const closeModal = () => setOpenModal(false)
@@ -34,10 +35,16 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			upload_option_link: 'instagram',
 		}
 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore
+		delete campaignToPublish.is_body_content
+
 		//@ts-ignore
 		publish.mutate(campaignToPublish, {
-			onSuccess: () => setOpenModal(true),
+			onSuccess: ({ data }) => {
+				setOpenModal(true)
+				setCampaignId(data.data.id)
+				console.log('published data', data)
+			},
 		})
 	}
 
@@ -182,8 +189,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 
 			<CampaignSetupModal
 				openModal={openCampaginModal}
-				setModalType={setModalType}
-				modalType={modalType}
+				campaignId={campaignId}
 				closeModal={() => setOpenCampaginModal(false)}
 			/>
 		</>
