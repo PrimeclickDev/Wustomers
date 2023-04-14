@@ -169,7 +169,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 						Are you sure you want to log out of your account?
 					</h3>
 
-					<div className='mt-6 flex items-center gap-5 md:mx-8'>
+					<div className='mt-6 flex flex-col items-center gap-3 md:mx-8 md:flex-row md:gap-5'>
 						<Button
 							variant='outline'
 							onClick={closeModal}
@@ -186,7 +186,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 								)
 							}
 							variant='fill'
-							className='py-2 px-8 normal-case hover:shadow-none'
+							className='py-2 px-8 normal-case'
 							onClick={logout}
 						/>
 					</div>

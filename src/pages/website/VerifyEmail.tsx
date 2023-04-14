@@ -83,7 +83,7 @@ const VerifyEmail = () => {
 					type='button'
 					disabled={min !== 0 || isFetching}
 					onClick={resendOtp}
-					className='mx-auto mt-5 flex w-max items-center p-1 text-sm text-wustomers-blue-light transition-colors hover:bg-wustomers-blue/20 active:scale-95 disabled:pointer-events-none disabled:text-gray-400'
+					className='mx-auto mt-5 flex w-max items-center p-1 text-sm text-wustomers-blue-light transition-colors hover:bg-wustomers-blue/20 active:scale-95 disabled:cursor-not-allowed disabled:text-gray-400'
 				>
 					{isFetching ? (
 						<Spinner />

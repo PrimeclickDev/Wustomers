@@ -135,7 +135,7 @@ const Login = () => {
 				<button
 					onClick={() => loginWithGoogle()}
 					disabled={mutation.isLoading}
-					className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98] disabled:pointer-events-none disabled:bg-wustomers-neutral-lighter/20'
+					className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-neutral-lighter/20'
 				>
 					{mutation.isLoading ? (
 						<Spinner />
