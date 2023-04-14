@@ -80,7 +80,7 @@ const Campaigns = () => {
 		})
 	}
 
-	console.log('campaigns', campaigns)
+	// console.log('campaigns', campaigns)
 	// console.log(isDateInPast())
 
 	return (

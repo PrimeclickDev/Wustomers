@@ -43,7 +43,6 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			onSuccess: ({ data }) => {
 				setOpenModal(true)
 				setCampaignId(data.data.id)
-				console.log('published data', data)
 			},
 		})
 	}

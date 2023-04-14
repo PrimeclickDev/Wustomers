@@ -92,9 +92,8 @@ export const CampaignSetupModal = ({
 				payload,
 			},
 			{
-				onSuccess: ({ data }) => {
+				onSuccess: () => {
 					setModalType('checkout')
-					console.log(data)
 				},
 			}
 		)

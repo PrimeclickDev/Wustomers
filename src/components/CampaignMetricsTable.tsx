@@ -169,16 +169,16 @@ export const CampaignMetricsTable = () => {
 							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0'>
 								{data.duration}
 							</td>
-							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0 md:text-right'>
 								{data.impression}
 							</td>
-							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0 md:text-right'>
 								{data.clicks}
 							</td>
-							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0 md:text-right'>
 								{data.conversion}
 							</td>
-							<td className='text-levare-gray border border-slate-50 px-6 py-4 text-right md:border-0'>
+							<td className='text-levare-gray border border-slate-50 px-6 py-4 md:border-0 md:text-right'>
 								{data.conversionRate}
 							</td>
 							<td className='border border-slate-50 px-6 py-4 text-right md:border-0'>

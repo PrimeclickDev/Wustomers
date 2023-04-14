@@ -31,7 +31,7 @@ export const useSetupCampaign = () => {
 		onError: error => {
 			if (error instanceof AxiosError) {
 				toast.error(error.response?.data.message)
-				console.log(error)
+				console.error(error)
 			}
 		},
 	})

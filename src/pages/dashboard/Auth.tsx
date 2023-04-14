@@ -24,8 +24,6 @@ const Auth = () => {
 			}
 		)
 
-		console.log('access_token', accessToken.data?.data?.token)
-
 		if (accessToken.data) {
 			setToken(accessToken.data?.data?.token)
 			navigate('/campaigns/new')
