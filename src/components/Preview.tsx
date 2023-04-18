@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/display-name */
 import { CampaignFormData } from 'models/campaigns'
 import { forwardRef } from 'react'
@@ -12,8 +13,14 @@ type Ref = HTMLIFrameElement
 
 export const Preview = forwardRef<Ref, PreviewProps>(
 	({ activeView, campaign }, ref) => {
-		const logo = URL.createObjectURL(campaign?.product_logo[0])
-		const bgImg = URL.createObjectURL(campaign?.background_image[0])
+		const logo =
+			typeof campaign?.product_logo === 'string'
+				? campaign?.product_logo
+				: URL.createObjectURL(campaign?.product_logo[0])
+		const bgImg =
+			typeof campaign?.background_image === 'string'
+				? campaign?.background_image
+				: URL.createObjectURL(campaign?.background_image[0])
 
 		const renderHTML = renderToStaticMarkup(
 			<>
@@ -31,12 +38,24 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 							<a
 								href={
 									campaign.contact_option === 'email'
-										? `mailto:${campaign.contact_option_link}`
+										? `mailto:${
+												campaign.contact_option_link ??
+												campaign.contact_option_medium
+										  }`
 										: campaign.contact_option === 'phone'
-										? `tel:${campaign.contact_option_link}`
+										? `tel:${
+												campaign.contact_option_link ??
+												campaign.contact_option_medium
+										  }`
 										: campaign.contact_option === 'whatsapp'
-										? `https://wa.me/${campaign.contact_option_link}`
-										: `https://www.instagram.com/${campaign.contact_option_link}/`
+										? `https://wa.me/${
+												campaign.contact_option_link ??
+												campaign.contact_option_medium
+										  }`
+										: `https://www.instagram.com/${
+												campaign.contact_option_link ??
+												campaign.contact_option_medium
+										  }/`
 								}
 								target='_blank'
 								rel='noopener noreferrer'
@@ -47,12 +66,14 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						</div>
 					</section>
 
-					<section className='why-section'>
-						<div className='container'>
-							<h2 className='why-title'>{campaign.body_heading}</h2>
-							<p className='why-lists'>{campaign.body_description}</p>
-						</div>
-					</section>
+					{campaign.body_heading && campaign.body_description ? (
+						<section className='why-section'>
+							<div className='container'>
+								<h2 className='why-title'>{campaign.body_heading}</h2>
+								<p className='why-lists'>{campaign.body_description}</p>
+							</div>
+						</section>
+					) : null}
 
 					<section className='posts-section'>
 						<div className='container'>
@@ -96,8 +117,6 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 
 				<footer className='footer'>
 					<div className='container'>
-						<h3>{campaign?.title}</h3>
-
 						<div className='contact-info'>
 							<h4>Contact information</h4>
 							<div className='contacts'>

@@ -27,6 +27,7 @@ const durations = [
 		value: 'one-year',
 	},
 ]
+const statuses = ['Active', 'Complete', 'Inactive']
 
 const CampaignMetrics = () => {
 	usePageTitle('Campaign Metrics')
@@ -38,7 +39,6 @@ const CampaignMetrics = () => {
 			<div className='mt-6 bg-white p-3 md:p-6 '>
 				<div className='flex flex-wrap items-center gap-4 lg:gap-9'>
 					<Select
-						// options={durations}
 						icon={<CalendarIcon />}
 						placeholder='Select a duration...'
 					>
@@ -50,11 +50,11 @@ const CampaignMetrics = () => {
 					</Select>
 					<Select
 						icon={<ActivityIcon className='text-wustomers-blue' />}
-						placeholder='Select a duration....'
+						placeholder='Select status....'
 					>
-						{durations?.map(option => (
-							<SelectItem value={option.name} key={option.id}>
-								{option.name}
+						{statuses?.map(option => (
+							<SelectItem value={option} key={option}>
+								{option}
 							</SelectItem>
 						))}
 					</Select>

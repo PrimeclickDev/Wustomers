@@ -16,6 +16,7 @@ export interface CampaignFormData
 		StepTwoSchema,
 		StepThreeSchema {
 	social_posts: Social[]
+	contact_option_medium?: string
 }
 
 // export interface Campaign extends ResponseType {
@@ -54,7 +55,6 @@ export type Campaign = {
 	contact_option_medium: string
 	body_heading: string
 	body_description: string
-	is_button_sticky: boolean
 	start_date: Date
 	end_date: Date
 	location: string

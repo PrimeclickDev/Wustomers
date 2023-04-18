@@ -2,7 +2,6 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	Legend,
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
@@ -46,17 +45,19 @@ const data = [
 	},
 ]
 
-const CampaignChart = () => {
+const CampaignChart = ({ height = 220 }) => {
 	return (
-		<ResponsiveContainer width='100%' height={220} className='mt-4 text-xs'>
+		<ResponsiveContainer
+			width='100%'
+			height={height}
+			className='mt-4 text-xs'
+		>
 			<BarChart data={data}>
 				<CartesianGrid strokeDasharray='3 3' />
 				<XAxis dataKey='name' />
 				<YAxis />
 				<Tooltip />
-				<Legend />
 				<Bar dataKey='pv' fill='#072AC8' />
-				{/* <Bar dataKey='uv' fill='#82ca9d' /> */}
 			</BarChart>
 		</ResponsiveContainer>
 	)

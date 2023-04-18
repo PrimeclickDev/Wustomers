@@ -1,7 +1,6 @@
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
 import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg'
-import { ReactComponent as ProfileIcon } from 'assets/icons/profile.svg'
 import { ReactComponent as SearchIcon } from 'assets/icons/search.svg'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -57,10 +56,6 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 					<NotificationIcon />
 					<span className='sr-only'>notifications</span>
 				</NavLink>
-				<button className='hidden transition-colors hover:bg-wustomers-blue hover:text-white lg:grid lg:h-10 lg:w-10 lg:place-items-center lg:rounded-full lg:bg-wustomers-primary'>
-					<ProfileIcon />
-					<span className='sr-only'>profile</span>
-				</button>
 			</div>
 		</div>
 	)

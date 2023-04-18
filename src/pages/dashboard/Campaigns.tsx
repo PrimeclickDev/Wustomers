@@ -5,15 +5,18 @@ import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as MoreIcon } from 'assets/icons/more-horizontal.svg'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
 import { Button } from 'components/Button'
+import { ConfirmationModal } from 'components/ConfirmationModal'
 import { ErrorMessage } from 'components/ErrorMessage'
 import { Modal } from 'components/Modal'
+import { PreviewModal } from 'components/PreviewModal'
 import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
+import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 
@@ -51,8 +54,12 @@ const Campaigns = () => {
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
 	const [campaignId, setCampaignId] = useState(0)
+	const [openPreviewModal, setOpenPreviewModal] = useState(false)
+	const [campaignPreview, setcampaignPreview] = useState<Campaign | null>(null)
+
 	const [, setCampaign] = useAtom(campaignAtom)
 	const navigate = useNavigate()
+
 	const { data: campaigns, isLoading } = useFetchCampaigns()
 	const deleteCampaign = useDeleteCampaign()
 
@@ -146,13 +153,17 @@ const Campaigns = () => {
 										>
 											{campaign?.payment_status === 'Paid' &&
 											campaign?.campaign_status === 'Paused' ? (
-												<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+												<button
+													type='button'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
 													Resume
 												</button>
 											) : null}
 											{campaign?.payment_status === 'Unpaid' &&
 											campaign?.campaign_status === 'Inactive' ? (
 												<button
+													type='button'
 													onClick={() => {
 														setOpenCampaginModal(true)
 														setCampaignId(campaign.id)
@@ -162,25 +173,48 @@ const Campaigns = () => {
 													Activate
 												</button>
 											) : null}
-											<Link
+											{/* <Link
 												to='/campaigns-metrics'
 												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 											>
 												Show metrics
-											</Link>
+											</Link> */}
+											<button
+												type='button'
+												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												onClick={() => {
+													setOpenPreviewModal(true)
+													setcampaignPreview(campaign)
+												}}
+											>
+												Preview
+											</button>
 											{campaign?.payment_status === 'Paid' &&
 											campaign?.campaign_status === 'Active' ? (
-												<button className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'>
+												<button
+													type='button'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
 													Pause
+												</button>
+											) : null}
+											{campaign?.payment_status === 'Unpaid' &&
+											campaign?.campaign_status === 'Inactive' ? (
+												<button
+													type='button'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
+													Edit
 												</button>
 											) : null}
 											{campaign?.campaign_status !== 'Active' ? (
 												<button
+													type='button'
 													onClick={() => {
 														setOpenConfirmationModal(true)
 														setCampaignId(campaign.id)
 													}}
-													className='rounded py-[6px]  px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
 												>
 													Delete
 												</button>
@@ -211,6 +245,7 @@ const Campaigns = () => {
 				<Spinner className='mt-3 text-wustomers-blue-light' />
 			)}
 
+			{/* setup new campaign modal */}
 			<Modal closeModal={closeModal} modalOpen={isOpen}>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<header>
@@ -267,43 +302,25 @@ const Campaigns = () => {
 				</form>
 			</Modal>
 
-			<Modal
-				modalOpen={openConfirmationModal}
-				closeModal={() => setOpenConfirmationModal(false)}
-			>
-				<div className='flex flex-col items-center text-center'>
-					<h3 className='max-w-[20ch] pt-2 text-xl font-medium'>
-						Are you sure you delete campaign?
-					</h3>
-
-					<div className='mt-6 flex items-center gap-5 md:mx-8'>
-						<Button
-							variant='outline'
-							onClick={() => setOpenConfirmationModal(false)}
-							text='No, Cancel'
-							className='px-8 normal-case hover:shadow-none'
-						/>
-						<Button
-							disabled={deleteCampaign.isLoading}
-							text={
-								deleteCampaign.isLoading ? (
-									<Spinner className='text-white' />
-								) : (
-									'Yes, Delete'
-								)
-							}
-							variant='fill'
-							className='py-2 px-8 normal-case hover:shadow-none'
-							onClick={campaignDelete}
-						/>
-					</div>
-				</div>
-			</Modal>
+			{/* confirmation modal */}
+			<ConfirmationModal
+				mutationAction={deleteCampaign}
+				onClick={campaignDelete}
+				openModal={openConfirmationModal}
+				setOpenModal={setOpenConfirmationModal}
+				title='Are you sure you delete campaign?'
+			/>
 
 			<CampaignSetupModal
 				openModal={openCampaginModal}
 				campaignId={campaignId}
 				closeModal={() => setOpenCampaginModal(false)}
+			/>
+
+			<PreviewModal
+				openModal={openPreviewModal}
+				setOpenModal={setOpenPreviewModal}
+				campaign={campaignPreview}
 			/>
 		</>
 	)
