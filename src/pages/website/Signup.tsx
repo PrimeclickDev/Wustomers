@@ -3,7 +3,6 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { useRegister } from 'api/hooks/auth/useRegister'
 import { useSignupWithGoogle } from 'api/hooks/auth/useSignupWithGoogle'
 import googleLogo from 'assets/images/google.png'
-import instagramLogo from 'assets/images/instagram.png'
 import axios from 'axios'
 import { Button } from 'components/Button'
 import { ErrorMessage } from 'components/ErrorMessage'
@@ -180,10 +179,10 @@ const Signup = () => {
 						</>
 					)}
 				</button>
-				<button className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98]'>
+				{/* <button className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />
 					<span>Sign up with Instagram</span>
-				</button>
+				</button> */}
 			</div>
 
 			<p className='pt-10 text-center'>

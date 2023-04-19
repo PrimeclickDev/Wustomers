@@ -101,52 +101,53 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 						: '-translate-x-full lg:translate-x-0'
 				}`}
 			>
-				<header className='bg-wustomers-blue-light/5 py-5 pl-4 pr-8 lg:px-10'>
+				<header className='hidden bg-wustomers-blue-light/5 py-5 pl-4 pr-8 lg:block lg:px-10'>
 					<WustomersLogo className='text-wustomers-blue' />
 				</header>
 
-				<nav className='pt-6 pb-10'>
-					{dashboardNavs.map(nav => (
-						<div
-							key={nav.title}
-							className={`px-4 ${
-								nav.title === 'settings' &&
-								'mt-10 border-t border-t-wustomers-dark-gray pt-2'
-							}`}
-						>
-							{/* <h3 key={nav.title}>{nav.title}</h3> */}
-							<ul className='flex flex-col gap-2'>
-								{nav.routes.map(route => (
-									<li key={route.name}>
-										<NavLink
-											to={route.link}
-											onClick={() => setIsOpen(false)}
-											className={({ isActive }) =>
-												`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
-													isActive
-														? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
-														: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
-												}`
-											}
-										>
-											{({ isActive }) => (
-												<>
-													{isActive
-														? route.activeIcon
-														: route.icon}
-													<span>{route.name}</span>
-												</>
-											)}
-										</NavLink>
-									</li>
-								))}
-							</ul>
-						</div>
-					))}
+				<nav className='grid h-full pt-6 pb-10'>
+					<div className='mt-7 md:mt-0'>
+						{dashboardNavs.map(nav => (
+							<div
+								key={nav.title}
+								className={`px-4 ${
+									nav.title === 'settings' &&
+									'mt-10 border-t border-t-wustomers-dark-gray pt-2'
+								}`}
+							>
+								<ul className='flex flex-col gap-2'>
+									{nav.routes.map(route => (
+										<li key={route.name}>
+											<NavLink
+												to={route.link}
+												onClick={() => setIsOpen(false)}
+												className={({ isActive }) =>
+													`flex items-center gap-3 rounded-sx py-3 px-4 capitalize transition-all ${
+														isActive
+															? 'bg-[#E6EAF9] fill-wustomers-blue font-medium text-wustomers-blue'
+															: 'bg-white fill-transparent font-normal text-wustomers-gray hover:text-wustomers-blue-light'
+													}`
+												}
+											>
+												{({ isActive }) => (
+													<>
+														{isActive
+															? route.activeIcon
+															: route.icon}
+														<span>{route.name}</span>
+													</>
+												)}
+											</NavLink>
+										</li>
+									))}
+								</ul>
+							</div>
+						))}
+					</div>
 					<button
 						onClick={openModal}
 						type='button'
-						className='mt-24 flex w-full items-center gap-3 rounded border-y border-y-wustomers-dark-gray py-4 px-6 capitalize text-wustomers-gray transition-all hover:text-red-600'
+						className='flex w-full items-center gap-3 self-end rounded border-y border-y-wustomers-dark-gray py-4 px-6 capitalize text-wustomers-gray transition-all hover:text-red-600'
 					>
 						<LogoutIcon width={20} height={20} />
 						<p>Log out</p>
@@ -156,7 +157,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 				<button
 					type='button'
 					onClick={() => setIsOpen(false)}
-					className='absolute right-2 top-6 rounded bg-wustomers-blue text-lg text-white lg:hidden'
+					className='absolute right-2 top-2 rounded bg-wustomers-blue text-lg text-white lg:hidden'
 				>
 					<Close />
 					<span className='sr-only'>close mobile menu</span>

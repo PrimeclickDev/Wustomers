@@ -3,7 +3,6 @@ import { useGoogleLogin } from '@react-oauth/google'
 import { useLogin } from 'api/hooks/auth/useLogin'
 import { useLoginWithGoogle } from 'api/hooks/auth/useLoginWithGoogle'
 import googleLogo from 'assets/images/google.png'
-import instagramLogo from 'assets/images/instagram.png'
 import axios from 'axios'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
@@ -74,7 +73,6 @@ const Login = () => {
 		},
 		onError: async error => {
 			console.error(error)
-			// toast.error(error)
 		},
 	})
 
@@ -146,10 +144,10 @@ const Login = () => {
 						</>
 					)}
 				</button>
-				<button className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98]'>
+				{/* <button className='flex w-full items-center justify-center gap-3 border border-wustomers-neutral-lighter bg-white py-2.5 font-normal normal-case text-inherit transition hover:bg-wustomers-neutral-lighter/20 active:scale-[0.98]'>
 					<img src={instagramLogo} alt='instagram logo' className='w-5' />
 					<span>Log in with Instagram</span>
-				</button>
+				</button> */}
 			</div>
 
 			<p className='pt-10 text-center'>
