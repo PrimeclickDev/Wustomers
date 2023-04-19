@@ -10,54 +10,58 @@ import GooglePlay from 'assets/images/google-play.png'
 import { Link } from 'react-router-dom'
 import { WustomersLogo } from './WustomersLogo'
 
+const navs = [
+	{
+		name: 'home',
+		link: '/',
+	},
+	{
+		name: 'pricing',
+		link: '/pricing',
+	},
+	{
+		name: 'contact',
+		link: '/contact',
+	},
+	{
+		name: 'Privacy policy',
+		link: '/privacy-policy',
+	},
+]
+
+const contacts = [
+	{
+		icon: <Contact />,
+		text: 'support@wustomers.com',
+		link: 'mailto:support@wustomers.com',
+	},
+	{
+		icon: <Call />,
+		text: '(+234) 812 014 8527',
+		link: 'tel:+2348120148527',
+	},
+	{
+		icon: <Location />,
+		text: '55a, Lafiaji way, Dolphin Estate Ikoyi, Lagos state.',
+		link: '',
+	},
+]
+
+const socials = [
+	{
+		icon: <Facebook />,
+	},
+	{
+		icon: <Instagram />,
+	},
+	{
+		icon: <Twitter />,
+	},
+	{
+		icon: <Linkedln />,
+	},
+]
 export const Footer = () => {
-	const navs = [
-		{
-			name: 'home',
-			link: '/',
-		},
-		{
-			name: 'pricing',
-			link: '/pricing',
-		},
-		{
-			name: 'contact',
-			link: '/contact',
-		},
-	]
-
-	const contacts = [
-		{
-			icon: <Contact />,
-			text: 'support@wustomers.com',
-			link: 'mailto:support@wustomers.com',
-		},
-		{
-			icon: <Call />,
-			text: '(+234) 812 014 8527',
-			link: 'tel:+2348120148527',
-		},
-		{
-			icon: <Location />,
-			text: '55a, Lafiaji way, Dolphin Estate Ikoyi, Lagos state.',
-			link: '',
-		},
-	]
-
-	const socials = [
-		{
-			icon: <Facebook />,
-		},
-		{
-			icon: <Instagram />,
-		},
-		{
-			icon: <Twitter />,
-		},
-		{
-			icon: <Linkedln />,
-		},
-	]
 	return (
 		<footer className='mt-auto bg-wustomers-blue'>
 			<div className='mx-auto max-w-screen-xl px-2 pt-10 lg:pt-16'>
@@ -93,7 +97,7 @@ export const Footer = () => {
 						</p>
 					</div>
 
-					<ul className='mt-5 flex items-center gap-8 lg:mt-0'>
+					<ul className='mt-5 flex items-center gap-8 text-sm lg:mt-0'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='link-hover capitalize'>
 								<Link to={nav.link}>{nav.name}</Link>

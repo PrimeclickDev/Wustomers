@@ -85,3 +85,17 @@ input[type='number'] {
 input[type='radio'] {
 	@apply h-4 w-4 accent-wustomers-blue;
 }
+
+/* markdown styles */
+.vite-plugin-react-markdown h1 {
+	@apply pb-4 text-4xl font-bold;
+}
+.vite-plugin-react-markdown h2 {
+	@apply mb-2 border-b pt-6 text-xl font-medium;
+}
+.vite-plugin-react-markdown li {
+	@apply list-inside list-disc pl-4;
+}
+.vite-plugin-react-markdown h3 {
+	@apply pt-4 text-lg font-medium;
+}

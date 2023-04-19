@@ -12,10 +12,11 @@ import Overview from 'pages/dashboard/Overview'
 import Settings from 'pages/dashboard/Settings'
 import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
+import Home from 'pages/website/Home'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-const Home = React.lazy(() => import('pages/website/Home'))
+// const Home = React.lazy(() => import('pages/website/Home'))
 const Pricing = React.lazy(() => import('pages/website/Pricing'))
 const Contact = React.lazy(() => import('pages/website/Contact'))
 const Login = React.lazy(() => import('pages/website/Login'))
@@ -23,6 +24,7 @@ const Signup = React.lazy(() => import('pages/website/Signup'))
 const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
 const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))
 const ResetPassword = React.lazy(() => import('pages/website/ResetPassword'))
+const PrivacyPolicy = React.lazy(() => import('pages/website/PrivacyPolicy'))
 
 const App = () => {
 	const location = useConcurrentTransition()
@@ -33,6 +35,7 @@ const App = () => {
 				<Route index element={<Home />} />
 				<Route path='pricing' element={<Pricing />} />
 				<Route path='contact' element={<Contact />} />
+				<Route path='privacy-policy' element={<PrivacyPolicy />} />
 			</Route>
 
 			<Route element={<DashboardLayout />}>
