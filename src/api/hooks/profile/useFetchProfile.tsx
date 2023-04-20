@@ -1,24 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 import { baseURL, instance } from 'api/requests'
-import { AxiosError, AxiosResponse } from 'axios'
-import { ErrorResponse } from 'models/auth-models'
+import { AxiosResponse } from 'axios'
 import { UserProfile } from 'models/profile'
-import { toast } from 'react-toastify'
 
 export const getUserProfile = async (): Promise<AxiosResponse<UserProfile>> => {
 	return await instance.get(`${baseURL}/profile`)
 }
 
 export const useFetchProfile = () => {
-	return useQuery<AxiosResponse<UserProfile>, AxiosError<ErrorResponse>>({
+	return useQuery({
 		queryKey: ['profile'],
 		queryFn: getUserProfile,
 		cacheTime: Infinity,
 		staleTime: Infinity,
-		// onSuccess: () => {
-		// 	console.log('yh baby')
-		// },
-		onError: error => toast.error(error.response?.data.message),
 		refetchOnMount: false,
+		onError: error => console.error(error),
+		select: data => data.data.data?.profile,
 	})
 }

@@ -34,13 +34,7 @@ const Overview = () => {
 		<>
 			<h2 className='flex items-center gap-2 text-3xl font-black'>
 				Hi,{' '}
-				<span>
-					{isLoading ? (
-						<Spinner />
-					) : (
-						profile?.data.data.profile.user.first_name
-					)}
-				</span>
+				<span>{isLoading ? <Spinner /> : profile?.user.first_name}</span>
 			</h2>
 
 			<div className='mt-10 grid gap-4 lg:grid-cols-3 lg:gap-10'>

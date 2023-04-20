@@ -39,6 +39,7 @@ const campaignStatus = {
 
 const Campaigns = () => {
 	usePageTitle('Campaigns')
+	const navigate = useNavigate()
 	const {
 		register,
 		handleSubmit,
@@ -58,9 +59,7 @@ const Campaigns = () => {
 	const [campaignPreview, setcampaignPreview] = useState<Campaign | null>(null)
 
 	const [, setCampaign] = useAtom(campaignAtom)
-	const navigate = useNavigate()
-
-	const { data: campaigns, isLoading } = useFetchCampaigns()
+	const { data, isLoading } = useFetchCampaigns()
 	const deleteCampaign = useDeleteCampaign()
 
 	const closeModal = () => setIsOpen(false)
@@ -87,8 +86,32 @@ const Campaigns = () => {
 		})
 	}
 
-	// console.log('campaigns', campaigns)
-	// console.log(isDateInPast())
+	const editCampaign = async (campaign: any) => {
+		const urls = [campaign.product_logo, campaign.background_image]
+		// fetch both image and get their blob
+		const allImage = await Promise.all(
+			urls.map(u => fetch(u).then(response => response.blob()))
+		)
+		// create a new data transfer object to add files into a filelist object
+		const first = new DataTransfer()
+		const fileOne = new File([allImage[0]], 'image.jpg', {
+			type: allImage[0].type,
+		})
+		first.items.add(fileOne)
+
+		const second = new DataTransfer()
+		const fileTwo = new File([allImage[1]], 'image.jpg', {
+			type: allImage[1].type,
+		})
+		second.items.add(fileTwo)
+		setCampaign({
+			...campaign,
+			product_logo: first.files,
+			background_image: second.files,
+		})
+		openModal()
+		// navigate('/campaigns/new')
+	}
 
 	return (
 		<>
@@ -96,7 +119,7 @@ const Campaigns = () => {
 
 			{!isLoading ? (
 				<ul className='mt-9 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-center gap-7'>
-					{campaigns?.map(campaign => (
+					{data?.map(campaign => (
 						<li
 							key={campaign.id}
 							className='relative w-full rounded bg-white'
@@ -142,6 +165,7 @@ const Campaigns = () => {
 										<button
 											type='button'
 											aria-label='show more options'
+											className='p-2'
 										>
 											<MoreIcon />
 										</button>
@@ -203,6 +227,10 @@ const Campaigns = () => {
 												<button
 													type='button'
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+													onClick={() => {
+														const fakeCampaign = { ...campaign }
+														editCampaign(fakeCampaign)
+													}}
 												>
 													Edit
 												</button>

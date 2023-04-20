@@ -38,7 +38,7 @@ const centerAspectCrop = (
 const aspect = 1 / 1
 
 export const UserAvatar = () => {
-	const { data, isFetching } = useFetchProfile()
+	const { data: profile, isFetching } = useFetchProfile()
 	const uploadAvatar = useUpdateAvatar()
 	const [imgSrc, setImgSrc] = useState('')
 	const imgRef = useRef<HTMLImageElement>(null)
@@ -126,13 +126,11 @@ export const UserAvatar = () => {
 				<div className='relative'>
 					<img
 						src={
-							data?.data.data?.profile.user.avatar
-								? data?.data.data?.profile.user.avatar
-								: emptyUserImg
+							profile?.user.avatar ? profile?.user.avatar : emptyUserImg
 						}
 						alt={
-							data?.data.data?.profile.user.avatar
-								? `${data?.data.data?.profile.user.first_name} avatar`
+							profile?.user.avatar
+								? `${profile?.user.first_name} avatar`
 								: 'empty user data'
 						}
 						className={`h-64 w-60 rounded-md bg-wustomers-main/20 object-cover shadow-lg ${

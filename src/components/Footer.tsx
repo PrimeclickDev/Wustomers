@@ -97,7 +97,7 @@ export const Footer = () => {
 						</p>
 					</div>
 
-					<ul className='mt-5 flex items-center gap-8 text-sm lg:mt-0'>
+					<ul className='mt-5 flex flex-wrap items-center justify-center gap-5 text-sm md:justify-start md:gap-8 lg:mt-0'>
 						{navs?.map(nav => (
 							<li key={nav.name} className='link-hover capitalize'>
 								<Link to={nav.link}>{nav.name}</Link>

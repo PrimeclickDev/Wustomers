@@ -17,6 +17,7 @@ export interface CampaignFormData
 		StepThreeSchema {
 	social_posts: Social[]
 	contact_option_medium?: string
+	id?: number
 }
 
 // export interface Campaign extends ResponseType {

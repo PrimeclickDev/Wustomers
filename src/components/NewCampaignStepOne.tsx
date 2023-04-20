@@ -8,29 +8,16 @@ import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 
-const logoPositions = [
-	{
-		id: 1,
-		value: 'left',
-		style: 'flex-start',
-	},
-	{
-		id: 2,
-		value: 'center',
-		style: 'center',
-	},
-	{
-		id: 3,
-		value: 'right',
-		style: 'flex-right',
-	},
-]
+const logoPositions = ['left', 'center', 'right']
+
+const allowedExtension = ['image/jpeg', 'image/jpg', 'image/png']
 const schema = z.object({
 	title: z
 		.string({ required_error: 'Campaign title is required' })
 		.min(1, { message: 'Campaign title is required' })
+		.max(30, { message: 'Campaign title cannot be more than 30 characters' })
 		.trim(),
-	logo_position: z.enum(['flex-start', 'center', 'flex-end'], {
+	logo_position: z.enum(['left', 'center', 'right'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Logo position is required',
 	}),
@@ -55,6 +42,12 @@ const schema = z.object({
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
 					message: `You can only upload image.`,
+				})
+			}
+			if (!allowedExtension.includes(val[0]?.type)) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Only jpg, jpeg and png are allowed`,
 				})
 			}
 		}),
@@ -96,6 +89,12 @@ const schema = z.object({
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
 					message: `You can only upload image.`,
+				})
+			}
+			if (!allowedExtension.includes(val[0]?.type)) {
+				ctx.addIssue({
+					code: z.ZodIssueCode.custom,
+					message: `Only jpg, jpeg and png are allowed`,
 				})
 			}
 		}),
@@ -176,12 +175,12 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 									type='file'
 									id='product_logo'
 									className='sr-only'
-									accept='image/*'
+									accept='.jpg,.jpeg,.png'
 									{...register('product_logo')}
 								/>
 							</label>
-							<span className='text-wustomers-neutral-dark'>
-								Logo format is png., svg. (not more than 300kb)
+							<span className='text-sm text-wustomers-neutral-dark'>
+								Logo format is png, jpeg, jpg. (not more than 300kb)
 							</span>
 						</div>
 						{errors.product_logo ? (
@@ -189,7 +188,11 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 						) : null}
 						{selectedLogo?.length ? (
 							<img
-								src={URL.createObjectURL(selectedLogo[0])}
+								src={
+									typeof campaign.product_logo === 'string'
+										? campaign.product_logo
+										: URL.createObjectURL(selectedLogo[0])
+								}
 								alt={selectedLogo[0].name}
 								className='mt-2 h-52 w-max object-cover'
 							/>
@@ -207,29 +210,29 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 							{logoPositions.map(position => (
 								<div
 									className='flex flex-col items-center gap-1'
-									key={position.id}
+									key={position}
 								>
 									<input
 										type='radio'
-										id={position.value}
+										id={position}
+										value={position}
 										className='peer sr-only'
-										value={position.style}
 										{...register('logo_position')}
 									/>
 									<label
-										htmlFor={position.value}
+										htmlFor={position}
 										className={`relative h-6 w-20 cursor-pointer rounded-sm border border-wustomers-primary-light bg-wustomers-primary transition-all after:absolute after:top-1/2 after:h-3 after:w-3 after:-translate-y-1/2 after:rounded-full after:bg-[#8394E3] peer-checked:bg-[#516AD9] peer-checked:after:bg-white ${
-											position.value === 'center'
+											position === 'center'
 												? 'after:left-1/2 after:-translate-x-1/2'
-												: position.value === 'right'
+												: position === 'right'
 												? 'after:right-2'
-												: position.value === 'left'
+												: position === 'left'
 												? 'after:left-2'
 												: ''
 										}`}
 									/>
 									<p className='text-center text-sm capitalize text-wustomers-gray'>
-										{position.value}
+										{position}
 									</p>
 								</div>
 							))}
@@ -301,17 +304,17 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 								{...register('background_image')}
 								id='backgroundImage'
 								className='sr-only'
-								accept='image/*'
+								accept='.jpg,.jpeg,.png'
 							/>
 							<span className='text-wustomers-neutral-dark'>
-								Background image format is png, jpeg. (not more than
+								Background image format ispng, jpeg, jpg. (not more than
 								1.5mb)
 							</span>
 						</div>
 						{errors.background_image ? (
 							<ErrorMessage message={errors.background_image.message} />
 						) : null}
-						{selectedBgImage?.length ? (
+						{selectedBgImage && selectedBgImage?.length ? (
 							<img
 								src={URL.createObjectURL(selectedBgImage[0])}
 								alt={selectedBgImage[0].name}

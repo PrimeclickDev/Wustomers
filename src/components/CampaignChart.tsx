@@ -57,7 +57,8 @@ const CampaignChart = ({ height = 220 }) => {
 				<XAxis dataKey='name' />
 				<YAxis />
 				<Tooltip />
-				<Bar dataKey='pv' fill='#072AC8' />
+				<Bar dataKey='pv' fill='#3955D3' />
+				<Bar dataKey='uv' fill='#82ca9d' />
 			</BarChart>
 		</ResponsiveContainer>
 	)

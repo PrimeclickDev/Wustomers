@@ -82,7 +82,8 @@ input[type='number'] {
 	);
 }
 
-input[type='radio'] {
+input[type='radio'],
+input[type='checkbox'] {
 	@apply h-4 w-4 accent-wustomers-blue;
 }
 
@@ -98,4 +99,7 @@ input[type='radio'] {
 }
 .vite-plugin-react-markdown h3 {
 	@apply pt-4 text-lg font-medium;
+}
+.vite-plugin-react-markdown a {
+	@apply text-wustomers-blue underline;
 }

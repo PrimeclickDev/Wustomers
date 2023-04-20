@@ -105,7 +105,7 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 	const updateProfile = useUpdateProfile()
 
 	const onUpdateProfile: SubmitHandler<AccountUpdateSchema> = data => {
-		const selectedIndustry = industries?.data?.data?.find(
+		const selectedIndustry = industries?.find(
 			option => data.industryType === option.name
 		)
 		updateProfile.mutate({
@@ -210,7 +210,7 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 										onChange={onChange}
 										value={value}
 									>
-										{industries?.data?.data?.map(option => (
+										{industries?.map(option => (
 											<SelectItem
 												value={option.name}
 												key={option.id}
@@ -315,7 +315,7 @@ export const AccountUpdateForm = ({ profile }: ProfileData) => {
 					text={updateProfile.isLoading ? <Spinner /> : 'Update account'}
 					variant='fill'
 					type='submit'
-					className='mt-3 normal-case md:ml-auto lg:mt-0'
+					className='mt-3 w-full normal-case md:ml-auto md:w-max lg:mt-0'
 					disabled={updateProfile.isLoading}
 				/>
 			</div>

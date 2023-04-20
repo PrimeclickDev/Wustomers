@@ -17,10 +17,6 @@ const Notifications = () => {
 		)
 		setSelected(updatedCheckedState)
 	}
-	// const handleSelectAll = () => {
-	// 	const select = selectAll.map(item => !item)
-	// 	setSelectAll(select)
-	// }
 
 	return (
 		<>

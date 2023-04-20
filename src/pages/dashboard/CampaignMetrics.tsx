@@ -37,7 +37,7 @@ const CampaignMetrics = () => {
 			<h2 className='text-3xl font-black'>Campagin Metrics</h2>
 
 			<div className='mt-6 bg-white p-3 md:p-6 '>
-				<div className='flex flex-wrap items-center gap-4 lg:gap-9'>
+				<div className='flex flex-col items-center gap-4 md:flex-row lg:gap-9'>
 					<Select
 						icon={<CalendarIcon />}
 						placeholder='Select a duration...'

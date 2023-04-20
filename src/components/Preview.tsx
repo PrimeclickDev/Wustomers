@@ -228,7 +228,13 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 					.header .container {
 						display: flex;
 						align-items: center;
-						justify-content: ${campaign?.logo_position};
+						justify-content: ${
+							campaign?.logo_position === 'left'
+								? 'flex-start'
+								: campaign?.logo_position === 'right'
+								? 'flex-end'
+								: 'center'
+						};
 						padding: 1rem 0;
 					}
 					.header img {

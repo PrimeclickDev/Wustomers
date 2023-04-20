@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useFetchIGPosts } from 'api/hooks/useFetchIGPosts'
 import { useAtom } from 'jotai'
 import InstagramPostsModal from 'modals/InstagramPostsModal'
 import { CampaignProps } from 'models/shared'
@@ -78,13 +77,16 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 			phone: campaign.phone ?? '',
 			office_address: campaign.office_address ?? '',
 			email: campaign.email ?? '',
-			is_body_content: campaign.is_body_content ?? undefined,
+			is_body_content:
+				campaign.body_description && campaign.body_heading
+					? '1'
+					: undefined,
 			body_description: campaign.body_description ?? '',
 			body_heading: campaign.body_heading ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
-	const { posts } = useFetchIGPosts()
+	// const { posts } = useFetchIGPosts()
 
 	const addBodyContent = watch('is_body_content')
 
@@ -112,7 +114,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 						<div className='grid gap-2 md:grid-cols-5'>
 							<p className='md:col-span-1'>Add body content:</p>
 							<div className='flex flex-col gap-1 md:col-span-4'>
-								<div className='flex items-center gap-16 text-wustomers-main md:col-span-3'>
+								<div className='flex flex-col gap-3 text-wustomers-main md:flex-row md:items-center md:gap-16'>
 									{['0', '1'].map(value => (
 										<label
 											className='flex items-center gap-2 capitalize'
@@ -270,7 +272,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 							<ul className='grid gap-4 md:grid-cols-2'>
 								{campaign.social_posts.map(post => (
 									<li
-										className='flex items-center gap-4 pt-3'
+										className='flex flex-col gap-1 pt-3'
 										key={post.posted_date}
 									>
 										<img
@@ -313,9 +315,9 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 			<Modal
 				modalOpen={isOpen}
 				closeModal={closeModal}
-				className='max-w-3xl'
+				className='max-w-3xl px-2 md:px-6'
 			>
-				<InstagramPostsModal closeModal={closeModal} posts={posts} />
+				<InstagramPostsModal closeModal={closeModal} />
 			</Modal>
 		</>
 	)

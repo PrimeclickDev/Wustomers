@@ -96,7 +96,7 @@ const Settings = () => {
 		<>
 			<h2 className='text-3xl font-black'>Settings</h2>
 
-			{!profile?.data.data.profile.user.social_login ? (
+			{!profile?.user.social_login ? (
 				<div className='mt-10 rounded-sx bg-white'>
 					<h3 className='bg-wustomers-primary py-3 px-4 text-lg font-medium text-wustomers-main md:px-7 md:text-xl'>
 						Change Password

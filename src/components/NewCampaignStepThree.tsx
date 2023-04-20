@@ -77,7 +77,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		control,
 	} = useForm<StepThreeSchema>({
 		defaultValues: {
-			is_testimonial: campaign.is_testimonial ?? undefined,
+			is_testimonial: campaign.testimonials?.length > 0 ? '1' : undefined,
 			testimonials: campaign.testimonials ?? [
 				{ comment: '', designation: '', name: '' },
 			],
@@ -99,7 +99,6 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 	})
 
 	const showAddTestimonial = watch('is_testimonial')
-
 	const onSubmit: SubmitHandler<StepThreeSchema> = data => {
 		setCampaign(prev => ({ ...prev, ...data }))
 		nextStep?.()
@@ -237,7 +236,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 
 					<div className='flex flex-col gap-1 md:col-span-4'>
 						<div>
-							<div className='flex items-center gap-10'>
+							<div className='flex flex-col gap-3 md:flex-row md:items-center md:gap-10'>
 								{contactOptions.map(option => (
 									<label
 										key={option}
@@ -259,7 +258,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 
 						{/* show this depending on what was selected */}
 						{contactOption ? (
-							<div className='mt-2 flex w-full items-center gap-5 bg-[#EAEAEA] py-3 px-5'>
+							<div className='mt-2 flex w-full flex-col gap-1 bg-[#EAEAEA] py-3 px-2 md:flex-row md:items-center md:gap-5 md:px-5'>
 								<label htmlFor='input'>{option[contactOption]}</label>
 								<div className='flex flex-1 flex-col'>
 									<input

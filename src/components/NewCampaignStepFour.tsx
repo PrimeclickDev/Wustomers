@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { useCreateCampaign } from 'api/hooks/campaigns/useCreateCampaign'
+import { useUpdateCampaign } from 'api/hooks/campaigns/useUpdateCampaign'
 import { ReactComponent as FullscreenIcon } from 'assets/icons/fullscreen.svg'
 import { ReactComponent as MobileIcon } from 'assets/icons/mobile-2.svg'
 import { ReactComponent as MonitorIcon } from 'assets/icons/monitor.svg'
@@ -8,6 +10,7 @@ import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { CampaignProps } from 'models/shared'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { campaignAtom, paymentModalType } from 'store/atoms'
 import { Button } from './Button'
 import { Modal } from './Modal'
@@ -15,6 +18,7 @@ import { Preview } from './Preview'
 import { Spinner } from './Spinner'
 
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
+	const navigate = useNavigate()
 	const [campaign] = useAtom(campaignAtom)
 	const [activeView, setActiveView] = useState('desktop')
 	const [campaignId, setCampaignId] = useState(0)
@@ -24,27 +28,49 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const previewRef = useRef<HTMLIFrameElement | null>(null)
 
 	const closeModal = () => setOpenModal(false)
-	const publish = useCreateCampaign()
+	const publishCampaign = useCreateCampaign()
+	const updateCampaign = useUpdateCampaign()
 
-	const publishCampaign = () => {
+	const onPublishCampaign = () => {
 		const campaignToPublish = {
 			...campaign,
 			product_logo: Object.values(campaign.product_logo)[0],
 			background_image: Object.values(campaign.background_image)[0],
-			upload_option: 'instagram',
-			upload_option_link: 'instagram',
+			upload_option: campaign.upload_option ?? 'instagram',
+			upload_option_link: campaign.upload_option ?? 'instagram',
 		}
 
-		//@ts-ignore
+		//@ts-expect-error
 		delete campaignToPublish.is_body_content
 
-		//@ts-ignore
-		publish.mutate(campaignToPublish, {
+		//@ts-expect-error
+		publishCampaign.mutate(campaignToPublish, {
 			onSuccess: ({ data }) => {
 				setOpenModal(true)
 				setCampaignId(data.data.id)
 			},
 		})
+	}
+
+	const onUpdateCampaign = () => {
+		const campaignToUpdate = {
+			...campaign,
+			product_logo: Object.values(campaign.product_logo)[0],
+			background_image: Object.values(campaign.background_image)[0],
+			upload_option: campaign.upload_option ?? 'instagram',
+			upload_option_link: campaign.upload_option ?? 'instagram',
+		}
+
+		updateCampaign.mutate(
+			{
+				//@ts-expect-error
+				formdata: campaignToUpdate,
+				id: campaign.id!,
+			},
+			{
+				onSuccess: () => navigate('/campaigns'),
+			}
+		)
 	}
 
 	const setupCampaign = () => {
@@ -145,18 +171,29 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 					<Button
 						text='Previous'
 						variant='outline'
-						disabled={publish.isLoading}
+						disabled={
+							publishCampaign.isLoading || updateCampaign.isLoading
+						}
 						onClick={prevStep}
 						className='!bg-white px-11 !font-normal capitalize'
 					/>
-					<Button
-						text={publish.isLoading ? <Spinner /> : 'Publish'}
-						disabled={publish.isLoading}
-						variant='fill'
-						className='px-14 !font-normal capitalize'
-						onClick={publishCampaign}
-						// onClick={() => }
-					/>
+					{campaign.contact_option_medium ? (
+						<Button
+							text={updateCampaign.isLoading ? <Spinner /> : 'Update'}
+							disabled={updateCampaign.isLoading}
+							variant='fill'
+							className='px-14 !font-normal capitalize'
+							onClick={onUpdateCampaign}
+						/>
+					) : (
+						<Button
+							text={publishCampaign.isLoading ? <Spinner /> : 'Publish'}
+							disabled={publishCampaign.isLoading}
+							variant='fill'
+							className='px-14 !font-normal capitalize'
+							onClick={onPublishCampaign}
+						/>
+					)}
 				</div>
 			</section>
 
@@ -176,6 +213,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 							className='!px-8 normal-case text-wustomers-blue'
 							href='/campaigns'
 						/>
+
 						<Button
 							variant='fill'
 							text='Setup campaign'

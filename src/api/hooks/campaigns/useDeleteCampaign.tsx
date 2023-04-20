@@ -14,7 +14,7 @@ export const useDeleteCampaign = () => {
 		mutationFn: (id: number) => deleteCampaign(id),
 		onSuccess: () => {
 			toast.success('Campaign deleted successfully!')
-			queryClient.invalidateQueries({ queryKey: ['campaings'] })
+			queryClient.invalidateQueries({ queryKey: ['campaigns'] })
 		},
 		onError: error => {
 			if (error instanceof AxiosError) {

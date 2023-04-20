@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { baseURL } from 'api/requests'
-import axios, { AxiosError, AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { Budgets } from 'models/shared'
 
 export const getAllBudgets = async (): Promise<AxiosResponse<Budgets>> => {
@@ -13,10 +13,8 @@ export const useFetchBudgets = () => {
 		queryFn: getAllBudgets,
 		cacheTime: Infinity,
 		staleTime: Infinity,
-		onError: error => {
-			if (error instanceof AxiosError) {
-				console.error(error.response?.data.message)
-			}
-		},
+		refetchOnMount: false,
+		onError: error => console.log(error),
+		select: data => data.data.data,
 	})
 }

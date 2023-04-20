@@ -221,6 +221,6 @@ You are advised to review this Privacy Policy periodically for any changes. Chan
 
 If you have any questions about this Privacy Policy, You can contact us:
 
-By email: wustomers16@gmail.com
+By email: <a href="mailto:wustomers16@gmail.com">wustomers16@gmail.com</a>
 
-By phone number: 09047350276
+By phone number: <a href="tel:09047350276">09047350276</a>

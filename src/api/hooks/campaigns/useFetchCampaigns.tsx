@@ -9,7 +9,7 @@ export const getAllCampaigns = async (): Promise<AxiosResponse<Campaigns>> => {
 
 export const useFetchCampaigns = () => {
 	return useQuery({
-		queryKey: ['campaings'],
+		queryKey: ['campaigns'],
 		queryFn: getAllCampaigns,
 		onError: error => {
 			if (error instanceof AxiosError) {

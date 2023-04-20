@@ -35,7 +35,10 @@ export const HomeSection = () => {
 		<>
 			{sections.map(info => (
 				<section key={info.id}>
-					<div className='mx-auto flex max-w-screen-xl flex-col items-center gap-10 px-3 pt-28 md:px-10 lg:flex-row lg:gap-20 lg:px-3 xl:px-0'>
+					<div className='mx-auto flex max-w-screen-xl flex-col items-center gap-5 px-3 pt-28 md:gap-10 md:px-10 lg:flex-row lg:gap-20 lg:px-3 xl:px-0'>
+						<p className='font-medium uppercase tracking-wider text-wustomers-blue md:hidden'>
+							{info.subheading}
+						</p>
 						<div
 							className={`${
 								info.heading.includes('Link your products')
@@ -46,13 +49,13 @@ export const HomeSection = () => {
 							<img src={info.img} alt={`${info.heading} illustration`} />
 						</div>
 						<div
-							className={` md:text-center lg:text-left ${
+							className={`md:text-center lg:text-left ${
 								info.heading.includes('Link your products')
 									? 'order-2 lg:order-1'
 									: ''
 							}`}
 						>
-							<p className='text-sm font-medium uppercase tracking-wider text-wustomers-blue md:text-lg'>
+							<p className='hidden text-sm font-medium uppercase tracking-wider text-wustomers-blue md:block md:text-lg'>
 								{info.subheading}
 							</p>
 							<h3 className='max-w-[50ch] pt-1 text-2xl font-bold md:text-4xl md:leading-[43px]'>

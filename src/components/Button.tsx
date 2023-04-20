@@ -38,7 +38,7 @@ export const Button = ({
 				<button
 					type={type ?? 'button'}
 					onClick={onClick}
-					className={`flex items-center justify-center rounded-sm px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/10 ${
+					className={`flex items-center justify-center rounded-sm px-11 font-medium uppercase tracking-wider text-white transition-all active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 ${
 						variant === 'fill'
 							? 'bg-wustomers-blue py-2 hover:scale-[1.01] hover:bg-wustomers-blue/90 disabled:hover:scale-100 disabled:hover:shadow-none lg:hover:shadow-xl lg:hover:shadow-wustomers-blue/20'
 							: variant === 'outline'
