@@ -73,11 +73,7 @@ const Campaigns = () => {
 
 		window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${
 			import.meta.env.VITE_IG_CLIENT_ID
-		}&redirect_uri=${
-			import.meta.env.PROD
-				? import.meta.env.VITE_PROD_REDIRECT_URL
-				: import.meta.env.VITE_DEV_REDIRECT_URL
-		}&scope=user_profile,user_media&response_type=code`
+		}&redirect_uri=https://wustomers.netlify.app/auth&scope=user_profile,user_media&response_type=code`
 	}
 
 	const campaignDelete = () => {
