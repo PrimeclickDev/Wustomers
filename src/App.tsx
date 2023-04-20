@@ -14,7 +14,8 @@ import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
 import Home from 'pages/website/Home'
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { getAccessToken } from 'utils/storage'
 
 // const Home = React.lazy(() => import('pages/website/Home'))
 const Pricing = React.lazy(() => import('pages/website/Pricing'))
@@ -28,6 +29,7 @@ const PrivacyPolicy = React.lazy(() => import('pages/website/PrivacyPolicy'))
 
 const App = () => {
 	const location = useConcurrentTransition()
+	const token = getAccessToken()
 
 	return (
 		<Routes location={location}>
@@ -54,8 +56,14 @@ const App = () => {
 
 			{/* auth routes */}
 			<Route element={<AuthLayout />}>
-				<Route path='login' element={<Login />} />
-				<Route path='signup' element={<Signup />} />
+				<Route
+					path='login'
+					element={token ? <Navigate to='/overview' /> : <Login />}
+				/>
+				<Route
+					path='signup'
+					element={token ? <Navigate to='/overview' /> : <Signup />}
+				/>
 				<Route path='forgot-password' element={<ForgotPassword />} />
 				<Route
 					path='recover-password/:token/:id'

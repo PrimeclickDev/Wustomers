@@ -104,7 +104,7 @@ const Login = () => {
 						to='/forgot-password'
 						className='block pt-2 text-sm capitalize text-wustomers-blue transition-colors hover:text-wustomers-blue-light'
 					>
-						Forgot password
+						Forgot password?
 					</Link>
 
 					{error?.response?.data.message ===

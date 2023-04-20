@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useFetchIGPosts } from 'api/hooks/useFetchIGPosts'
 import { useAtom } from 'jotai'
 import InstagramPostsModal from 'modals/InstagramPostsModal'
 import { CampaignProps } from 'models/shared'
@@ -86,7 +87,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 		},
 		resolver: zodResolver(schema),
 	})
-	// const { posts } = useFetchIGPosts()
+	const { posts } = useFetchIGPosts()
 
 	const addBodyContent = watch('is_body_content')
 
@@ -317,7 +318,7 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				closeModal={closeModal}
 				className='max-w-3xl px-2 md:px-6'
 			>
-				<InstagramPostsModal closeModal={closeModal} />
+				<InstagramPostsModal closeModal={closeModal} posts={posts} />
 			</Modal>
 		</>
 	)

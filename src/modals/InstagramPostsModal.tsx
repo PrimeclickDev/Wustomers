@@ -4,6 +4,7 @@ import { Button } from 'components/Button'
 import { format } from 'date-fns'
 import useMediaQuery from 'hooks/useMediaQuery'
 import { useAtom } from 'jotai'
+import { IGPosts } from 'models/shared'
 import {
 	Controller,
 	FieldValues,
@@ -12,14 +13,16 @@ import {
 } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { campaignAtom } from 'store/atoms'
-import { posts } from 'utils/constants'
 
 type InstagramPostsModalProps = {
 	closeModal: () => void
-	// posts: IGPosts
+	posts: IGPosts
 }
 
-const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
+const InstagramPostsModal = ({
+	closeModal,
+	posts,
+}: InstagramPostsModalProps) => {
 	const { handleSubmit, control } = useForm()
 	const [, setCampaign] = useAtom(campaignAtom)
 	const matches = useMediaQuery('(min-width: 768px)')
@@ -68,7 +71,7 @@ const InstagramPostsModal = ({ closeModal }: InstagramPostsModalProps) => {
 					{posts?.data?.length > 0 ? (
 						<>
 							{matches ? (
-								<ul className='h-96 overflow-y-auto'>
+								<ul className='flex h-96 flex-col gap-6 overflow-y-auto'>
 									{posts?.data
 										?.filter(
 											post =>
