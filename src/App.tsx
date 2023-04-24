@@ -13,6 +13,7 @@ import Settings from 'pages/dashboard/Settings'
 import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
 import Home from 'pages/website/Home'
+import Login from 'pages/website/Login'
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { getAccessToken } from 'utils/storage'
@@ -20,7 +21,7 @@ import { getAccessToken } from 'utils/storage'
 // const Home = React.lazy(() => import('pages/website/Home'))
 const Pricing = React.lazy(() => import('pages/website/Pricing'))
 const Contact = React.lazy(() => import('pages/website/Contact'))
-const Login = React.lazy(() => import('pages/website/Login'))
+// const Login = React.lazy(() => import('pages/website/Login'))
 const Signup = React.lazy(() => import('pages/website/Signup'))
 const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
 const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))

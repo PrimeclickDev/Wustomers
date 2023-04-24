@@ -68,7 +68,7 @@ const InstagramPostsModal = ({
 					<p className='col-span-1 text-center'>Date</p>
 				</div>
 				<>
-					{posts?.data?.length > 0 ? (
+					{posts?.data?.length ? (
 						<>
 							{matches ? (
 								<ul className='flex h-96 flex-col gap-6 overflow-y-auto'>

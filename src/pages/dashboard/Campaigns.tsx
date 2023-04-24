@@ -59,7 +59,7 @@ const Campaigns = () => {
 	const [campaignPreview, setcampaignPreview] = useState<Campaign | null>(null)
 
 	const [, setCampaign] = useAtom(campaignAtom)
-	const { data, isLoading } = useFetchCampaigns()
+	const { data, isLoading } = useFetchCampaigns('all')
 	const deleteCampaign = useDeleteCampaign()
 
 	const closeModal = () => setIsOpen(false)
@@ -115,7 +115,7 @@ const Campaigns = () => {
 
 			{!isLoading ? (
 				<ul className='mt-9 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-center gap-7'>
-					{data?.map(campaign => (
+					{data?.campaigns?.data?.map(campaign => (
 						<li
 							key={campaign.id}
 							className='relative w-full rounded bg-white'

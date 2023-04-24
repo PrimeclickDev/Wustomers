@@ -1,3 +1,4 @@
+import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import {
 	Bar,
 	BarChart,
@@ -7,58 +8,31 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts'
-const data = [
-	{
-		name: 'Page A',
-		uv: 4000,
-		pv: 2400,
-	},
-	{
-		name: 'Page B',
-		uv: 3000,
-		pv: 1398,
-	},
-	{
-		name: 'Page C',
-		uv: 2000,
-		pv: 9800,
-	},
-	{
-		name: 'Page D',
-		uv: 2780,
-		pv: 3908,
-	},
-	{
-		name: 'Page E',
-		uv: 1890,
-		pv: 4800,
-	},
-	{
-		name: 'Page F',
-		uv: 2390,
-		pv: 3800,
-	},
-	{
-		name: 'Page G',
-		uv: 3490,
-		pv: 4300,
-	},
-]
 
 const CampaignChart = ({ height = 220 }) => {
+	const { data } = useFetchCampaigns('all')
+
+	const chartData = data?.campaigns.data.map(item => ({
+		name: item.title,
+		visits: item.impression,
+		contact: item.conversion,
+		contact_rate: item.conversion_rate,
+	}))
+
 	return (
 		<ResponsiveContainer
 			width='100%'
 			height={height}
 			className='mt-4 text-xs'
 		>
-			<BarChart data={data}>
+			<BarChart data={chartData}>
 				<CartesianGrid strokeDasharray='3 3' />
 				<XAxis dataKey='name' />
 				<YAxis />
 				<Tooltip />
-				<Bar dataKey='pv' fill='#3955D3' />
-				<Bar dataKey='uv' fill='#82ca9d' />
+				<Bar dataKey='visits' fill='#1E96FC' />
+				<Bar dataKey='contact' fill='#203FCD' />
+				<Bar dataKey='contact_rate' fill='#FFC600' />
 			</BarChart>
 		</ResponsiveContainer>
 	)

@@ -9,7 +9,7 @@ import { Select, SelectItem } from 'components/Select'
 import { Spinner } from 'components/Spinner'
 import { states } from 'constants/state'
 import { useAtom } from 'jotai'
-import { Controller, SubmitHandler, useForm, useWatch } from 'react-hook-form'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { paymentModalType } from 'store/atoms'
 import { formatCurrency } from 'utils/formatCurrency'
@@ -50,6 +50,7 @@ export const CampaignSetupModal = ({
 		register,
 		handleSubmit,
 		formState: { errors },
+		watch,
 	} = useForm<CampaignSetupSchema>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -58,10 +59,7 @@ export const CampaignSetupModal = ({
 			location: '',
 		},
 	})
-	const durationValue = useWatch({
-		control,
-		name: 'duration',
-	})
+	const durationValue = watch('duration')
 
 	const setupCampaign = useSetupCampaign()
 	const { data: budgets } = useFetchBudgets()

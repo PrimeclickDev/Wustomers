@@ -1,9 +1,11 @@
-import { ReactComponent as ActivityIcon } from 'assets/icons/activity-outline.svg'
+import { useFetchMetrics } from 'api/hooks/overview/useFetchMetrics'
 import { ReactComponent as CalendarIcon } from 'assets/icons/calendar.svg'
 import CampaignChart from 'components/CampaignChart'
 import { CampaignMetricsTable } from 'components/CampaignMetricsTable'
 import { Select, SelectItem } from 'components/Select'
+import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
+import { Controller, useForm } from 'react-hook-form'
 
 const durations = [
 	{
@@ -27,42 +29,58 @@ const durations = [
 		value: 'one-year',
 	},
 ]
-const statuses = ['Active', 'Complete', 'Inactive']
+
+const replaceSpaceWithUnderscore = (value: string) =>
+	value?.replace(/\s+/g, '_').toLowerCase()
 
 const CampaignMetrics = () => {
 	usePageTitle('Campaign Metrics')
+	const { control, watch } = useForm({
+		defaultValues: {
+			duration: '',
+		},
+	})
+	const durationValue = watch('duration')
+	const duration = replaceSpaceWithUnderscore(durationValue)
 
+	const { data, isLoading, isPreviousData } = useFetchMetrics(
+		duration ? duration : ''
+	)
+
+	if (isLoading) {
+		return <Spinner />
+	}
 	return (
 		<>
 			<h2 className='text-3xl font-black'>Campagin Metrics</h2>
 
 			<div className='mt-6 bg-white p-3 md:p-6 '>
-				<div className='flex flex-col items-center gap-4 md:flex-row lg:gap-9'>
-					<Select
-						icon={<CalendarIcon />}
-						placeholder='Select a duration...'
-					>
-						{durations?.map(option => (
-							<SelectItem value={option.name} key={option.id}>
-								{option.name}
-							</SelectItem>
-						))}
-					</Select>
-					<Select
-						icon={<ActivityIcon className='text-wustomers-blue' />}
-						placeholder='Select status....'
-					>
-						{statuses?.map(option => (
-							<SelectItem value={option} key={option}>
-								{option}
-							</SelectItem>
-						))}
-					</Select>
-				</div>
+				<Controller
+					name='duration'
+					control={control}
+					render={({ field: { onChange, value } }) => (
+						<Select
+							icon={<CalendarIcon />}
+							placeholder='Select a duration...'
+							onChange={onChange}
+							value={value}
+						>
+							{durations?.map(option => (
+								<SelectItem value={option.name} key={option.id}>
+									{option.name}
+								</SelectItem>
+							))}
+						</Select>
+					)}
+				/>
 
 				<div className='mt-6 grid gap-7 xl:grid-cols-2'>
 					{/* campaign data */}
-					<div className='rounded bg-wustomers-neutral-light p-3 md:p-6'>
+					<div
+						className={`rounded bg-wustomers-neutral-light p-3 md:p-6 ${
+							isPreviousData ? 'opacity-50' : ''
+						}`}
+					>
 						<h3 className='text-center text-lg font-bold text-[#444444] lg:text-left'>
 							Campaign Data
 						</h3>
@@ -72,7 +90,7 @@ const CampaignMetrics = () => {
 									No. of Visits
 								</p>
 								<h4 className='bg-white px-9 py-11 text-center text-5xl font-medium text-wustomers-neutral-dark'>
-									30
+									{data?.userCampignmetrics.total_visit}
 								</h4>
 							</li>
 							<li className='flex-auto overflow-hidden rounded'>
@@ -80,7 +98,7 @@ const CampaignMetrics = () => {
 									No. of Contact
 								</p>
 								<h4 className='bg-white px-9 py-11 text-center text-5xl font-medium text-wustomers-neutral-dark'>
-									40
+									{data?.userCampignmetrics.total_contact}
 								</h4>
 							</li>
 							<li className='flex-auto overflow-hidden rounded'>
@@ -88,7 +106,7 @@ const CampaignMetrics = () => {
 									Contact Rate
 								</p>
 								<h4 className='bg-white px-9 py-11 text-center text-5xl font-medium text-wustomers-neutral-dark'>
-									2.5
+									{data?.userCampignmetrics.conversion_rate}
 								</h4>
 							</li>
 						</ul>

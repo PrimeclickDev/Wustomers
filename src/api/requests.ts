@@ -1,12 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { getAccessToken, removeAccessToken } from 'utils/storage'
 
-// const pageUrl = new URL(window.location.href)
-
 export const baseURL = 'https://stage.wustomers.com/api/v1'
-// import.meta.env.MODE === 'development'
-// 	? 'https://jsonplaceholder.typicode.com'
-// 	: ''
 
 export const instance = axios.create({
 	baseURL,
