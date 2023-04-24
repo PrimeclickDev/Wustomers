@@ -199,7 +199,7 @@ export const CampaignMetricsTable = () => {
 									</div>
 								</td>
 								<td className='px-6 py-4'>
-									{data.budget.duration} days
+									{data.budget?.duration} days
 								</td>
 								<td className='px-6 py-4 text-center'>
 									{data.impression}
