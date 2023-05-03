@@ -53,7 +53,7 @@ export const CampaignMetricsTable = () => {
 				</form> */}
 
 				{/* filters */}
-				<div className='flex items-center gap-2 text-wustomers-gray'>
+				<div className='flex flex-wrap items-center justify-center gap-4 text-wustomers-gray md:gap-2'>
 					<button
 						type='button'
 						onClick={() => setFilterBy('all')}
@@ -144,118 +144,120 @@ export const CampaignMetricsTable = () => {
 				) : null}
 			</header>
 
-			<table className='table w-full whitespace-nowrap rounded bg-white text-left text-sm text-gray-500'>
-				<thead className='bg-wustomers-neutral-light'>
-					<tr className='table-row'>
-						{tableHeaders?.map(header => (
-							<th
-								key={header}
-								scope='col'
-								className='px-6 py-4 font-normal'
-							>
-								{header}
-							</th>
-						))}
-					</tr>
-				</thead>
+			<div className='overflow-x-auto'>
+				<table className='table w-full whitespace-nowrap rounded bg-white text-left text-sm text-gray-500'>
+					<thead className='bg-wustomers-neutral-light'>
+						<tr className='table-row'>
+							{tableHeaders?.map(header => (
+								<th
+									key={header}
+									scope='col'
+									className='px-6 py-4 font-normal'
+								>
+									{header}
+								</th>
+							))}
+						</tr>
+					</thead>
 
-				<tbody
-					className={`relative ${
-						isPreviousData
-							? 'cursor-not-allowed opacity-50 after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:text-xl after:content-["Loading..."]'
-							: ''
-					}`}
-				>
-					{data?.campaigns.data.length ? (
-						data?.campaigns.data?.map(data => (
-							<tr key={data.id}>
-								<td className='px-6 py-5 font-medium text-wustomers-main'>
-									{data.title}
-								</td>
-								<td className='px-6 py-4'>
-									{new Date(data.created_at).toLocaleDateString(
-										'default',
-										{
-											dateStyle: 'long',
-										}
-									)}
-								</td>
-								<td className='px-6 py-4'>
-									<div
-										className={`flex items-center gap-2 capitalize ${
-											statusTagClr[
-												data.campaign_status as keyof typeof statusTagClr
-											]
-										}`}
-									>
+					<tbody
+						className={`relative ${
+							isPreviousData
+								? 'cursor-not-allowed opacity-50 after:absolute after:top-1/2 after:left-1/2 after:-translate-y-1/2 after:-translate-x-1/2 after:text-xl after:content-["Loading..."]'
+								: ''
+						}`}
+					>
+						{data?.campaigns.data.length ? (
+							data?.campaigns.data?.map(data => (
+								<tr key={data.id}>
+									<td className='px-6 py-5 font-medium text-wustomers-main'>
+										{data.title}
+									</td>
+									<td className='px-6 py-4'>
+										{new Date(data.created_at).toLocaleDateString(
+											'default',
+											{
+												dateStyle: 'long',
+											}
+										)}
+									</td>
+									<td className='px-6 py-4'>
 										<div
-											className={`h-[11px] w-[11px] rounded-full ${
-												statusTagBg[
-													data.campaign_status as keyof typeof statusTagBg
+											className={`flex items-center gap-2 capitalize ${
+												statusTagClr[
+													data.campaign_status as keyof typeof statusTagClr
 												]
 											}`}
-										/>
-										{data.campaign_status}
-									</div>
-								</td>
-								<td className='px-6 py-4'>
-									{data.budget?.duration} days
-								</td>
-								<td className='px-6 py-4 text-center'>
-									{data.impression}
-								</td>
-								<td className='px-6 py-4 text-center'>
-									{data.conversion}
-								</td>
-								<td className='px-6 py-4 text-center'>
-									{data.conversion_rate}
-								</td>
-								<td className='px-6 py-4 text-right'>
-									<Popover.Root>
-										<Popover.Trigger asChild>
-											<button
-												aria-label='show more options'
-												className='text-primary flex w-max p-1 underline transition-all'
-											>
-												<MoreIcon />
-											</button>
-										</Popover.Trigger>
-										<Popover.Portal>
-											<Popover.Content
-												className='flex w-max flex-col rounded border border-gray-200 bg-white p-1 text-xs shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
-												sideOffset={5}
-											>
-												<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
-													Renew
+										>
+											<div
+												className={`h-[11px] w-[11px] rounded-full ${
+													statusTagBg[
+														data.campaign_status as keyof typeof statusTagBg
+													]
+												}`}
+											/>
+											{data.campaign_status}
+										</div>
+									</td>
+									<td className='px-6 py-4'>
+										{data.budget?.duration} days
+									</td>
+									<td className='px-6 py-4 text-center'>
+										{data.impression}
+									</td>
+									<td className='px-6 py-4 text-center'>
+										{data.conversion}
+									</td>
+									<td className='px-6 py-4 text-center'>
+										{data.conversion_rate}
+									</td>
+									<td className='px-6 py-4 text-right'>
+										<Popover.Root>
+											<Popover.Trigger asChild>
+												<button
+													aria-label='show more options'
+													className='text-primary flex w-max p-1 underline transition-all'
+												>
+													<MoreIcon />
 												</button>
-												<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
-													Delete
-												</button>
-												<Popover.Arrow className='fill-gray-300' />
-											</Popover.Content>
-										</Popover.Portal>
-									</Popover.Root>
+											</Popover.Trigger>
+											<Popover.Portal>
+												<Popover.Content
+													className='flex w-max flex-col rounded border border-gray-200 bg-white p-1 text-xs shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
+													sideOffset={5}
+												>
+													<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
+														Renew
+													</button>
+													<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
+														Delete
+													</button>
+													<Popover.Arrow className='fill-gray-300' />
+												</Popover.Content>
+											</Popover.Portal>
+										</Popover.Root>
 
-									{/* {openMenu === data.id ? (
+										{/* {openMenu === data.id ? (
 										<div className='bg-red-200 p-2'>
 											<p>hello</p>
 										</div>
 									) : null} */}
+									</td>
+								</tr>
+							))
+						) : (
+							<tr>
+								<td
+									colSpan={8}
+									className='px-6 py-4 text-center text-wustomers-gray'
+								>
+									You don&apos;t have any {filterBy} campaign(s)
 								</td>
 							</tr>
-						))
-					) : (
-						<tr>
-							<td
-								colSpan={8}
-								className='px-6 py-4 text-center text-wustomers-gray'
-							>
-								You don&apos;t have any {filterBy} campaign(s)
-							</td>
-						</tr>
-					)}
-				</tbody>
-			</table>
+						)}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	)
 }

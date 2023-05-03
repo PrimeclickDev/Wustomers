@@ -185,7 +185,7 @@ const InstagramPostsModal = ({
 			</div>
 
 			<div className='mt-4 flex flex-col items-center justify-between gap-2 md:flex-row'>
-				<p className='text-xs'>Showing: {posts?.data.length} posts</p>
+				<p className='text-xs'>Showing: {posts?.data?.length} posts</p>
 				<div className='flex w-full items-center gap-2 md:max-w-sm md:flex-row md:gap-5'>
 					<Button
 						text='Cancel'
