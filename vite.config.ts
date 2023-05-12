@@ -11,6 +11,7 @@ export default defineConfig({
 		tsconfigPaths(),
 		Markdown(),
 		svgr(),
+		// basicSsl(),
 		VitePWA({
 			registerType: 'autoUpdate',
 			injectRegister: 'auto',

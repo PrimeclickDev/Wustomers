@@ -8,6 +8,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				aeonik: "'Aeonik', 'sans-serif'",
+				figtree: "'Figtree', 'sans-serif'",
 			},
 			colors: {
 				'wustomers-blue': '#072AC8',
@@ -24,6 +25,9 @@ module.exports = {
 				'wustomers-neutral-light': '#F5F5F5',
 				'wustomers-primary-lighter': '#6A7FDE',
 				'wustomers-neutral-lighter': '#C1C1C1',
+			},
+			gridTemplateColumns: {
+				fluid: 'repeat(auto-fit, minmax(300px, 1fr))',
 			},
 			borderRadius: {
 				sx: '3px',

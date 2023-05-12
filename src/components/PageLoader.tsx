@@ -10,8 +10,8 @@ export const PageLoader = () => {
 					<div className='loader-inner'></div>
 				</div>
 			</div>
-			<p className='-mt-2 text-center text-sm uppercase tracking-widest text-gray-500'>
-				Loading
+			<p className='-mt-2 text-center text-sm font-bold uppercase tracking-widest text-gray-500'>
+				Loading...
 			</p>
 		</div>
 	)

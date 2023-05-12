@@ -6,6 +6,7 @@ import { ReactComponent as LeftChevron } from 'assets/icons/left-chevron.svg'
 import { ReactComponent as MoreIcon } from 'assets/icons/more.svg'
 import { ReactComponent as RightChevron } from 'assets/icons/right-chevron.svg'
 import { useSearchParamsState } from 'hooks/useSearchParamsState'
+import { Link } from 'react-router-dom'
 
 const tableHeaders = [
 	'Title',
@@ -34,6 +35,8 @@ const statusTagClr = {
 export const CampaignMetricsTable = () => {
 	const [filterBy, setFilterBy] = useSearchParamsState('filterBy', 'all')
 	const { data, isPreviousData } = useFetchCampaigns(filterBy)
+
+	console.log('meteric', data?.metrics)
 
 	return (
 		<div>
@@ -168,13 +171,13 @@ export const CampaignMetricsTable = () => {
 						}`}
 					>
 						{data?.campaigns.data.length ? (
-							data?.campaigns.data?.map(data => (
-								<tr key={data.id}>
+							data?.campaigns.data?.map(campaign => (
+								<tr key={campaign.id}>
 									<td className='px-6 py-5 font-medium text-wustomers-main'>
-										{data.title}
+										{campaign.title}
 									</td>
 									<td className='px-6 py-4'>
-										{new Date(data.created_at).toLocaleDateString(
+										{new Date(campaign.created_at).toLocaleDateString(
 											'default',
 											{
 												dateStyle: 'long',
@@ -185,31 +188,31 @@ export const CampaignMetricsTable = () => {
 										<div
 											className={`flex items-center gap-2 capitalize ${
 												statusTagClr[
-													data.campaign_status as keyof typeof statusTagClr
+													campaign.campaign_status as keyof typeof statusTagClr
 												]
 											}`}
 										>
 											<div
 												className={`h-[11px] w-[11px] rounded-full ${
 													statusTagBg[
-														data.campaign_status as keyof typeof statusTagBg
+														campaign.campaign_status as keyof typeof statusTagBg
 													]
 												}`}
 											/>
-											{data.campaign_status}
+											{campaign.campaign_status}
 										</div>
 									</td>
 									<td className='px-6 py-4'>
-										{data.budget?.duration} days
+										{campaign.budget?.duration} days
 									</td>
 									<td className='px-6 py-4 text-center'>
-										{data.impression}
+										{campaign.impression}
 									</td>
 									<td className='px-6 py-4 text-center'>
-										{data.conversion}
+										{campaign.conversion}
 									</td>
 									<td className='px-6 py-4 text-center'>
-										{data.conversion_rate}
+										{campaign.conversion_rate}
 									</td>
 									<td className='px-6 py-4 text-right'>
 										<Popover.Root>
@@ -229,6 +232,15 @@ export const CampaignMetricsTable = () => {
 													<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
 														Renew
 													</button>
+													{campaign.campaign_status === 'Active' &&
+													campaign.payment_status === 'Paid' ? (
+														<Link
+															to={`/campaign/${campaign.campaign_code}`}
+															className='inline-block rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'
+														>
+															View live
+														</Link>
+													) : null}
 													<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
 														Delete
 													</button>
@@ -236,12 +248,6 @@ export const CampaignMetricsTable = () => {
 												</Popover.Content>
 											</Popover.Portal>
 										</Popover.Root>
-
-										{/* {openMenu === data.id ? (
-										<div className='bg-red-200 p-2'>
-											<p>hello</p>
-										</div>
-									) : null} */}
 									</td>
 								</tr>
 							))

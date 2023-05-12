@@ -2,6 +2,7 @@ import { useConcurrentTransition } from 'hooks/useConcurrentTransition'
 import { AuthLayout } from 'layouts/AuthLayout'
 import { DashboardLayout } from 'layouts/DashboardLayout'
 import { WebsiteLayout } from 'layouts/WebsiteLayout'
+import CampaignWebsite from 'pages/campaign/CampaignWebsite'
 import AccountUpdate from 'pages/dashboard/AccountUpdate'
 import Auth from 'pages/dashboard/Auth'
 import CampaignMetrics from 'pages/dashboard/CampaignMetrics'
@@ -18,10 +19,8 @@ import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { getAccessToken } from 'utils/storage'
 
-// const Home = React.lazy(() => import('pages/website/Home'))
 const Pricing = React.lazy(() => import('pages/website/Pricing'))
 const Contact = React.lazy(() => import('pages/website/Contact'))
-// const Login = React.lazy(() => import('pages/website/Login'))
 const Signup = React.lazy(() => import('pages/website/Signup'))
 const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
 const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))
@@ -73,6 +72,7 @@ const App = () => {
 				<Route path='verify-email' element={<VerifyEmail />} />
 			</Route>
 
+			<Route path='campaign/:id' element={<CampaignWebsite />} />
 			<Route path='*' element={<NotFound />} />
 		</Routes>
 	)

@@ -19,10 +19,10 @@ export const PreviewModal = ({
 		<Modal
 			modalOpen={openModal}
 			closeModal={() => setOpenModal(false)}
-			className='h-[95%] max-w-screen-lg px-1'
+			className='h-[90%] max-w-[1280px] px-4'
 		>
 			<button
-				className='absolute top-3 right-0 bg-wustomers-blue p-1 text-white'
+				className='absolute top-1 right-1 z-50 bg-wustomers-blue p-1 text-white'
 				type='button'
 				onClick={() => setOpenModal(false)}
 			>

@@ -1,0 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@500;700;900&display=swap');
+
+.campaign-website-container {
+	@apply mx-auto w-full max-w-screen-xl p-3;
+}

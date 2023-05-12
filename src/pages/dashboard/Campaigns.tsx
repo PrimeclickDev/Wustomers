@@ -82,33 +82,6 @@ const Campaigns = () => {
 		})
 	}
 
-	const editCampaign = async (campaign: any) => {
-		const urls = [campaign.product_logo, campaign.background_image]
-		// fetch both image and get their blob
-		const allImage = await Promise.all(
-			urls.map(u => fetch(u).then(response => response.blob()))
-		)
-		// create a new data transfer object to add files into a filelist object
-		const first = new DataTransfer()
-		const fileOne = new File([allImage[0]], 'image.jpg', {
-			type: allImage[0].type,
-		})
-		first.items.add(fileOne)
-
-		const second = new DataTransfer()
-		const fileTwo = new File([allImage[1]], 'image.jpg', {
-			type: allImage[1].type,
-		})
-		second.items.add(fileTwo)
-		setCampaign({
-			...campaign,
-			product_logo: first.files,
-			background_image: second.files,
-		})
-		openModal()
-		// navigate('/campaigns/new')
-	}
-
 	return (
 		<>
 			<h2 className='text-3xl font-black'>My Campaigns</h2>
@@ -224,8 +197,12 @@ const Campaigns = () => {
 													type='button'
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 													onClick={() => {
-														const fakeCampaign = { ...campaign }
-														editCampaign(fakeCampaign)
+														const newCampaign = { ...campaign }
+														sessionStorage.setItem(
+															'campaign',
+															JSON.stringify(newCampaign)
+														)
+														openModal()
 													}}
 												>
 													Edit
@@ -253,7 +230,10 @@ const Campaigns = () => {
 					<li className='w-full justify-self-start'>
 						<button
 							type='button'
-							onClick={openModal}
+							onClick={() => {
+								sessionStorage.removeItem('campaign')
+								openModal()
+							}}
 							className='group inline-block w-full transition-colors'
 						>
 							<div className='grid h-[200px] place-items-center bg-white p-2'>

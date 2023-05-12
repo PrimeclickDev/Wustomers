@@ -15,31 +15,31 @@ import { HomeSection } from 'components/HomeSection'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { faqs } from 'utils/constants'
 
+const howitWorks = [
+	{
+		title: 'Create Account',
+		body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+		icon: <User />,
+	},
+	{
+		title: 'Build Landing page',
+		body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+		icon: <Monitor />,
+	},
+	{
+		title: 'Pay Google ads budget',
+		body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+		icon: <Money />,
+	},
+	{
+		title: 'Study metrics',
+		body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+		icon: <Activity />,
+	},
+]
+
 const Home = () => {
 	usePageTitle('Home')
-
-	const howitWorks = [
-		{
-			title: 'Create Account',
-			body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-			icon: <User />,
-		},
-		{
-			title: 'Build Landing page',
-			body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-			icon: <Monitor />,
-		},
-		{
-			title: 'Pay Google ads budget',
-			body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-			icon: <Money />,
-		},
-		{
-			title: 'Study metrics',
-			body: 'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-			icon: <Activity />,
-		},
-	]
 
 	return (
 		<main>
