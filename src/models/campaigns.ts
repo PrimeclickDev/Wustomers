@@ -41,7 +41,7 @@ export type Campaign = {
 	id: number
 	impression: number
 	conversion: number
-	conversion_rate: number
+	conversion_rate: string
 	campaign_code: string
 	amount: number
 	user_id: number
@@ -75,6 +75,7 @@ export type Campaign = {
 	resumed_at: any
 	created_at: string
 	updated_at: string
+	contact_link: string
 }
 
 export type Budget = {

@@ -193,14 +193,14 @@ export const CampaignSetupModal = ({
 							/>
 						</div>
 						<div>
-							<label className='flex flex-col items-center gap-2 text-center leading-none md:flex-row md:items-start md:gap-4'>
+							<label className='flex flex-col items-center gap-2 text-center leading-none md:flex-row md:items-start md:gap-4 md:text-left'>
 								<input
 									type='checkbox'
 									id='acceptTerms'
 									className='h-5 w-5 accent-wustomers-blue'
 									{...register('acceptTerms')}
 								/>
-								<span className='text-sm md:text-base'>
+								<span className='text-sm md:text-base md:leading-none'>
 									I agree to the terms and condition and 10% service
 									charge and all relevant taxes.
 								</span>

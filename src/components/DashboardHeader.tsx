@@ -32,7 +32,10 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 				</h1>
 			</Link>
 
-			<form className='relative hidden lg:block lg:flex-1'>
+			<form
+				className='relative hidden lg:block lg:flex-1'
+				onSubmit={e => e.preventDefault()}
+			>
 				<input
 					type='search'
 					name='search'

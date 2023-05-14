@@ -129,6 +129,19 @@ const Campaigns = () => {
 													Resume
 												</button>
 											) : null}
+											{campaign?.campaign_status === 'Completed' ? (
+												<button
+													onClick={() => {
+														setOpenConfirmationModal(true)
+														setCampaignId(campaign.campaign_code)
+														setAction('renew')
+													}}
+													type='button'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
+													Renew
+												</button>
+											) : null}
 											{campaign?.payment_status === 'Unpaid' &&
 											campaign?.campaign_status === 'Inactive' ? (
 												<button

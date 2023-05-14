@@ -41,7 +41,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 								<img
 									src={logo}
 									alt={`${campaign?.title} logo`}
-									width='150'
+									width='60'
 								/>
 							</div>
 						</section>

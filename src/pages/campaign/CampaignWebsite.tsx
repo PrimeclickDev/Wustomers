@@ -18,6 +18,20 @@ const Loader = () => {
 const CampaignWebsite = () => {
 	const params = useParams()
 	const { data: campaign, isLoading } = useFetchCampaign(params.id as string)
+	// const campaignAction = useCampaignAction()
+
+	// const onClick = () => {
+	// 	campaignAction.mutate(
+	// 		{
+	// 			campaignId: campaign?.campaign_code as string,
+	// 			action: 'contact',
+	// 		},
+	// 		{
+	// 			onSuccess: ({ data }) =>
+	// 				(window.location.href = data.data.contact_link),
+	// 		}
+	// 	)
+	// }
 
 	if (isLoading) {
 		return <Loader />
@@ -38,7 +52,8 @@ const CampaignWebsite = () => {
 							<img
 								src={campaign?.product_logo}
 								alt={`${campaign?.title} logo`}
-								width='30'
+								width='60'
+								className=''
 							/>
 						</div>
 					</section>
