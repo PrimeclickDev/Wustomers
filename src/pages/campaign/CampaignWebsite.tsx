@@ -189,7 +189,7 @@ const CampaignWebsite = () => {
 								href='https://wustomers.netlify.app/'
 								className='hover:underline'
 							>
-								Created by Wustomers
+								Created with Wustomers
 							</a>
 						</strong>
 						. All rights reserved.

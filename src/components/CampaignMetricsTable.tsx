@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import * as Popover from '@radix-ui/react-popover'
 import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as LeftChevron } from 'assets/icons/left-chevron.svg'
-import { ReactComponent as MoreIcon } from 'assets/icons/more.svg'
 import { ReactComponent as RightChevron } from 'assets/icons/right-chevron.svg'
 import { useSearchParamsState } from 'hooks/useSearchParamsState'
-import { Link } from 'react-router-dom'
 
 const tableHeaders = [
 	'Title',
-	'Date',
+	'Start Date',
+	'End Date',
 	'Status',
 	'Duration',
 	'Visits',
 	'Contact',
 	'Contact rate',
-	'Action',
+	// 'Action',
 ]
 
 const statusTagBg = {
@@ -42,18 +40,6 @@ export const CampaignMetricsTable = () => {
 		<div>
 			<header className='mt-6 flex flex-wrap items-center justify-center gap-4 bg-white py-3 px-3 text-sm md:justify-between md:px-5 xl:gap-0'>
 				<h3 className='text-lg font-medium'>Preview Campaign page</h3>
-				{/* <form className='relative w-full md:w-80'>
-					<input
-						type='search'
-						name='search'
-						id='search'
-						placeholder='Search page'
-						className='w-full border-2 border-[#B5BFEF] bg-wustomers-primary py-[6px] px-4 pr-10'
-					/>
-					<div className='absolute top-1/2 right-0 grid h-full w-9 -translate-y-1/2 place-items-center bg-[#B5BFEF] text-white'>
-						<SearchIcon />
-					</div>
-				</form> */}
 
 				{/* filters */}
 				<div className='flex flex-wrap items-center justify-center gap-4 text-wustomers-gray md:gap-2'>
@@ -177,12 +163,22 @@ export const CampaignMetricsTable = () => {
 										{campaign.title}
 									</td>
 									<td className='px-6 py-4'>
-										{new Date(campaign.created_at).toLocaleDateString(
-											'default',
-											{
-												dateStyle: 'long',
-											}
-										)}
+										{campaign.campaign_status === 'Inactive'
+											? '-'
+											: new Date(
+													campaign.start_date as string
+											  ).toLocaleDateString('default', {
+													dateStyle: 'long',
+											  })}
+									</td>
+									<td className='px-6 py-4'>
+										{campaign.campaign_status === 'Inactive'
+											? '-'
+											: new Date(
+													campaign.end_date as string
+											  ).toLocaleDateString('default', {
+													dateStyle: 'long',
+											  })}
 									</td>
 									<td className='px-6 py-4'>
 										<div
@@ -203,7 +199,13 @@ export const CampaignMetricsTable = () => {
 										</div>
 									</td>
 									<td className='px-6 py-4'>
-										{campaign.budget?.duration} days
+										{campaign.campaign_status === 'Inactive'
+											? '-'
+											: `${campaign.budget?.duration} ${
+													campaign.budget?.duration > 1
+														? 'days'
+														: 'day'
+											  }`}{' '}
 									</td>
 									<td className='px-6 py-4 text-center'>
 										{campaign.impression}
@@ -214,7 +216,7 @@ export const CampaignMetricsTable = () => {
 									<td className='px-6 py-4 text-center'>
 										{campaign.conversion_rate}
 									</td>
-									<td className='px-6 py-4 text-right'>
+									{/* <td className='px-6 py-4 text-right'>
 										<Popover.Root>
 											<Popover.Trigger asChild>
 												<button
@@ -232,23 +234,17 @@ export const CampaignMetricsTable = () => {
 													<button className='rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'>
 														Renew
 													</button>
-													{campaign.campaign_status === 'Active' &&
-													campaign.payment_status === 'Paid' ? (
-														<Link
-															to={`/campaign/${campaign.campaign_code}`}
-															className='inline-block rounded py-[6px] px-4 transition-colors hover:bg-wustomers-blue hover:text-white'
-														>
-															View live
-														</Link>
+													{campaign?.campaign_status !==
+													'Active' ? (
+														<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
+															Delete
+														</button>
 													) : null}
-													<button className='rounded py-[6px] px-4 transition-colors hover:bg-red-600 hover:text-white'>
-														Delete
-													</button>
 													<Popover.Arrow className='fill-gray-300' />
 												</Popover.Content>
 											</Popover.Portal>
 										</Popover.Root>
-									</td>
+									</td> */}
 								</tr>
 							))
 						) : (

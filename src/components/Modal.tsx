@@ -31,12 +31,6 @@ export const Modal = ({
 						className={`fixed top-1/2 left-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 animate-contentShow overflow-auto rounded-sx bg-white p-6 shadow-2xl focus:outline-none ${className}`}
 					>
 						{children}
-
-						{/* <Dialog.Close asChild>
-						<button className='IconButton' aria-label='Close'>
-							<CloseSquare />
-						</button>
-					</Dialog.Close> */}
 					</Dialog.Content>
 				</div>
 			</Dialog.Portal>

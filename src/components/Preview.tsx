@@ -204,7 +204,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 									href='https://wustomers.netlify.app/'
 									className='hover:underline'
 								>
-									Wustomers
+									Created with Wustomers
 								</a>
 							</strong>
 							. All rights reserved.

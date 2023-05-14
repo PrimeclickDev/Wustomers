@@ -1,7 +1,7 @@
+import { NewCampaignSchema } from 'components/NewCampaignModal'
 import { StepOneSchema } from 'components/NewCampaignStepOne'
 import { StepThreeSchema } from 'components/NewCampaignStepThree'
 import { StepTwoSchema } from 'components/NewCampaignStepTwo'
-import { NewCampaignSchema } from 'pages/dashboard/Campaigns'
 import { ResponseType } from './shared'
 
 type Social = {

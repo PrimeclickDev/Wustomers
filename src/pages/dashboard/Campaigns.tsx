@@ -1,35 +1,17 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import * as Popover from '@radix-ui/react-popover'
+import { useCampaignAction } from 'api/hooks/campaigns/useCampaignAction'
 import { useDeleteCampaign } from 'api/hooks/campaigns/useDeleteCampaign'
 import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as MoreIcon } from 'assets/icons/more-horizontal.svg'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
-import { Button } from 'components/Button'
 import { ConfirmationModal } from 'components/ConfirmationModal'
-import { ErrorMessage } from 'components/ErrorMessage'
-import { Modal } from 'components/Modal'
+import NewCampaignModal from 'components/NewCampaignModal'
 import { PreviewModal } from 'components/PreviewModal'
 import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
-import { campaignAtom } from 'store/atoms'
-import { z } from 'zod'
-
-const schema = z.object({
-	upload_option: z
-		.string({
-			invalid_type_error: 'To continue, select of the above upload options',
-		})
-		.min(1, { message: 'To continue, select of the above upload options' })
-		.trim(),
-})
-
-export type NewCampaignSchema = z.infer<typeof schema>
 
 const campaignStatus = {
 	Active: 'Active',
@@ -39,47 +21,36 @@ const campaignStatus = {
 
 const Campaigns = () => {
 	usePageTitle('Campaigns')
-	const navigate = useNavigate()
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isSubmitted, isValid },
-		reset,
-	} = useForm<NewCampaignSchema>({
-		defaultValues: {
-			upload_option: '',
-		},
-		resolver: zodResolver(schema),
-	})
+
 	const [isOpen, setIsOpen] = useState(false)
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
-	const [campaignId, setCampaignId] = useState(0)
+	const [campaignId, setCampaignId] = useState<string | number>()
 	const [openPreviewModal, setOpenPreviewModal] = useState(false)
-	const [campaignPreview, setcampaignPreview] = useState<Campaign | null>(null)
+	const [campaignPreview, setCampaignPreview] = useState<Campaign | null>(null)
+	const [action, setAction] = useState('')
 
-	const [, setCampaign] = useAtom(campaignAtom)
 	const { data, isLoading } = useFetchCampaigns('all')
 	const deleteCampaign = useDeleteCampaign()
+	const campaignAction = useCampaignAction()
 
-	const closeModal = () => setIsOpen(false)
-	const openModal = () => setIsOpen(true)
-
-	const onSubmit: SubmitHandler<NewCampaignSchema> = data => {
-		setCampaign(prev => ({ ...prev, ...data }))
-		if (data.upload_option === 'manual') {
-			navigate('/campaigns/new')
+	const performAction = () => {
+		if (action === 'delete') {
+			deleteCampaign.mutate(campaignId as number, {
+				onSuccess: () => setOpenConfirmationModal(false),
+			})
+			return
 		}
 
-		window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${
-			import.meta.env.VITE_IG_CLIENT_ID
-		}&redirect_uri=https://wustomers.netlify.app/auth&scope=user_profile,user_media&response_type=code`
-	}
-
-	const campaignDelete = () => {
-		deleteCampaign.mutate(campaignId, {
-			onSuccess: () => setOpenConfirmationModal(false),
-		})
+		campaignAction.mutate(
+			{
+				campaignId: campaignId as string,
+				action,
+			},
+			{
+				onSuccess: () => setOpenConfirmationModal(false),
+			}
+		)
 	}
 
 	return (
@@ -147,6 +118,11 @@ const Campaigns = () => {
 											{campaign?.payment_status === 'Paid' &&
 											campaign?.campaign_status === 'Paused' ? (
 												<button
+													onClick={() => {
+														setOpenConfirmationModal(true)
+														setCampaignId(campaign.campaign_code)
+														setAction('resume')
+													}}
 													type='button'
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 												>
@@ -166,18 +142,12 @@ const Campaigns = () => {
 													Activate
 												</button>
 											) : null}
-											{/* <Link
-												to='/campaigns-metrics'
-												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
-											>
-												Show metrics
-											</Link> */}
 											<button
 												type='button'
 												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 												onClick={() => {
 													setOpenPreviewModal(true)
-													setcampaignPreview(campaign)
+													setCampaignPreview(campaign)
 												}}
 											>
 												Preview
@@ -185,14 +155,20 @@ const Campaigns = () => {
 											{campaign?.payment_status === 'Paid' &&
 											campaign?.campaign_status === 'Active' ? (
 												<button
+													onClick={() => {
+														setOpenConfirmationModal(true)
+														setCampaignId(campaign.campaign_code)
+														setAction('pause')
+													}}
 													type='button'
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
 												>
 													Pause
 												</button>
 											) : null}
-											{campaign?.payment_status === 'Unpaid' &&
-											campaign?.campaign_status === 'Inactive' ? (
+											{(campaign?.payment_status === 'Unpaid' &&
+												campaign?.campaign_status === 'Inactive') ||
+											campaign?.campaign_status === 'Paused' ? (
 												<button
 													type='button'
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
@@ -202,7 +178,7 @@ const Campaigns = () => {
 															'campaign',
 															JSON.stringify(newCampaign)
 														)
-														openModal()
+														setIsOpen(true)
 													}}
 												>
 													Edit
@@ -214,6 +190,7 @@ const Campaigns = () => {
 													onClick={() => {
 														setOpenConfirmationModal(true)
 														setCampaignId(campaign.id)
+														setAction('delete')
 													}}
 													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-red-600 hover:text-white'
 												>
@@ -227,12 +204,13 @@ const Campaigns = () => {
 							</div>
 						</li>
 					))}
+
 					<li className='w-full justify-self-start'>
 						<button
 							type='button'
 							onClick={() => {
 								sessionStorage.removeItem('campaign')
-								openModal()
+								setIsOpen(true)
 							}}
 							className='group inline-block w-full transition-colors'
 						>
@@ -250,74 +228,21 @@ const Campaigns = () => {
 			)}
 
 			{/* setup new campaign modal */}
-			<Modal closeModal={closeModal} modalOpen={isOpen}>
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<header>
-						<h3 className='text-lg font-medium'>
-							How would you like to upload your campaign?
-						</h3>
-						<p className='text-sm italic'>NB: Pls select one</p>
-					</header>
-
-					<div className='mt-6 flex flex-col gap-3'>
-						{['manual', 'instagram'].map(value => (
-							<div key={value} className='flex items-center gap-3'>
-								<input
-									type='radio'
-									className='peer h-4 w-4 accent-wustomers-blue disabled:cursor-not-allowed disabled:opacity-50'
-									disabled={value === 'manual'}
-									id={value}
-									value={value}
-									{...register('upload_option')}
-								/>
-								<label
-									htmlFor={value}
-									className='peer-disabled:cursor-not-allowed peer-disabled:opacity-50'
-								>
-									{value === 'manual'
-										? 'Manual Upload'
-										: 'Connect to IG'}
-								</label>
-							</div>
-						))}
-						{errors.upload_option ? (
-							<ErrorMessage message={errors.upload_option.message} />
-						) : null}
-					</div>
-
-					<div className='flex items-center justify-between gap-4'>
-						<Button
-							text={isSubmitted && isValid ? <Spinner /> : 'Continue'}
-							disabled={isSubmitted && isValid}
-							variant='fill'
-							className='mt-6 w-full normal-case'
-							type='submit'
-						/>
-						<Button
-							text='Cancel'
-							variant='outline'
-							className='mt-6 w-full normal-case'
-							onClick={() => {
-								closeModal()
-								reset()
-							}}
-						/>
-					</div>
-				</form>
-			</Modal>
+			<NewCampaignModal setIsOpen={setIsOpen} isOpen={isOpen} />
 
 			{/* confirmation modal */}
 			<ConfirmationModal
-				mutationAction={deleteCampaign}
-				onClick={campaignDelete}
+				isLoading={deleteCampaign.isLoading || campaignAction.isLoading}
+				onClick={performAction}
 				openModal={openConfirmationModal}
 				setOpenModal={setOpenConfirmationModal}
-				title='Are you sure you delete campaign?'
+				title={`Are you sure you ${action} campaign?`}
+				btnText={`Yes, ${action}`}
 			/>
 
 			<CampaignSetupModal
 				openModal={openCampaginModal}
-				campaignId={campaignId}
+				campaignId={campaignId as number}
 				closeModal={() => setOpenCampaginModal(false)}
 			/>
 

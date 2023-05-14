@@ -1,28 +1,24 @@
-import { UseMutationResult } from '@tanstack/react-query'
-import { AxiosResponse } from 'axios'
 import React from 'react'
 import { Button } from './Button'
 import { Modal } from './Modal'
+import { Spinner } from './Spinner'
 
 type ConfirmationModalProps = {
 	openModal: boolean
 	setOpenModal: React.Dispatch<React.SetStateAction<boolean>>
-	mutationAction: UseMutationResult<
-		AxiosResponse<any, any>,
-		unknown,
-		number,
-		unknown
-	>
+	isLoading: boolean
 	onClick: () => void
 	title: string
+	btnText: string
 }
 
 export const ConfirmationModal = ({
 	openModal,
 	setOpenModal,
-	mutationAction,
+	isLoading,
 	onClick,
 	title,
+	btnText,
 }: ConfirmationModalProps) => {
 	return (
 		<Modal modalOpen={openModal} closeModal={() => setOpenModal(false)}>
@@ -33,14 +29,12 @@ export const ConfirmationModal = ({
 					<Button
 						variant='outline'
 						onClick={() => setOpenModal(false)}
-						text='No, Cancel'
+						text='No, cancel'
 						className='px-8 normal-case hover:shadow-none'
 					/>
 					<Button
-						disabled={mutationAction.isLoading}
-						text={
-							mutationAction.isLoading ? 'Deleting...' : 'Yes, Delete'
-						}
+						disabled={isLoading}
+						text={isLoading ? <Spinner /> : `${btnText}`}
 						variant='fill'
 						className='py-2 px-8 normal-case hover:shadow-none'
 						onClick={onClick}

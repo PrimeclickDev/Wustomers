@@ -7,10 +7,10 @@ export const getCampaignsMetrics = async (
 	filterBy?: string
 ): Promise<AxiosResponse<Metrics>> => {
 	return await instance.get(
-		`${baseURL}/campaign/metric${filterBy ? `/${filterBy}` : '/overview'}`
+		`${baseURL}/metric${filterBy ? `/${filterBy}` : '/overview'}`
 	)
 }
-// https://stage.wustomers.com/api/v1/campaign/metric/past_one_month
+
 export const useFetchMetrics = (filterBy?: string) => {
 	return useQuery({
 		queryKey: ['campaign-metrics', filterBy],
