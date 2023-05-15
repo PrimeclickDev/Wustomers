@@ -23,9 +23,7 @@ const Overview = () => {
 
 			<ul className='mt-10 grid gap-4 lg:grid-cols-3 lg:gap-10'>
 				<li className='relative rounded-sx border-l-[10px] border-l-wustomers-blue-other bg-wustomers-blue p-5 text-white'>
-					<p className='text-lg font-medium'>
-						Total No. of Campaign pages
-					</p>
+					<p className='text-lg font-medium'>Total No. of Campaigns</p>
 					<h3 className='py-4 text-6xl font-bold'>
 						{data?.userCampignmetrics.total_campaign.toLocaleString()}
 					</h3>
@@ -35,7 +33,7 @@ const Overview = () => {
 					</div>
 				</li>
 				<li className='relative rounded-sx border-l-[10px] border-l-wustomers-blue-other bg-wustomers-blue p-5 text-white'>
-					<p className='text-lg font-medium'>Total No. of Visits</p>
+					<p className='text-lg font-medium'>Total No. of Clicks</p>
 					<h3 className='py-4 text-6xl font-bold'>
 						{data?.userCampignmetrics.total_visit.toLocaleString()}
 					</h3>
@@ -45,7 +43,7 @@ const Overview = () => {
 					</div>
 				</li>
 				<li className='relative rounded-sx border-l-[10px] border-l-wustomers-blue-other bg-wustomers-blue p-5 text-white'>
-					<p className='text-lg font-medium'>Total No. of Contacts</p>
+					<p className='text-lg font-medium'>Total No. of Conversion</p>
 					<h3 className='py-4 text-6xl font-bold'>
 						{data?.userCampignmetrics.total_contact.toLocaleString()}
 					</h3>

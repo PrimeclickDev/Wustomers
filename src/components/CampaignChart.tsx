@@ -20,9 +20,9 @@ const CampaignChart = ({ height = 220 }) => {
 
 	const chartData = data?.campaigns.data.map(item => ({
 		name: item.title,
-		visits: item.impression,
-		contact: item.conversion,
-		contact_rate: parseInt(item.conversion_rate),
+		clicks: item.impression,
+		conversion: item.conversion,
+		conversion_rate: parseInt(item.conversion_rate),
 	}))
 
 	const CustomTooltip = ({
@@ -36,13 +36,13 @@ const CampaignChart = ({ height = 220 }) => {
 					<h3 className='font-bold text-neutral-800'>{label}</h3>
 					<ul className='pt-1'>
 						<li className='text-xs text-neutral-700'>
-							Visits: {payload[0].payload.visits}
+							Click: {payload[0].payload.clicks}
 						</li>
 						<li className='text-xs text-neutral-700'>
-							Contact: {payload[0].payload.contact}
+							Conversion: {payload[0].payload.conversion}
 						</li>
 						<li className='text-xs text-neutral-700'>
-							Contact rate: {payload[0].payload.contact_rate}%
+							Conversion rate: {payload[0].payload.conversion_rate}%
 						</li>
 					</ul>
 				</div>
@@ -63,9 +63,9 @@ const CampaignChart = ({ height = 220 }) => {
 				<XAxis dataKey='name' />
 				<YAxis />
 				<Tooltip content={<CustomTooltip />} />
-				<Bar dataKey='visits' fill='#1E96FC' />
-				<Bar dataKey='contact' fill='#203FCD' />
-				<Bar dataKey='contact_rate' fill='#FFC600' />
+				<Bar dataKey='clicks' fill='#1E96FC' />
+				<Bar dataKey='conversion' fill='#203FCD' />
+				<Bar dataKey='conversion_rate' fill='#FFC600' />
 			</BarChart>
 		</ResponsiveContainer>
 	)

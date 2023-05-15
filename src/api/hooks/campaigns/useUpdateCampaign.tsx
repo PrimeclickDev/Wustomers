@@ -18,7 +18,6 @@ export const updateCampaign = async (
 		payload.formdata,
 		{
 			headers: {
-				Accept: 'application/json',
 				'Content-Type': 'multipart/form-data',
 			},
 		}

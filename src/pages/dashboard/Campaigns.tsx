@@ -13,12 +13,6 @@ import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
 
-const campaignStatus = {
-	Active: 'Active',
-	Inactive: 'Inactive',
-	Paused: 'Paused',
-}
-
 const Campaigns = () => {
 	usePageTitle('Campaigns')
 
@@ -48,7 +42,12 @@ const Campaigns = () => {
 				action,
 			},
 			{
-				onSuccess: () => setOpenConfirmationModal(false),
+				onSuccess: ({ data }) => {
+					if (data.redirectUrl) {
+						window.location.href = data.redirectUrl
+					}
+					setOpenConfirmationModal(false)
+				},
 			}
 		)
 	}
@@ -69,6 +68,8 @@ const Campaigns = () => {
 									className={`h-3 w-3 rounded-full ${
 										campaign.campaign_status === 'Active'
 											? 'bg-[#24C97A]'
+											: campaign?.campaign_status === 'Completed'
+											? 'bg-green-900'
 											: 'bg-[rgba(255,0,0,0.9)]'
 									}`}
 								/>
@@ -76,14 +77,12 @@ const Campaigns = () => {
 									className={`text-sm font-medium ${
 										campaign.campaign_status === 'Active'
 											? 'text-[#24C97A]'
+											: campaign?.campaign_status === 'Completed'
+											? 'text-green-900'
 											: 'text-[rgba(255,0,0,0.9)]'
 									}`}
 								>
-									{
-										campaignStatus[
-											campaign?.campaign_status as keyof typeof campaignStatus
-										]
-									}
+									{campaign?.campaign_status}
 								</span>
 							</div>
 							<img

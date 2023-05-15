@@ -11,9 +11,9 @@ const tableHeaders = [
 	'End Date',
 	'Status',
 	'Duration',
-	'Visits',
-	'Contact',
-	'Contact rate',
+	'Clicks',
+	'Conversion',
+	'Conversion rate',
 	// 'Action',
 ]
 

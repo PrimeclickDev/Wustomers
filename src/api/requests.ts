@@ -15,7 +15,7 @@ instance.interceptors.request.use(
 	async config => {
 		const token = getAccessToken()
 		if (token) {
-			config.headers['Authorization'] = `Bearer ${token}`
+			config.headers.Authorization = `Bearer ${token}`
 		}
 
 		return config

@@ -35,6 +35,7 @@ export type Campaigns = {
 
 export interface CreateCampaign extends ResponseType {
 	data: Campaign
+	redirectUrl?: string
 }
 
 export type Campaign = {
