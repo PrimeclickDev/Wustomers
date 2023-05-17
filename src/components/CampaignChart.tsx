@@ -35,13 +35,13 @@ const CampaignChart = ({ height = 220 }) => {
 				<div className='rounded border border-neutral-300 bg-white py-2 px-4 shadow-2xl'>
 					<h3 className='font-bold text-neutral-800'>{label}</h3>
 					<ul className='pt-1'>
-						<li className='text-xs text-neutral-700'>
+						<li className='text-xs font-medium text-[#1E96FC]'>
 							Click: {payload[0].payload.clicks}
 						</li>
-						<li className='text-xs text-neutral-700'>
+						<li className='text-xs font-medium text-[#203FCD]'>
 							Conversion: {payload[0].payload.conversion}
 						</li>
-						<li className='text-xs text-neutral-700'>
+						<li className='text-xs font-medium text-[#FFC600]'>
 							Conversion rate: {payload[0].payload.conversion_rate}%
 						</li>
 					</ul>
