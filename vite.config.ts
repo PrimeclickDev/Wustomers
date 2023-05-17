@@ -1,3 +1,4 @@
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -11,7 +12,7 @@ export default defineConfig({
 		tsconfigPaths(),
 		Markdown(),
 		svgr(),
-		// basicSsl(),
+		basicSsl(),
 		VitePWA({
 			registerType: 'autoUpdate',
 			injectRegister: 'auto',
@@ -49,7 +50,7 @@ export default defineConfig({
 		}),
 	],
 	server: {
-		// https: true,
+		https: true,
 		port: 5174,
 	},
 })

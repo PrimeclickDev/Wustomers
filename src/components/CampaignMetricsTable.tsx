@@ -34,8 +34,6 @@ export const CampaignMetricsTable = () => {
 	const [filterBy, setFilterBy] = useSearchParamsState('filterBy', 'all')
 	const { data, isPreviousData } = useFetchCampaigns(filterBy)
 
-	console.log('meteric', data?.metrics)
-
 	return (
 		<div>
 			<header className='mt-6 flex flex-wrap items-center justify-center gap-4 bg-white py-3 px-3 text-sm md:justify-between md:px-5 xl:gap-0'>

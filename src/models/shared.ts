@@ -83,4 +83,6 @@ export type IGPost = {
 	media_url: string
 	caption: string
 	timestamp: Date
+	username?: string
+	// permalink: string
 }

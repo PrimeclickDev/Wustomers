@@ -10,7 +10,7 @@ export const useFetchIGPosts = () => {
 
 	const fetchUserIGPost = async () => {
 		const posts: AxiosResponse<IGPosts> = await axios.get(
-			`https://graph.instagram.com/me/media?limit=50&fields=id,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
+			`https://graph.instagram.com/me/media?limit=50&fields=id,username,media_type,media_url,caption,timestamp,permalink&access_token=${token?.access_token}`
 		)
 		setPosts(posts.data)
 	}

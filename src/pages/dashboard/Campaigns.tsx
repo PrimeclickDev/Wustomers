@@ -1,9 +1,11 @@
 import * as Popover from '@radix-ui/react-popover'
+import { useQueryClient } from '@tanstack/react-query'
 import { useCampaignAction } from 'api/hooks/campaigns/useCampaignAction'
 import { useDeleteCampaign } from 'api/hooks/campaigns/useDeleteCampaign'
 import { useFetchCampaigns } from 'api/hooks/campaigns/useFetchCampaigns'
 import { ReactComponent as MoreIcon } from 'assets/icons/more-horizontal.svg'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
+import { AxiosError } from 'axios'
 import { ConfirmationModal } from 'components/ConfirmationModal'
 import NewCampaignModal from 'components/NewCampaignModal'
 import { PreviewModal } from 'components/PreviewModal'
@@ -12,6 +14,7 @@ import { usePageTitle } from 'hooks/usePageTitle'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 const Campaigns = () => {
 	usePageTitle('Campaigns')
@@ -28,6 +31,7 @@ const Campaigns = () => {
 	const deleteCampaign = useDeleteCampaign()
 	const campaignAction = useCampaignAction()
 
+	const queryClient = useQueryClient()
 	const performAction = () => {
 		if (action === 'delete') {
 			deleteCampaign.mutate(campaignId as number, {
@@ -43,10 +47,18 @@ const Campaigns = () => {
 			},
 			{
 				onSuccess: ({ data }) => {
+					toast.success(data.message)
+					queryClient.invalidateQueries({ queryKey: ['campaigns', 'all'] })
 					if (data.redirectUrl) {
 						window.location.href = data.redirectUrl
 					}
 					setOpenConfirmationModal(false)
+				},
+				onError: error => {
+					if (error instanceof AxiosError) {
+						toast.error(error.response?.data.message)
+						console.error(error)
+					}
 				},
 			}
 		)

@@ -1,3 +1,4 @@
+import { useCampaignAction } from 'api/hooks/campaigns/useCampaignAction'
 import { useFetchCampaign } from 'api/hooks/campaigns/useFetchCamapign'
 import { Spinner } from 'components/Spinner'
 import { useParams } from 'react-router-dom'
@@ -18,20 +19,14 @@ const Loader = () => {
 const CampaignWebsite = () => {
 	const params = useParams()
 	const { data: campaign, isLoading } = useFetchCampaign(params.id as string)
-	// const campaignAction = useCampaignAction()
+	const campaignAction = useCampaignAction()
 
-	// const onClick = () => {
-	// 	campaignAction.mutate(
-	// 		{
-	// 			campaignId: campaign?.campaign_code as string,
-	// 			action: 'contact',
-	// 		},
-	// 		{
-	// 			onSuccess: ({ data }) =>
-	// 				(window.location.href = data.data.contact_link),
-	// 		}
-	// 	)
-	// }
+	const fetchContact = () => {
+		campaignAction.mutate({
+			campaignId: campaign?.campaign_code as string,
+			action: 'contact',
+		})
+	}
 
 	if (isLoading) {
 		return <Loader />
@@ -84,6 +79,7 @@ const CampaignWebsite = () => {
 							target='_blank'
 							rel='noopener noreferrer'
 							className='mx-auto mt-8 block w-max rounded bg-white px-12 py-[10px] transition-opacity hover:opacity-80'
+							onClick={fetchContact}
 						>
 							<span>{campaign?.button_text}</span>{' '}
 							<span aria-hidden='true'>&rarr;</span>

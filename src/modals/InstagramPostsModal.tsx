@@ -28,7 +28,7 @@ const InstagramPostsModal = ({
 	const matches = useMediaQuery('(min-width: 768px)')
 
 	const addPosts: SubmitHandler<FieldValues> = data => {
-		// map through data and remove properties with undefiend and false values
+		// map through data and remove properties with undefined and false values
 		for (const key in data) {
 			if (data[key] === undefined || data[key] === false) {
 				delete data[key]
@@ -60,6 +60,13 @@ const InstagramPostsModal = ({
 					<Close />
 				</button>
 			</header>
+
+			<h2 className='pt-2 text-sm'>
+				Instagram username:{' '}
+				<span className='font-bold text-wustomers-blue'>
+					{posts.data?.at(0)?.username}
+				</span>
+			</h2>
 
 			<div className='mt-5 text-sm'>
 				<div className='hidden items-center gap-4 border-b border-b-wustomers-dark-gray py-3 px-4 font-medium md:grid md:grid-cols-5'>

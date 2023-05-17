@@ -88,7 +88,6 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 		resolver: zodResolver(schema),
 	})
 	const { posts } = useFetchIGPosts()
-
 	const addBodyContent = watch('is_body_content')
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {

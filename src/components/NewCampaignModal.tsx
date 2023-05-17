@@ -49,7 +49,11 @@ const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 
 		window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${
 			import.meta.env.VITE_IG_CLIENT_ID
-		}&redirect_uri=https://wustomers.netlify.app/auth&scope=user_profile,user_media&response_type=code`
+		}&redirect_uri=${
+			import.meta.env.DEV
+				? import.meta.env.VITE_IG_DEV_REDIRECT_URL
+				: import.meta.env.VITE_iG_PROD_REDIRECT_URL
+		}&scope=user_profile,user_media&response_type=code`
 	}
 
 	return (
