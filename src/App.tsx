@@ -11,7 +11,6 @@ import NewCampaign from 'pages/dashboard/NewCampaign'
 import Notifications from 'pages/dashboard/Notifications'
 import Overview from 'pages/dashboard/Overview'
 import Settings from 'pages/dashboard/Settings'
-import Support from 'pages/dashboard/Support'
 import NotFound from 'pages/NotFound'
 import Home from 'pages/website/Home'
 import Login from 'pages/website/Login'
@@ -49,7 +48,7 @@ const App = () => {
 				<Route path='campaigns-metrics' element={<CampaignMetrics />} />
 				<Route path='account-update' element={<AccountUpdate />} />
 				<Route path='settings' element={<Settings />} />
-				<Route path='support' element={<Support />} />
+				{/* <Route path='support' element={<Support />} /> */}
 				<Route path='notifications' element={<Notifications />} />
 				<Route path='auth' element={<Auth />} />
 			</Route>

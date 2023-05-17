@@ -4,8 +4,6 @@ import { ReactComponent as CampaignMetricFillIcon } from 'assets/icons/activity.
 import { ReactComponent as CampaignFillIcon } from 'assets/icons/campaigns-fill.svg'
 import { ReactComponent as CampaignIcon } from 'assets/icons/campaigns.svg'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
-import { ReactComponent as SupportFillIcon } from 'assets/icons/information-fill.svg'
-import { ReactComponent as SupportIcon } from 'assets/icons/information.svg'
 import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import { ReactComponent as OverviewFillIcon } from 'assets/icons/overview-fill.svg'
 import { ReactComponent as OverviewIcon } from 'assets/icons/overview.svg'
@@ -66,12 +64,12 @@ const dashboardNavs = [
 				icon: <SettingsIcon />,
 				activeIcon: <SettingsFillIcon />,
 			},
-			{
-				name: 'Support',
-				link: 'support',
-				icon: <SupportIcon />,
-				activeIcon: <SupportFillIcon />,
-			},
+			// {
+			// 	name: 'Support',
+			// 	link: 'support',
+			// 	icon: <SupportIcon />,
+			// 	activeIcon: <SupportFillIcon />,
+			// },
 		],
 	},
 ]
