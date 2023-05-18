@@ -8,6 +8,7 @@ type Social = {
 	title: string
 	image_url: string
 	posted_date: string
+	post_url: string
 }
 
 export interface CampaignFormData
@@ -104,6 +105,7 @@ export type SocialPost = {
 	title: string
 	posted_date: string
 	image_url: string
+	post_url: string
 	created_at: string
 	updated_at: string
 }

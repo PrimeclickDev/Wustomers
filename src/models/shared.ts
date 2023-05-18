@@ -84,5 +84,5 @@ export type IGPost = {
 	caption: string
 	timestamp: Date
 	username?: string
-	// permalink: string
+	permalink: string
 }

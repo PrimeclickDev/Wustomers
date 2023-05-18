@@ -11,56 +11,40 @@ import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
 import { Modal } from './Modal'
 
-const schema = z
-	.object({
-		office_address: z
-			.string({ required_error: 'Office address is required' })
-			.min(1, { message: 'Office address is required' })
-			.trim(),
-		phone: z
-			.string({ required_error: 'Phone number is required' })
-			.min(1, { message: 'Phone number is required' })
-			.min(11, { message: 'Phone number cannot be less than 11 characters' })
-			// .regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
-			// 	message: 'Please enter a valid phone number',
-			// })
-			.trim(),
-		email: z
-			.string({ required_error: 'Email address is required' })
-			.min(1, { message: 'Email address is required' })
-			.min(3, { message: 'Email address cannot be less than 3 characters' })
-			.email({ message: 'Please enter a valid email address' })
-			.trim(),
-		is_body_content: z.enum(['0', '1'], {
-			invalid_type_error: 'Please select one',
-			required_error: 'Add body content is required',
-		}),
-		body_heading: z
-			.string({ required_error: 'Body heading is required' })
-			.optional(),
-		body_description: z
-			.string({
-				required_error: 'Body description is required',
-			})
-			.optional(),
-	})
-	.superRefine((input, ctx) => {
-		if (input.is_body_content === '1' && input.body_heading === '') {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Body heading is required',
-				path: ['body_heading'],
-			})
-		}
-
-		if (input.is_body_content === '1' && input.body_description === '') {
-			ctx.addIssue({
-				code: z.ZodIssueCode.custom,
-				message: 'Body description is required',
-				path: ['body_description'],
-			})
-		}
-	})
+const schema = z.object({
+	office_address: z
+		.string({ required_error: 'Office address is required' })
+		.min(1, { message: 'Office address is required' })
+		.trim(),
+	phone: z
+		.string({ required_error: 'Phone number is required' })
+		.min(1, { message: 'Phone number is required' })
+		.min(11, { message: 'Phone number cannot be less than 11 characters' })
+		.max(11, { message: 'Phone number cannot be more than 11 characters' })
+		.regex(/^([0]{1}|\+?234)([7-9]{1})([0|1]{1})([\d]{1})([\d]{7})$/g, {
+			message: 'Please enter a valid phone number',
+		})
+		.trim(),
+	email: z
+		.string({ required_error: 'Email address is required' })
+		.min(1, { message: 'Email address is required' })
+		.min(5, { message: 'Email address cannot be less than 5 characters' })
+		.email({ message: 'Please enter a valid email address' })
+		.trim(),
+	body_heading: z
+		.string({ required_error: 'Body heading is required' })
+		.min(1, { message: 'Body heading is required' })
+		.trim(),
+	body_description: z
+		.string({
+			required_error: 'Body description is required',
+		})
+		.min(1, { message: 'Body description is required' })
+		.max(250, {
+			message: 'Body description cannot be greater than 250 characters',
+		})
+		.trim(),
+})
 
 export type StepTwoSchema = z.infer<typeof schema>
 
@@ -68,27 +52,21 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
 	const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
+	const { posts } = useFetchIGPosts()
 	const {
 		register,
 		handleSubmit,
-		watch,
 		formState: { errors },
 	} = useForm<StepTwoSchema>({
 		defaultValues: {
 			phone: campaign.phone ?? '',
 			office_address: campaign.office_address ?? '',
 			email: campaign.email ?? '',
-			is_body_content:
-				campaign.body_description && campaign.body_heading
-					? '1'
-					: undefined,
 			body_description: campaign.body_description ?? '',
 			body_heading: campaign.body_heading ?? '',
 		},
 		resolver: zodResolver(schema),
 	})
-	const { posts } = useFetchIGPosts()
-	const addBodyContent = watch('is_body_content')
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {
 		if (!campaign?.social_posts) {
@@ -110,82 +88,51 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				</h3>
 				<div className='bg-white px-3 py-6 md:py-12 md:px-9'>
 					<form className='flex flex-col gap-5'>
-						{/* Body content */}
 						<div className='grid gap-2 md:grid-cols-5'>
-							<p className='md:col-span-1'>Add body content:</p>
+							<label htmlFor='office_address' className='md:col-span-1'>
+								Body heading
+							</label>
 							<div className='flex flex-col gap-1 md:col-span-4'>
-								<div className='flex flex-col gap-3 text-wustomers-main md:flex-row md:items-center md:gap-16'>
-									{['0', '1'].map(value => (
-										<label
-											className='flex items-center gap-2 capitalize'
-											key={value}
-										>
-											<input
-												type='radio'
-												value={value}
-												{...register('is_body_content')}
-											/>
-											<span>
-												{value === '1'
-													? 'Yes, add body content'
-													: "No, don't add body content"}
-											</span>
-										</label>
-									))}
-								</div>
-								{errors.is_body_content ? (
+								<input
+									type='text'
+									id='body_heading'
+									placeholder='Body heading'
+									{...register('body_heading')}
+									className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+										errors.body_heading
+											? 'bg-red-50 ring-red-600'
+											: 'bg-wustomers-primary ring-wustomers-primary-light'
+									}`}
+								/>
+								{errors.body_heading ? (
 									<ErrorMessage
-										message={errors.is_body_content.message}
+										message={errors.body_heading.message}
 									/>
 								) : null}
 							</div>
 						</div>
-
-						{/* body header and body description */}
-						{addBodyContent === '1' ? (
-							<div className='grid gap-2 md:grid-cols-5'>
-								<p className='md:col-span-1'></p>
-								<div className='flex flex-col gap-4 text-sm md:col-span-4'>
-									<div className='flex flex-col gap-1 md:col-span-4'>
-										<input
-											type='text'
-											id='body_heading'
-											placeholder='Body heading'
-											{...register('body_heading')}
-											className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-												errors.body_heading
-													? 'bg-red-50 ring-red-600'
-													: 'bg-wustomers-primary ring-wustomers-primary-light'
-											}`}
-										/>
-										{errors.body_heading ? (
-											<ErrorMessage
-												message={errors.body_heading.message}
-											/>
-										) : null}
-									</div>
-
-									<div className='flex flex-col gap-1 md:col-span-4'>
-										<textarea
-											id='body_description'
-											{...register('body_description')}
-											placeholder='Body description'
-											className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-												errors.body_description
-													? 'bg-red-50 ring-red-600'
-													: 'bg-wustomers-primary ring-wustomers-primary-light'
-											}`}
-										/>
-										{errors.body_description ? (
-											<ErrorMessage
-												message={errors.body_description.message}
-											/>
-										) : null}
-									</div>
-								</div>
+						<div className='grid gap-2 md:grid-cols-5'>
+							<label htmlFor='office_address' className='md:col-span-1'>
+								Body description
+							</label>
+							<div className='flex flex-col gap-1 md:col-span-4'>
+								<textarea
+									id='body_description'
+									{...register('body_description')}
+									placeholder='Body description'
+									className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+										errors.body_description
+											? 'bg-red-50 ring-red-600'
+											: 'bg-wustomers-primary ring-wustomers-primary-light'
+									}`}
+								/>
+								{errors.body_description ? (
+									<ErrorMessage
+										message={errors.body_description.message}
+									/>
+								) : null}
 							</div>
-						) : null}
-
+						</div>
 						<div className='grid gap-2 md:grid-cols-5'>
 							<label htmlFor='office_address' className='md:col-span-1'>
 								Office address:

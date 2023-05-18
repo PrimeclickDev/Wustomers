@@ -45,6 +45,7 @@ const InstagramPostsModal = ({
 			posted_date: post?.timestamp
 				? format(new Date(post.timestamp), 'yyyy-MM-dd hh:mm:ss')
 				: '',
+			post_url: post?.permalink ? post.permalink : '',
 		}))
 
 		setCampaign(prev => ({ ...prev, social_posts: selectedPost }))
@@ -184,10 +185,6 @@ const InstagramPostsModal = ({
 					) : (
 						<p>You have no post on instagram</p>
 					)}
-
-					{/* {posts.paging?.next ? (
-						<button className='mt-4'>Next page</button>
-					) : null} */}
 				</>
 			</div>
 

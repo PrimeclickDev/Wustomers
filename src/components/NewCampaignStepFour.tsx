@@ -41,9 +41,6 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 		}
 
 		//@ts-expect-error
-		delete campaignToPublish.is_body_content
-
-		//@ts-expect-error
 		publishCampaign.mutate(campaignToPublish, {
 			onSuccess: ({ data }) => {
 				setOpenModal(true)

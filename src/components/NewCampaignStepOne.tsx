@@ -64,7 +64,7 @@ const schema = z.object({
 		.min(10, {
 			message: 'Subheading content cannot be less than 10 characters',
 		})
-		.max(245, {
+		.max(250, {
 			message: 'Subheading content cannot be greater than 250 characters',
 		})
 		.trim(),

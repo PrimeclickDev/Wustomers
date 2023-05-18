@@ -43,7 +43,15 @@ const CampaignWebsite = () => {
 				>
 					{/* header */}
 					<section className='px-4'>
-						<div className='campaign-website-container relative z-50 grid place-items-center rounded-md bg-white shadow-2xl'>
+						<div
+							className={`campaign-website-container relative z-50 flex items-center ${
+								campaign?.logo_position === 'left'
+									? 'justify-start'
+									: campaign?.logo_position === 'right'
+									? 'justify-end'
+									: 'justify-center'
+							} rounded-md bg-white shadow-2xl`}
+						>
 							<img
 								src={campaign?.product_logo}
 								alt={`${campaign?.title} logo`}
@@ -55,15 +63,12 @@ const CampaignWebsite = () => {
 
 					{/* hero */}
 					<section className='relative z-50 mx-auto flex h-[90%]  flex-col items-center justify-center px-3 text-center md:px-0'>
-						<div className='max-w-[90ch]'>
-							<p className='mx-auto w-max rounded bg-neutral-900 py-1 px-10 text-xs uppercase tracking-[3px] text-neutral-300'>
-								{campaign?.title}
-							</p>
-							<h2 className=' pt-1 text-5xl font-black text-white md:text-7xl'>
+						<div className='max-w-[80ch]'>
+							<h2 className='text-5xl font-black text-white'>
 								{campaign?.header_content}
 							</h2>
 						</div>
-						<p className='max-w-[60ch] pt-7 leading-relaxed text-gray-200'>
+						<p className='max-w-[60ch] pt-3 leading-relaxed text-gray-200'>
 							{campaign?.subheading_content}
 						</p>
 						<a
@@ -117,9 +122,20 @@ const CampaignWebsite = () => {
 										alt='post picture'
 										className='h-96 w-full rounded-lg object-cover'
 									/>
-									<p className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
-										{post.title}
-									</p>
+									<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
+										<p>{post.title}</p>
+										{post.post_url ? (
+											<a
+												href={post.post_url}
+												target='_blank'
+												rel='noopener noreferrer'
+												className='inline-block pt-3 text-right text-xs font-medium text-wustomers-blue transition-all hover:underline'
+											>
+												View on Instagram{' '}
+												<span aria-hidden='true'>&rarr;</span>
+											</a>
+										) : null}
+									</div>
 								</li>
 							))}
 						</ul>
