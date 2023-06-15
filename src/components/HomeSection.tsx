@@ -70,7 +70,7 @@ export const HomeSection = () => {
 									text='Get started'
 									type='submit'
 									variant='outline'
-									href='/signup'
+									href='/login'
 									className='mt-10 inline-block py-2.5 text-wustomers-blue md:mx-auto lg:mx-0'
 								/>
 							) : null}

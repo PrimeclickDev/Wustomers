@@ -33,7 +33,7 @@ const Pricing = () => {
 						type='button'
 						variant='fill'
 						text='Get started'
-						href='/signup'
+						href='/login'
 						className='py-2.5'
 					/>
 

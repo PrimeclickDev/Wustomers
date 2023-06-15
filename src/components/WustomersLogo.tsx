@@ -8,7 +8,7 @@ type WustomersLogoProps = {
 export const WustomersLogo = ({ className }: WustomersLogoProps) => {
 	return (
 		<Link
-			to='/'
+			to='/overview'
 			className={`flex items-center justify-center gap-2 text-2xl font-bold md:justify-start ${className}`}
 		>
 			<Logo width={36} height={32} />

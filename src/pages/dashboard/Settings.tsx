@@ -3,10 +3,8 @@ import { useFetchProfile } from 'api/hooks/profile/useFetchProfile'
 import { useUpdatePassword } from 'api/hooks/profile/useUpdatePassword'
 import { Button } from 'components/Button'
 import { Spinner } from 'components/Spinner'
-import { Switch } from 'components/Switch'
 import { TextField } from 'components/TextField'
 import { usePageTitle } from 'hooks/usePageTitle'
-import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -57,9 +55,6 @@ type ChangePasswordSchema = z.infer<typeof schema>
 
 const Settings = () => {
 	usePageTitle('Settings')
-	const [isNotificationOn, setIsNotificationOn] = useState<boolean>(
-		JSON.parse(localStorage.getItem('isWustomersNotificationOn') ?? 'false')
-	)
 	const { register, control, handleSubmit, reset } =
 		useForm<ChangePasswordSchema>({
 			resolver: zodResolver(schema),
@@ -84,13 +79,6 @@ const Settings = () => {
 			}
 		)
 	}
-
-	useEffect(() => {
-		localStorage.setItem(
-			'isWustomersNotificationOn',
-			JSON.stringify(isNotificationOn)
-		)
-	}, [isNotificationOn])
 
 	return (
 		<>
@@ -139,14 +127,6 @@ const Settings = () => {
 					</form>
 				</div>
 			) : null}
-
-			<div className='mt-10 flex items-center justify-between rounded-sx bg-white py-4 px-4 lg:px-7'>
-				<h4 className='text-lg'>Notifications</h4>
-				<Switch
-					enabled={isNotificationOn}
-					toggle={() => setIsNotificationOn(!isNotificationOn)}
-				/>
-			</div>
 		</>
 	)
 }

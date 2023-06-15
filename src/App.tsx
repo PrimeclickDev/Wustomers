@@ -20,7 +20,6 @@ import { getAccessToken } from 'utils/storage'
 
 const Pricing = React.lazy(() => import('pages/website/Pricing'))
 const Contact = React.lazy(() => import('pages/website/Contact'))
-const Signup = React.lazy(() => import('pages/website/Signup'))
 const ForgotPassword = React.lazy(() => import('pages/website/ForgotPassword'))
 const VerifyEmail = React.lazy(() => import('pages/website/VerifyEmail'))
 const ResetPassword = React.lazy(() => import('pages/website/ResetPassword'))
@@ -58,10 +57,6 @@ const App = () => {
 				<Route
 					path='login'
 					element={token ? <Navigate to='/overview' /> : <Login />}
-				/>
-				<Route
-					path='signup'
-					element={token ? <Navigate to='/overview' /> : <Signup />}
 				/>
 				<Route path='forgot-password' element={<ForgotPassword />} />
 				<Route

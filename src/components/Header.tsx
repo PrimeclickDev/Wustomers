@@ -63,21 +63,13 @@ export const Header = () => {
 						</nav>
 						<div className='flex items-center gap-5'>
 							{!token ? (
-								<>
-									<Button
-										text='Login'
-										type='button'
-										variant='outline'
-										href='/login'
-										className='text-wustomers-blue'
-									/>
-									<Button
-										text='Sign up'
-										type='button'
-										variant='fill'
-										href='/signup'
-									/>
-								</>
+								<Button
+									text='Login'
+									type='button'
+									variant='outline'
+									href='/login'
+									className='text-wustomers-blue'
+								/>
 							) : (
 								<Button
 									text='dashboard'
@@ -130,20 +122,12 @@ export const Header = () => {
 
 							<div className='mt-20 flex flex-col gap-4'>
 								{!token ? (
-									<>
-										<Button
-											text='Login'
-											variant='outline'
-											href='/login'
-											className='border-white py-3 text-center text-white'
-										/>
-										<Button
-											text='Sign up'
-											variant='fill'
-											href='/signup'
-											className='!bg-white py-3 text-center text-wustomers-blue hover:bg-white'
-										/>
-									</>
+									<Button
+										text='Login'
+										variant='outline'
+										href='/login'
+										className='border-white py-3 text-center text-white'
+									/>
 								) : (
 									<Button
 										text='Dashboard'
