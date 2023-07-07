@@ -74,7 +74,7 @@ export const CampaignMetricsTable = () => {
 					>
 						Inactive ({data?.metrics.inactive_campaigns.toLocaleString()})
 					</button>
-					<button
+					{/* <button
 						type='button'
 						onClick={() => setFilterBy('paused')}
 						className={`px-[6px] py-[2px] transition-colors ${
@@ -96,7 +96,7 @@ export const CampaignMetricsTable = () => {
 					>
 						Completed (
 						{data?.metrics.completed_campaigns.toLocaleString()})
-					</button>
+					</button> */}
 				</div>
 
 				{data?.campaigns?.meta ? (
