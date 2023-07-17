@@ -1,12 +1,12 @@
 import { ReactComponent as Eye } from 'assets/icons/eye.svg'
 import { ReactComponent as EyeSlash } from 'assets/icons/eyeslash.svg'
-import { useState } from 'react'
+import { HTMLInputTypeAttribute, useState } from 'react'
 import {
 	Control,
 	FieldValues,
 	Path,
-	useController,
 	UseFormRegister,
+	useController,
 } from 'react-hook-form'
 import { useLocation } from 'react-router-dom'
 import { ErrorMessage } from './ErrorMessage'
@@ -14,7 +14,7 @@ import { ErrorMessage } from './ErrorMessage'
 interface TextFieldProps<T extends FieldValues>
 	extends React.ComponentPropsWithoutRef<'input'> {
 	label?: React.ReactNode
-	type: string
+	type: HTMLInputTypeAttribute | 'textarea'
 	name: Path<T>
 	className?: string
 	register: UseFormRegister<T>
@@ -42,7 +42,7 @@ export const TextField = <T extends FieldValues>({
 	})
 
 	return (
-		<div className={`flex flex-col gap-1 ${className}`}>
+		<div className={`flex flex-col ${className}`}>
 			<label htmlFor={name} className='text-base capitalize md:text-lg'>
 				{label}
 			</label>
@@ -52,20 +52,36 @@ export const TextField = <T extends FieldValues>({
 						{prefixIcon}
 					</div>
 				) : null}
-				<input
-					type={togglePassword ? 'text' : type}
-					{...register(name)}
-					name={name}
-					id={name}
-					className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-						type === 'password' && 'pr-14'
-					} ${prefixIcon && 'pl-12'} ${
-						error
-							? 'bg-red-50 ring-red-600'
-							: 'bg-wustomers-primary ring-wustomers-primary-light'
-					}`}
-					{...inputProps}
-				/>
+
+				{type === 'textarea' ? (
+					// @ts-expect-error try to include textarea in extends
+					<textarea
+						id={name}
+						{...register(name)}
+						className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-3 ring-[1.5px] ${
+							error
+								? 'bg-red-50 ring-red-600'
+								: 'bg-wustomers-primary ring-wustomers-primary-light'
+						}`}
+						{...inputProps}
+					/>
+				) : (
+					<input
+						type={togglePassword ? 'text' : type}
+						{...register(name)}
+						name={name}
+						id={name}
+						className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
+							type === 'password' && 'pr-14'
+						} ${prefixIcon && 'pl-12'} ${
+							error
+								? 'bg-red-50 ring-red-600'
+								: 'bg-wustomers-primary ring-wustomers-primary-light'
+						}`}
+						{...inputProps}
+					/>
+				)}
+
 				{type === 'password' ? (
 					<button
 						onClick={() => setTogglePassword(!togglePassword)}

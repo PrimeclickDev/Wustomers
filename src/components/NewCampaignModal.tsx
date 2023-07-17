@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useAtom } from 'jotai'
 import React from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
@@ -11,12 +11,9 @@ import { Modal } from './Modal'
 import { Spinner } from './Spinner'
 
 const schema = z.object({
-	upload_option: z
-		.string({
-			invalid_type_error: 'To continue, select of the above upload options',
-		})
-		.min(1, { message: 'To continue, select of the above upload options' })
-		.trim(),
+	upload_option: z.enum(['manual', 'instagram'], {
+		required_error: 'To continue please select one',
+	}),
 })
 
 export type NewCampaignSchema = z.infer<typeof schema>
@@ -29,6 +26,7 @@ type NewCampaignModalProps = {
 const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 	const [, setCampaign] = useAtom(campaignAtom)
 	const navigate = useNavigate()
+	const [_, setSearchParams] = useSearchParams()
 	const {
 		register,
 		handleSubmit,
@@ -36,7 +34,7 @@ const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 		reset,
 	} = useForm<NewCampaignSchema>({
 		defaultValues: {
-			upload_option: '',
+			upload_option: undefined,
 		},
 		resolver: zodResolver(schema),
 	})
@@ -44,7 +42,9 @@ const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 	const onSubmit: SubmitHandler<NewCampaignSchema> = data => {
 		setCampaign(prev => ({ ...prev, ...data }))
 		if (data.upload_option === 'manual') {
-			navigate('/campaigns/new')
+			setSearchParams({ type: 'manual' })
+			navigate(`/auth`)
+			return
 		}
 
 		window.location.href = `https://api.instagram.com/oauth/authorize?client_id=${
@@ -72,7 +72,7 @@ const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 							<input
 								type='radio'
 								className='peer h-4 w-4 accent-wustomers-blue disabled:cursor-not-allowed disabled:opacity-50'
-								disabled={value === 'manual'}
+								disabled={value === 'instagram'}
 								id={value}
 								value={value}
 								{...register('upload_option')}

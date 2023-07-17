@@ -7,10 +7,11 @@ import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
 import { ErrorMessage } from './ErrorMessage'
+import { TextField } from './TextField'
 
 const logoPositions = ['left', 'center', 'right']
+export const allowedExtension = ['image/jpeg', 'image/jpg', 'image/png']
 
-const allowedExtension = ['image/jpeg', 'image/jpg', 'image/png']
 const schema = z.object({
 	title: z
 		.string({ required_error: 'Campaign title is required' })
@@ -70,13 +71,13 @@ const schema = z.object({
 		.trim(),
 	background_image: z
 		.instanceof(FileList, {
-			message: 'Please select an image file not more than 300kb',
+			message: 'Please select an image file not more than 1.5mb',
 		})
 		.superRefine((val, ctx) => {
 			if (val.length === 0) {
 				ctx.addIssue({
 					code: z.ZodIssueCode.custom,
-					message: 'Please select an image file not more than 300kb',
+					message: 'Please select an image file not more than 1.5mb',
 				})
 			}
 			if (val[0]?.size > 1500000) {
@@ -109,10 +110,12 @@ export type StepOneSchema = z.infer<typeof schema>
 export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 	const navigate = useNavigate()
 	const [campaign, setCampaign] = useAtom(campaignAtom)
+
 	const {
 		handleSubmit,
 		register,
 		watch,
+		control,
 		formState: { errors },
 	} = useForm<StepOneSchema>({
 		defaultValues: {
@@ -136,32 +139,28 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 		nextStep?.()
 	}
 
+	// useEffect(() => {
+	// 	getSavedCampaign()
+	// }, [])
+
 	return (
 		<section className='mt-10 flex flex-col'>
 			<h3 className='bg-wustomers-neutral-light p-3 font-medium md:px-9'>
 				Above the fold section:
 			</h3>
-			<form className='flex flex-col gap-5 bg-white px-3 py-6 md:py-12 md:px-9'>
+			<form className='flex flex-col gap-4 bg-white px-3 py-6 md:py-12 md:px-9'>
 				{/* campaign title */}
 				<div className='grid gap-2 md:grid-cols-5'>
 					<label htmlFor='title' className='md:col-span-1'>
 						Campaign title:
 					</label>
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<input
-							type='text'
-							id='title'
-							{...register('title')}
-							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.title
-									? 'bg-red-50 ring-red-600'
-									: 'bg-wustomers-primary ring-wustomers-primary-light'
-							}`}
-						/>
-						{errors.title ? (
-							<ErrorMessage message={errors.title.message} />
-						) : null}
-					</div>
+					<TextField
+						control={control}
+						name='title'
+						register={register}
+						type='text'
+						className='md:col-span-4'
+					/>
 				</div>
 
 				{/* product logo */}
@@ -248,21 +247,13 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					<label htmlFor='header_content' className='md:col-span-1'>
 						Header content:
 					</label>
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<input
-							type='text'
-							id='header_content'
-							{...register('header_content')}
-							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.header_content
-									? 'bg-red-50 ring-red-600'
-									: 'bg-wustomers-primary ring-wustomers-primary-light'
-							}`}
-						/>
-						{errors.header_content ? (
-							<ErrorMessage message={errors.header_content.message} />
-						) : null}
-					</div>
+					<TextField
+						control={control}
+						name='header_content'
+						register={register}
+						type='text'
+						className='md:col-span-4'
+					/>
 				</div>
 
 				{/* subheading content */}
@@ -270,22 +261,13 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					<label htmlFor='subheading' className='md:col-span-1'>
 						Subheading content:
 					</label>
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<textarea
-							id='header'
-							{...register('subheading_content')}
-							className={`h-32 w-full resize-none appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.subheading_content
-									? 'bg-red-50 ring-red-600'
-									: 'bg-wustomers-primary ring-wustomers-primary-light'
-							}`}
-						/>
-						{errors.subheading_content ? (
-							<ErrorMessage
-								message={errors.subheading_content.message}
-							/>
-						) : null}
-					</div>
+					<TextField
+						control={control}
+						name='subheading_content'
+						register={register}
+						type='textarea'
+						className='md:col-span-4'
+					/>
 				</div>
 
 				{/* bg image */}
@@ -329,21 +311,13 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 					<label htmlFor='button_text' className='md:col-span-1'>
 						Button text:
 					</label>
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<input
-							type='text'
-							id='button_text'
-							{...register('button_text')}
-							className={`w-full appearance-none rounded-sm px-4 py-2.5 ring-[1.5px] ${
-								errors.button_text
-									? 'bg-red-50 ring-red-600'
-									: 'bg-wustomers-primary ring-wustomers-primary-light'
-							}`}
-						/>
-						{errors.button_text ? (
-							<ErrorMessage message={errors.button_text.message} />
-						) : null}
-					</div>
+					<TextField
+						control={control}
+						name='button_text'
+						register={register}
+						type='text'
+						className='md:col-span-4'
+					/>
 				</div>
 			</form>
 

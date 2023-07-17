@@ -4,11 +4,11 @@ import { StepThreeSchema } from 'components/NewCampaignStepThree'
 import { StepTwoSchema } from 'components/NewCampaignStepTwo'
 import { ResponseType } from './shared'
 
-type Social = {
+export type Social = {
 	title: string
-	image_url: string
+	image_url: string | FileList
 	posted_date: string
-	post_url: string
+	post_url?: string
 }
 
 export interface CampaignFormData

@@ -122,7 +122,11 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 										key={index}
 									>
 										<img
-											src={post.image_url}
+											src={
+												typeof post.image_url === 'string'
+													? post.image_url
+													: URL.createObjectURL(post.image_url[0])
+											}
 											alt='post picture'
 											className='h-96 w-full rounded-lg object-cover'
 										/>

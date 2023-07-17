@@ -10,7 +10,7 @@ import { useAtom } from 'jotai'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
 import { CampaignProps } from 'models/shared'
 import { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { campaignAtom, paymentModalType } from 'store/atoms'
 import { Button } from './Button'
 import { Modal } from './Modal'
@@ -20,6 +20,7 @@ import { Spinner } from './Spinner'
 export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const navigate = useNavigate()
 	const [campaign] = useAtom(campaignAtom)
+	const [searchParams] = useSearchParams()
 	const [activeView, setActiveView] = useState('desktop')
 	const [campaignId, setCampaignId] = useState(0)
 	const [openModal, setOpenModal] = useState(false)
@@ -36,11 +37,17 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			...campaign,
 			product_logo: Object.values(campaign.product_logo)[0],
 			background_image: Object.values(campaign.background_image)[0],
-			upload_option: campaign.upload_option ?? 'instagram',
-			upload_option_link: campaign.upload_option ?? 'instagram',
+			upload_option: campaign.upload_option ?? searchParams.get('type'),
+			upload_option_link: campaign.upload_option ?? searchParams.get('type'),
+			social_posts: campaign.social_posts.map(post => {
+				return {
+					...post,
+					image_url: Object.values(post.image_url)[0],
+				}
+			}),
 		}
 
-		//@ts-expect-error
+		// @ts-expect-error
 		publishCampaign.mutate(campaignToPublish, {
 			onSuccess: ({ data }) => {
 				setOpenModal(true)
@@ -54,8 +61,8 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			...campaign,
 			product_logo: Object.values(campaign.product_logo)[0],
 			background_image: Object.values(campaign.background_image)[0],
-			upload_option: campaign.upload_option ?? 'instagram',
-			upload_option_link: campaign.upload_option ?? 'instagram',
+			upload_option: campaign.upload_option ?? searchParams.get('type'),
+			upload_option_link: campaign.upload_option ?? searchParams.get('type'),
 		}
 
 		updateCampaign.mutate(
@@ -85,7 +92,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 
 	return (
 		<>
-			<section className='mt-10 flex flex-col'>
+			<section className='mt-10 flex flex-col bg-white p-2'>
 				<header className='flex items-center justify-between bg-wustomers-neutral-light p-3 font-medium md:px-9'>
 					<h3>Preview Campaign:</h3>
 
@@ -126,43 +133,12 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 						</div>
 					</div>
 				</header>
-				<div className='flex flex-col gap-6 bg-white px-3 py-6 md:py-12 md:px-9'>
-					<Preview
-						activeView={activeView}
-						campaign={campaign}
-						ref={previewRef}
-					/>
 
-					{/* switch */}
-					{/* <label className='relative mt-10 inline-flex cursor-pointer items-center'>
-						<input
-							type='checkbox'
-							value=''
-							className='peer sr-only'
-							checked={changeMode}
-							onChange={() => setChangeMode(!changeMode)}
-						/>
-						<div className='flex h-[50px] w-[180px] items-center'>
-							<span
-								className={`grid h-full place-items-center bg-wustomers-blue px-4 transition-all ${
-									changeMode ? '-translate-x-0' : 'translate-x-[125px]'
-								}`}
-							>
-								{changeMode ? <SunIcon /> : <MoonIcon />}
-							</span>
-							<span
-								className={`grid h-full w-full place-items-center px-5 transition-all ${
-									changeMode
-										? 'translate-x-0 bg-wustomers-primary'
-										: 'translate-x-[-55px] bg-wustomers-main text-white'
-								}`}
-							>
-								{changeMode ? 'Light mode' : 'Dark mode'}
-							</span>
-						</div>
-						<span className='sr-only'>toggle theme</span>
-					</label> */}
-				</div>
+				<Preview
+					activeView={activeView}
+					campaign={campaign}
+					ref={previewRef}
+				/>
 
 				<div className='mt-3 flex flex-col gap-4 md:flex-row md:items-center md:self-end'>
 					<Button
