@@ -58,7 +58,7 @@ export const AuthLayout = () => {
 				<section className='relative col-span-3 flex flex-col bg-wustomers-blue-light px-5 py-7 lg:sticky lg:top-0 lg:right-0 lg:h-screen lg:self-start lg:py-10 lg:px-28 lg:pt-16'>
 					<WustomersLogo className='text-white' to='/' />
 
-					<AuthBgTop className='absolute top-0 right-0' />
+					<AuthBgTop className='absolute top-0 right-0 hidden lg:block' />
 
 					{changePageIllustration()}
 
@@ -66,7 +66,7 @@ export const AuthLayout = () => {
 						Keep track of your campaigns with little or no effort
 					</p>
 
-					<AuthBgBottom className='absolute bottom-0 left-0' />
+					<AuthBgBottom className='absolute bottom-0 left-0 hidden lg:block' />
 				</section>
 				<section className='col-span-2 py-10 px-3 md:my-20 md:px-10 lg:px-3 xl:px-0 xl:py-0 xl:pr-32'>
 					<Suspense fallback={<PageLoader />}>
