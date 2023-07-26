@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 
 type WustomersLogoProps = {
 	className: string
+	to?: string
 }
 
-export const WustomersLogo = ({ className }: WustomersLogoProps) => {
+export const WustomersLogo = ({ className, to }: WustomersLogoProps) => {
 	return (
 		<Link
-			to='/overview'
+			to={to ?? '/overview'}
 			className={`flex items-center justify-center gap-2 text-2xl font-bold md:justify-start ${className}`}
 		>
 			<Logo width={36} height={32} />

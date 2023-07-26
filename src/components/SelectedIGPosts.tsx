@@ -16,7 +16,7 @@ export const SelectedIGPosts = ({ socialPosts }: SelectedIGPostsProps) => {
 							key={post.posted_date}
 						>
 							<img
-								src={post.image_url}
+								src={post.image_url as string}
 								alt='woman walkign to a store'
 								width={72}
 								height={72}
