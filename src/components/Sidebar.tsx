@@ -4,6 +4,8 @@ import { ReactComponent as CampaignMetricFillIcon } from 'assets/icons/activity.
 import { ReactComponent as CampaignFillIcon } from 'assets/icons/campaigns-fill.svg'
 import { ReactComponent as CampaignIcon } from 'assets/icons/campaigns.svg'
 import { ReactComponent as Close } from 'assets/icons/close-square.svg'
+import { ReactComponent as FileFillIcon } from 'assets/icons/file-fill.svg'
+import { ReactComponent as FileIcon } from 'assets/icons/file.svg'
 import { ReactComponent as LogoutIcon } from 'assets/icons/logout.svg'
 import { ReactComponent as OverviewFillIcon } from 'assets/icons/overview-fill.svg'
 import { ReactComponent as OverviewIcon } from 'assets/icons/overview.svg'
@@ -46,6 +48,12 @@ const dashboardNavs = [
 				link: 'campaigns-metrics',
 				icon: <CampaignMetricIcon />,
 				activeIcon: <CampaignMetricFillIcon width={20} height={20} />,
+			},
+			{
+				name: 'Data submission',
+				link: 'data-submission',
+				icon: <FileIcon />,
+				activeIcon: <FileFillIcon width={20} height={20} />,
 			},
 			{
 				name: 'Account update',
@@ -113,7 +121,7 @@ export const Sidebar = ({ isOpen, setIsOpen }: SidebarProps) => {
 									'mt-10 border-t border-t-wustomers-dark-gray pt-2'
 								}`}
 							>
-								<ul className='flex flex-col gap-2'>
+								<ul className='flex flex-col gap-1'>
 									{nav.routes.map(route => (
 										<li key={route.name}>
 											<NavLink

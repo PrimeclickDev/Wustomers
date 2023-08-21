@@ -7,7 +7,7 @@ import { ResponseType } from './shared'
 export type Social = {
 	title: string
 	image_url: string | FileList
-	posted_date: string
+	posted_date: string | null
 	post_url?: string
 }
 
@@ -19,6 +19,7 @@ export interface CampaignFormData
 	social_posts: Social[]
 	contact_option_medium?: string
 	id?: number
+	form_field: any
 }
 
 export interface AllCampaigns extends ResponseType {
@@ -77,6 +78,7 @@ export type Campaign = {
 	resumed_at: any
 	created_at: string
 	updated_at: string
+	campaignFormRequirement?: any
 	contact_link: string
 }
 

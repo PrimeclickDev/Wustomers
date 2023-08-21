@@ -37,14 +37,44 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			...campaign,
 			product_logo: Object.values(campaign.product_logo)[0],
 			background_image: Object.values(campaign.background_image)[0],
-			upload_option: campaign.upload_option ?? searchParams.get('type'),
-			upload_option_link: campaign.upload_option ?? searchParams.get('type'),
+			upload_option: searchParams.get('type'),
+			upload_option_link: searchParams.get('type'),
 			social_posts: campaign.social_posts.map(post => {
 				return {
 					...post,
 					image_url: Object.values(post.image_url)[0],
 				}
 			}),
+			contact_option_link:
+				// check if "campaign.contact_option" is an array
+				Array.isArray(campaign.contact_option_link)
+					? campaign.contact_option_link.join(',')
+					: campaign.contact_option_link,
+			form_field:
+				campaign.contact_option === 'form'
+					? [
+							{
+								full_name: campaign.contact_option_link.includes(
+									'full_name'
+								)
+									? 1
+									: 0,
+								email: campaign.contact_option_link.includes('email')
+									? 1
+									: 0,
+								phone_number: campaign.contact_option_link.includes(
+									'phone_number'
+								)
+									? 1
+									: 0,
+								location: campaign.contact_option_link.includes(
+									'location'
+								)
+									? 1
+									: 0,
+							},
+					  ]
+					: null,
 		}
 
 		// @ts-expect-error
@@ -61,9 +91,47 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 			...campaign,
 			product_logo: Object.values(campaign.product_logo)[0],
 			background_image: Object.values(campaign.background_image)[0],
-			upload_option: campaign.upload_option ?? searchParams.get('type'),
-			upload_option_link: campaign.upload_option ?? searchParams.get('type'),
+			upload_option: searchParams.get('type'),
+			upload_option_link: searchParams.get('type'),
+			social_posts: campaign.social_posts.map(post => {
+				return {
+					...post,
+					image_url: Object.values(post.image_url)[0],
+				}
+			}),
+			contact_option_link:
+				// check if "campaign.contact_option" is an array
+				Array.isArray(campaign.contact_option_link)
+					? campaign.contact_option_link.join(',')
+					: campaign.contact_option_link,
+			form_field:
+				campaign.contact_option === 'form'
+					? [
+							{
+								full_name: campaign.contact_option_link.includes(
+									'full_name'
+								)
+									? 1
+									: 0,
+								email: campaign.contact_option_link.includes('email')
+									? 1
+									: 0,
+								phone_number: campaign.contact_option_link.includes(
+									'phone_number'
+								)
+									? 1
+									: 0,
+								location: campaign.contact_option_link.includes(
+									'location'
+								)
+									? 1
+									: 0,
+							},
+					  ]
+					: null,
 		}
+
+		console.log('campaign to update', campaignToUpdate)
 
 		updateCampaign.mutate(
 			{

@@ -2,15 +2,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
 import { useAtom } from 'jotai'
 import { CampaignProps } from 'models/shared'
-import {
-	SubmitHandler,
-	useFieldArray,
-	useForm,
-	useWatch,
-} from 'react-hook-form'
+import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form'
 import { campaignAtom } from 'store/atoms'
 import { z } from 'zod'
 import { Button } from './Button'
+import { CampaignContact } from './CampaignContact'
 import { ErrorMessage } from './ErrorMessage'
 
 const schema = z.object({
@@ -43,14 +39,18 @@ const schema = z.object({
 			})
 		)
 		.default([]),
-	contact_option: z.enum(['whatsapp', 'email', 'instagram', 'phone'], {
+	contact_option: z.enum(['whatsapp', 'email', 'form', 'instagram', 'phone'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Contact option is required',
 	}),
-	contact_option_link: z
-		.string({ required_error: 'Please fill this field' })
-		.min(1, { message: 'Please fill this field' })
-		.trim(),
+	contact_option_link: z.union([
+		z.string().min(1, 'This fieldis required'),
+		z
+			.array(z.string())
+			.nonempty(
+				'You must select at least one field to be added to the form'
+			),
+	]),
 	is_button_sticky: z.enum(['0', '1'], {
 		invalid_type_error: 'Please select one',
 		required_error: 'Button sticky option is required',
@@ -58,14 +58,6 @@ const schema = z.object({
 })
 
 export type StepThreeSchema = z.infer<typeof schema>
-
-const contactOptions = ['whatsapp', 'email', 'instagram', 'phone']
-const option = {
-	whatsapp: 'Whatsapp number',
-	email: 'Email address',
-	instagram: 'Instagram username',
-	phone: 'Phone number',
-}
 
 export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 	const [campaign, setCampaign] = useAtom(campaignAtom)
@@ -87,10 +79,6 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		},
 		resolver: zodResolver(schema),
 		shouldUnregister: true,
-	})
-	const contactOption = useWatch({
-		control,
-		name: 'contact_option',
 	})
 
 	const { fields, append } = useFieldArray({
@@ -231,55 +219,11 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 				) : null}
 
 				{/* contact option */}
-				<div className='grid gap-2 md:grid-cols-5'>
-					<p className='md:col-span-1'>Contact option:</p>
-
-					<div className='flex flex-col gap-1 md:col-span-4'>
-						<div>
-							<div className='flex flex-col gap-3 md:flex-row md:items-center md:gap-10'>
-								{contactOptions.map(option => (
-									<label
-										key={option}
-										className='flex items-center gap-2 capitalize'
-									>
-										<input
-											type='radio'
-											value={option}
-											{...register('contact_option')}
-										/>
-										<span>{option}</span>
-									</label>
-								))}
-							</div>
-							{errors.contact_option ? (
-								<ErrorMessage message={errors.contact_option.message} />
-							) : null}
-						</div>
-
-						{/* show this depending on what was selected */}
-						{contactOption ? (
-							<div className='mt-2 flex w-full flex-col gap-1 bg-[#EAEAEA] py-3 px-2 md:flex-row md:items-center md:gap-5 md:px-5'>
-								<label htmlFor='input'>{option[contactOption]}</label>
-								<div className='flex flex-1 flex-col'>
-									<input
-										type='text'
-										{...register('contact_option_link')}
-										className={`appearance-none rounded-sm bg-white px-4 py-2 ${
-											errors?.contact_option_link
-												? 'bg-red-50 ring-[1.5px] ring-red-600'
-												: 'bg-white'
-										}`}
-									/>
-									{errors.contact_option_link ? (
-										<ErrorMessage
-											message={errors.contact_option_link.message}
-										/>
-									) : null}
-								</div>
-							</div>
-						) : null}
-					</div>
-				</div>
+				<CampaignContact
+					register={register}
+					control={control}
+					errors={errors}
+				/>
 
 				{/* button sticky option */}
 				<div className='grid gap-2 md:grid-cols-5'>

@@ -49,14 +49,18 @@ export const ManualUploadForm = ({
 							register={register}
 							type='textarea'
 							placeholder='Enter post'
-							// className='md:col-span-4'
 						/>
 
 						<div>
 							{post[index]?.image_url?.length ? (
 								<img
 									// @ts-expect-error string is nsot assignable to blob | media source
-									src={URL.createObjectURL(post[index].image_url[0])}
+									src={
+										typeof post[index]?.image_url === 'string'
+											? post[index].image_url
+											: // @ts-expect-error string is nsot assignable to blob | media source
+											  URL.createObjectURL(post[index].image_url[0])
+									}
 									alt='post'
 									className='h-32 w-max object-cover'
 								/>

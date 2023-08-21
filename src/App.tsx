@@ -7,6 +7,7 @@ import AccountUpdate from 'pages/dashboard/AccountUpdate'
 import Auth from 'pages/dashboard/Auth'
 import CampaignMetrics from 'pages/dashboard/CampaignMetrics'
 import Campaigns from 'pages/dashboard/Campaigns'
+import DataSubmission from 'pages/dashboard/DataSubmission'
 import NewCampaign from 'pages/dashboard/NewCampaign'
 import Notifications from 'pages/dashboard/Notifications'
 import Overview from 'pages/dashboard/Overview'
@@ -45,6 +46,7 @@ const App = () => {
 					<Route path='new' element={<NewCampaign />} />
 				</Route>
 				<Route path='campaigns-metrics' element={<CampaignMetrics />} />
+				<Route path='data-submission' element={<DataSubmission />} />
 				<Route path='account-update' element={<AccountUpdate />} />
 				<Route path='settings' element={<Settings />} />
 				{/* <Route path='support' element={<Support />} /> */}

@@ -51,7 +51,10 @@ const schema = z.object({
 			title: z.string().min(1, { message: 'Post is required' }).max(250, {
 				message: 'Post cannot be more than 250 characters',
 			}),
-			posted_date: z.string().default(new Date().toJSON().slice(0, 10)),
+			posted_date: z
+				.string()
+				.default(new Date().toJSON().slice(0, 10))
+				.nullable(),
 			image_url: z
 				.instanceof(FileList, {
 					message: 'Please select an image file not more than 1.5mb',
@@ -94,7 +97,12 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	// const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
 	// const { posts } = useFetchIGPosts()
-	const { register, control, handleSubmit } = useForm<StepTwoSchema>({
+	const {
+		register,
+		control,
+		formState: { errors },
+		handleSubmit,
+	} = useForm<StepTwoSchema>({
 		defaultValues: {
 			phone: campaign.phone ?? '',
 			office_address: campaign.office_address ?? '',
@@ -105,12 +113,14 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 				{
 					title: '',
 					image_url: undefined,
-					// posted_date: `${date.getFullYear()}-${date.}`,
+					// posted_date: '',
 				},
 			],
 		},
 		resolver: zodResolver(schema),
 	})
+
+	console.log('errors', errors)
 
 	const [searchParams] = useSearchParams()
 	const type = searchParams.get('type')

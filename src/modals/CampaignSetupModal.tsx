@@ -93,7 +93,7 @@ export const CampaignSetupModal = ({
 			<Modal
 				modalOpen={openModal}
 				closeModal={closeModal}
-				className='max-w-lg p-0'
+				className='!max-w-lg p-0'
 			>
 				<header className='flex items-center justify-between gap-2 bg-[#EAEAEA] px-6 py-3'>
 					<h3 className='text-2xl font-black'>

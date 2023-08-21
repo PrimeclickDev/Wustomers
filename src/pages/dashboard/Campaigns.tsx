@@ -8,12 +8,11 @@ import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
 import { AxiosError } from 'axios'
 import { ConfirmationModal } from 'components/ConfirmationModal'
 import NewCampaignModal from 'components/NewCampaignModal'
-import { PreviewModal } from 'components/PreviewModal'
 import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
-import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 const Campaigns = () => {
@@ -23,8 +22,6 @@ const Campaigns = () => {
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
 	const [campaignId, setCampaignId] = useState<string | number>()
-	const [openPreviewModal, setOpenPreviewModal] = useState(false)
-	const [campaignPreview, setCampaignPreview] = useState<Campaign | null>(null)
 	const [action, setAction] = useState('')
 
 	const { data, isLoading } = useFetchCampaigns('all')
@@ -126,20 +123,6 @@ const Campaigns = () => {
 											className='flex w-max flex-col rounded border border-gray-200 bg-white p-1 text-xs shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade'
 											sideOffset={5}
 										>
-											{campaign?.payment_status === 'Paid' &&
-											campaign?.campaign_status === 'Paused' ? (
-												<button
-													onClick={() => {
-														setOpenConfirmationModal(true)
-														setCampaignId(campaign.campaign_code)
-														setAction('resume')
-													}}
-													type='button'
-													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
-												>
-													Resume
-												</button>
-											) : null}
 											{campaign?.campaign_status === 'Completed' ? (
 												<button
 													onClick={() => {
@@ -166,30 +149,15 @@ const Campaigns = () => {
 													Activate
 												</button>
 											) : null}
-											<button
-												type='button'
+											<Link
+												to={`/campaign/${campaign.campaign_code}`}
+												rel='noopener noreferrer'
+												target='_blank'
 												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
-												onClick={() => {
-													setOpenPreviewModal(true)
-													setCampaignPreview(campaign)
-												}}
 											>
 												Preview
-											</button>
-											{campaign?.payment_status === 'Paid' &&
-											campaign?.campaign_status === 'Active' ? (
-												<button
-													onClick={() => {
-														setOpenConfirmationModal(true)
-														setCampaignId(campaign.campaign_code)
-														setAction('pause')
-													}}
-													type='button'
-													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
-												>
-													Pause
-												</button>
-											) : null}
+											</Link>
+
 											{(campaign?.payment_status === 'Unpaid' &&
 												campaign?.campaign_status === 'Inactive') ||
 											campaign?.campaign_status === 'Paused' ? (
@@ -268,12 +236,6 @@ const Campaigns = () => {
 				openModal={openCampaginModal}
 				campaignId={campaignId as number}
 				closeModal={() => setOpenCampaginModal(false)}
-			/>
-
-			<PreviewModal
-				openModal={openPreviewModal}
-				setOpenModal={setOpenPreviewModal}
-				campaign={campaignPreview}
 			/>
 		</>
 	)

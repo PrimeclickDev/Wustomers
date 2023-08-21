@@ -1,3 +1,4 @@
+import { useFetchNotifications } from 'api/hooks/notifications/useFetchNotifications'
 import { ReactComponent as Logo } from 'assets/icons/logo.svg'
 import { ReactComponent as Menu } from 'assets/icons/menu.svg'
 import { ReactComponent as NotificationIcon } from 'assets/icons/notification.svg'
@@ -9,6 +10,8 @@ type DashboardHeaderProps = {
 }
 
 export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
+	const { data: notifications } = useFetchNotifications()
+
 	return (
 		<div className='flex items-center justify-between bg-white px-4 py-3 lg:gap-44 lg:px-10'>
 			{/* for mobile view */}
@@ -49,7 +52,7 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 				<NavLink
 					to='notifications'
 					className={({ isActive }) =>
-						`grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-wustomers-blue hover:text-white ${
+						`relative grid h-10 w-10 place-items-center rounded-full transition-colors hover:bg-wustomers-blue hover:text-white ${
 							isActive
 								? 'bg-wustomers-blue text-white'
 								: 'bg-wustomers-primary'
@@ -57,6 +60,17 @@ export const DashboardHeader = ({ toggle }: DashboardHeaderProps) => {
 					}
 				>
 					<NotificationIcon />
+					{notifications &&
+					notifications.filter(notification => !notification.read_at)
+						.length ? (
+						<span className='absolute -top-1 right-0 grid h-4 w-4 place-items-center rounded-full bg-red-600 text-xs text-white'>
+							{
+								notifications.filter(
+									notification => !notification.read_at
+								).length
+							}
+						</span>
+					) : null}
 					<span className='sr-only'>notifications</span>
 				</NavLink>
 			</div>
