@@ -100,22 +100,24 @@ const Notifications = () => {
 						notifications?.map(notification => (
 							<li
 								key={notification.id}
-								className={`flex flex-col gap-3 border-b border-b-gray-200 px-3 py-3 transition-colors last-of-type:border-0 sm:flex-row sm:items-center sm:justify-between md:px-8 ${
-									notification.read_at
-										? 'bg-transparent'
-										: 'bg-gray-100'
-								}`}
+								className={`flex flex-col gap-3 border-b border-b-gray-200 px-3 py-3 transition-colors last-of-type:border-0 sm:flex-row sm:items-center sm:justify-between md:px-8`}
 							>
 								<div className='transition-colors'>
-									<h4 className='font-medium text-[#444444]'>
-										{notification.data?.message}
-									</h4>
-									<p className='text-xs text-wustomers-gray'>
-										{notification.type
-											.replace('App\\Notifications\\', '')
-											// this add space between words
-											.replace(/([a-z])([A-Z])/g, '$1 $2')}
-									</p>
+									{!notification.read_at ? (
+										<span className='h-10 w-1 rounded bg-wustomers-blue' />
+									) : null}
+
+									<div>
+										<h4 className='font-medium text-[#444444]'>
+											{notification.data?.message}
+										</h4>
+										<p className='text-xs text-wustomers-gray'>
+											{notification.type
+												.replace('App\\Notifications\\', '')
+												// this add space between words
+												.replace(/([a-z])([A-Z])/g, '$1 $2')}
+										</p>
+									</div>
 								</div>
 
 								<div className='flex items-center gap-3'>
