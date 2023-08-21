@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Social } from 'models/campaigns'
 
 type SelectedIGPostsProps = {
@@ -25,6 +26,7 @@ export const SelectedIGPosts = ({ socialPosts }: SelectedIGPostsProps) => {
 							<div className='flex flex-col gap-1'>
 								<p className='pt-1'>{post.title}</p>
 								<p className='text-xs italic'>
+									{/* @ts-ignore */}
 									{new Date(post.posted_date).toDateString()}
 								</p>
 							</div>

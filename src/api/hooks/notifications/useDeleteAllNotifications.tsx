@@ -4,7 +4,7 @@ import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 
 export const deleteAllNotifications = async () => {
-	return await instance.delete(`${baseURL}notification/delete/all`)
+	return await instance.delete(`${baseURL}/notification/delete/all`)
 }
 
 export const useDeleteAllNotifications = () => {
