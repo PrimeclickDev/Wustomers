@@ -8,9 +8,11 @@ import { ReactComponent as PlusCircleIcon } from 'assets/icons/plus-circle.svg'
 import { AxiosError } from 'axios'
 import { ConfirmationModal } from 'components/ConfirmationModal'
 import NewCampaignModal from 'components/NewCampaignModal'
+import { PreviewModal } from 'components/PreviewModal'
 import { Spinner } from 'components/Spinner'
 import { usePageTitle } from 'hooks/usePageTitle'
 import { CampaignSetupModal } from 'modals/CampaignSetupModal'
+import { Campaign } from 'models/campaigns'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -21,6 +23,8 @@ const Campaigns = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [openConfirmationModal, setOpenConfirmationModal] = useState(false)
 	const [openCampaginModal, setOpenCampaginModal] = useState(false)
+	const [openPreviewModal, setOpenPreviewModal] = useState(false)
+	const [campaignPreview, setCampaignPreview] = useState<Campaign | null>(null)
 	const [campaignId, setCampaignId] = useState<string | number>()
 	const [action, setAction] = useState('')
 
@@ -149,14 +153,26 @@ const Campaigns = () => {
 													Activate
 												</button>
 											) : null}
-											<Link
-												to={`/campaign/${campaign.campaign_code}`}
-												rel='noopener noreferrer'
-												target='_blank'
-												className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
-											>
-												Preview
-											</Link>
+											{campaign?.campaign_status === 'Active' ? (
+												<Link
+													to={`/campaign/${campaign.campaign_code.toLowerCase()}`}
+													rel='noopener noreferrer'
+													target='_blank'
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
+													Preview
+												</Link>
+											) : (
+												<button
+													onClick={() => {
+														setOpenPreviewModal(true)
+														setCampaignPreview(campaign)
+													}}
+													className='rounded py-[6px] px-4 text-left transition-colors hover:bg-wustomers-blue hover:text-white'
+												>
+													Preview
+												</button>
+											)}
 
 											{(campaign?.payment_status === 'Unpaid' &&
 												campaign?.campaign_status === 'Inactive') ||
@@ -230,6 +246,12 @@ const Campaigns = () => {
 				setOpenModal={setOpenConfirmationModal}
 				title={`Are you sure you ${action} campaign?`}
 				btnText={`Yes, ${action}`}
+			/>
+
+			<PreviewModal
+				openModal={openPreviewModal}
+				setOpenModal={setOpenPreviewModal}
+				campaign={campaignPreview}
 			/>
 
 			<CampaignSetupModal

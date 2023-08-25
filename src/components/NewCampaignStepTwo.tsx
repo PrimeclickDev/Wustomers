@@ -120,13 +120,11 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 		resolver: zodResolver(schema),
 	})
 
-	console.log('errors', errors)
-
 	const [searchParams] = useSearchParams()
 	const type = searchParams.get('type')
 
 	const onSubmit: SubmitHandler<StepTwoSchema> = data => {
-		console.log('two', data)
+		// console.log('two', data)
 		if (type === 'instagram' && !campaign?.social_posts) {
 			setNoPostError(true)
 			return

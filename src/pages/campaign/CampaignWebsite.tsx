@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { useCampaignContact } from 'api/hooks/campaign-website/useCampaignContact'
-import { usePageTitle } from 'hooks/usePageTitle'
 import 'styles/campaign-website.css'
 
 const Loader = () => {
@@ -28,7 +27,6 @@ const CampaignWebsite = () => {
 	const campaignAction = useCampaignAction()
 	const contact = useCampaignContact()
 
-	usePageTitle(`${campaign?.title} - Wustomers`)
 	const {
 		register,
 		formState: { errors },

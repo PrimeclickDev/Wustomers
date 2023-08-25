@@ -20,6 +20,7 @@ export interface CampaignFormData
 	contact_option_medium?: string
 	id?: number
 	form_field: any
+	campaignFormRequirement?: any
 }
 
 export interface AllCampaigns extends ResponseType {

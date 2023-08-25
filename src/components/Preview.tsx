@@ -1,8 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable react/display-name */
 import { CampaignFormData } from 'models/campaigns'
-import { forwardRef } from 'react'
+import { forwardRef, useState } from 'react'
 import 'styles/campaign-website.css'
+import { Modal } from './Modal'
 
 type PreviewProps = {
 	activeView: string
@@ -13,7 +14,7 @@ type Ref = HTMLIFrameElement
 
 export const Preview = forwardRef<Ref, PreviewProps>(
 	({ activeView, campaign }, ref) => {
-		// const [openModal, setOpenModal] = useState(false)
+		const [openModal, setOpenModal] = useState(false)
 		const logo =
 			typeof campaign?.product_logo === 'string'
 				? campaign?.product_logo
@@ -22,6 +23,9 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 			typeof campaign?.background_image === 'string'
 				? campaign?.background_image
 				: URL.createObjectURL(campaign?.background_image[0])
+
+		const campaignContactForm =
+			campaign.form_field?.at(0) ?? campaign.campaignFormRequirement
 
 		return (
 			<>
@@ -72,7 +76,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 									<button
 										className='mx-auto mt-8 block w-max rounded bg-white px-12 py-[10px] transition-opacity hover:opacity-80'
 										type='button'
-										// onClick={() => setOpenModal(true)}
+										onClick={() => setOpenModal(true)}
 									>
 										{campaign?.button_text}
 									</button>
@@ -249,12 +253,70 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						</div>
 					</footer>
 				</div>
-				{/*
+
 				<Modal modalOpen={openModal} closeModal={() => setOpenModal(false)}>
 					<form>
-						<input type="text" name="" id="" />
+						<h3 className='text-lg'>Contact:</h3>
+
+						<div className='mt-4 flex flex-col gap-3 text-sm'>
+							{campaignContactForm?.full_name ? (
+								<div className='flex flex-col gap-1'>
+									<label htmlFor='full_name'>Your full name</label>
+									<input
+										type='text'
+										id='full_name'
+										className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ring-wustomers-primary-light`}
+									/>
+								</div>
+							) : null}
+
+							{campaignContactForm?.email ? (
+								<div className='flex flex-col gap-1'>
+									<label htmlFor='email'>Your email address</label>
+									<input
+										type='email'
+										id='email'
+										className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ring-wustomers-primary-light`}
+									/>
+								</div>
+							) : null}
+
+							{campaignContactForm?.phone_number ? (
+								<div className='flex flex-col gap-1'>
+									<label htmlFor='phone_number'>
+										Your phone number
+									</label>
+									<input
+										type='text'
+										inputMode='numeric'
+										id='phone_number'
+										className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ring-wustomers-primary-light`}
+									/>
+								</div>
+							) : null}
+
+							{campaignContactForm?.location ? (
+								<div className='flex flex-col gap-1'>
+									<label htmlFor='location'>Your location</label>
+									<input
+										type='text'
+										required
+										id='location'
+										className={`w-full appearance-none rounded-sm bg-wustomers-primary px-4 py-2.5 ring-[1.5px] ring-wustomers-primary-light`}
+									/>
+								</div>
+							) : null}
+
+							<button
+								type='submit'
+								disabled
+								className='flex items-center justify-center rounded-sm bg-wustomers-blue px-11 py-2 font-medium uppercase tracking-wider text-white transition-all hover:scale-[1.01] hover:bg-wustomers-blue/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-wustomers-blue/20 disabled:hover:scale-100 disabled:hover:shadow-none lg:hover:shadow-xl lg:hover:shadow-wustomers-blue/20'
+							>
+								Submit
+							</button>
+						</div>
 					</form>
-				</Modal> */}
+				</Modal>
 			</>
 		)
 	}

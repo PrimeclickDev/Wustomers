@@ -102,7 +102,7 @@ const Notifications = () => {
 								key={notification.id}
 								className={`flex flex-col gap-3 border-b border-b-gray-200 px-3 py-3 transition-colors last-of-type:border-0 sm:flex-row sm:items-center sm:justify-between md:px-8`}
 							>
-								<div className='transition-colors'>
+								<div className='flex items-center gap-2 transition-colors'>
 									{!notification.read_at ? (
 										<span className='h-10 w-1 rounded bg-wustomers-blue' />
 									) : null}

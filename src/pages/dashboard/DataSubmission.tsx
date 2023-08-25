@@ -9,8 +9,6 @@ const DataSubmission = () => {
 	const { data, isLoading } = useFetchCampaignFormInfo({ page: 1 })
 	const { data: metrics } = useFetchMetrics()
 
-	console.log('data', data)
-
 	return (
 		<>
 			<h2 className='text-3xl font-black'>Data Submissions</h2>

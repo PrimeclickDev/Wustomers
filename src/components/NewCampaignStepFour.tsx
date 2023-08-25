@@ -32,6 +32,38 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 	const publishCampaign = useCreateCampaign()
 	const updateCampaign = useUpdateCampaign()
 
+	const previewCampaign = {
+		...campaign,
+		contact_option_link:
+			// check if "campaign.contact_option" is an array
+			Array.isArray(campaign.contact_option_link)
+				? campaign.contact_option_link.join(',')
+				: campaign.contact_option_link,
+		form_field:
+			campaign.contact_option === 'form'
+				? [
+						{
+							full_name: campaign.contact_option_link.includes(
+								'full_name'
+							)
+								? 1
+								: 0,
+							email: campaign.contact_option_link.includes('email')
+								? 1
+								: 0,
+							phone_number: campaign.contact_option_link.includes(
+								'phone_number'
+							)
+								? 1
+								: 0,
+							location: campaign.contact_option_link.includes('location')
+								? 1
+								: 0,
+						},
+				  ]
+				: null,
+	}
+
 	const onPublishCampaign = () => {
 		const campaignToPublish = {
 			...campaign,
@@ -131,8 +163,6 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 					: null,
 		}
 
-		console.log('campaign to update', campaignToUpdate)
-
 		updateCampaign.mutate(
 			{
 				//@ts-expect-error
@@ -204,7 +234,7 @@ export const NewCampaignStepFour = ({ prevStep }: CampaignProps) => {
 
 				<Preview
 					activeView={activeView}
-					campaign={campaign}
+					campaign={previewCampaign}
 					ref={previewRef}
 				/>
 

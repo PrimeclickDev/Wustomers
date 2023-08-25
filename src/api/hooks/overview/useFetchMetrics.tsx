@@ -17,7 +17,7 @@ export const useFetchMetrics = (filterBy?: string) => {
 		queryFn: () => getCampaignsMetrics(filterBy),
 		refetchOnMount: false,
 		keepPreviousData: true,
-		onError: error => console.log(error),
+		onError: error => console.error(error),
 		select: data => data.data.data,
 	})
 }

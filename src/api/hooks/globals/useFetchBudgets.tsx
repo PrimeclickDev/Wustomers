@@ -14,7 +14,7 @@ export const useFetchBudgets = () => {
 		cacheTime: Infinity,
 		staleTime: Infinity,
 		refetchOnMount: false,
-		onError: error => console.log(error),
+		onError: error => console.error(error),
 		select: data => data.data.data,
 	})
 }
