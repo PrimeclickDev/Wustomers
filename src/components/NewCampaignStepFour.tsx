@@ -15,10 +15,6 @@ import { MultiSelect } from './MultiSelect'
 import { Select, SelectItem } from './Select'
 import { TagsInput } from './TagsInput'
 
-const components = {
-	DropdownIndicator: null,
-}
-
 const schema = z.object({
 	country: z
 		.string({ required_error: 'Country is required' })

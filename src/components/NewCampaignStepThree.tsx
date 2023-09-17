@@ -23,9 +23,9 @@ const schema = z.object({
 					.min(5, {
 						message: 'Customer comment cannot be less than 5 characters',
 					})
-					.max(300, {
+					.max(250, {
 						message:
-							'Customer comment cannot be greater than 300 characters',
+							'Customer comment cannot be greater than 250 characters',
 					})
 					.trim(),
 				name: z

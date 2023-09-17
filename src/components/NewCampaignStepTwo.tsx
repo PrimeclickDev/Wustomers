@@ -42,8 +42,8 @@ const schema = z.object({
 			required_error: 'Body description is required',
 		})
 		.min(1, { message: 'Body description is required' })
-		.max(300, {
-			message: 'Body description cannot be greater than 300 characters',
+		.max(250, {
+			message: 'Body description cannot be greater than 250 characters',
 		})
 		.trim(),
 	social_posts: z.array(

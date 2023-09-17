@@ -246,10 +246,10 @@ export const CampaignSetupModal = ({
 								variant='fill'
 								text='Make payment'
 								className='normal-case'
-								// onClick={() => {
-								// 	window.location.href =
-								// 		setupCampaign.data?.data?.data?.redirecturl
-								// }}
+								onClick={() => {
+									window.location.href =
+										setupCampaign.data?.data?.data?.redirecturl
+								}}
 							/>
 							<Button
 								variant='outline'
