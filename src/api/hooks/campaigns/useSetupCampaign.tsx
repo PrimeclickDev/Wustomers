@@ -5,8 +5,7 @@ import { toast } from 'react-toastify'
 
 type SetupCampaignPayload = {
 	duration: number
-	budget: number
-	location: number
+	amount: number
 }
 
 export const setupCampaign = async (

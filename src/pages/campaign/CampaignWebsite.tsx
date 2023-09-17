@@ -5,6 +5,12 @@ import { Spinner } from 'components/Spinner'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
+import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 import { useCampaignContact } from 'api/hooks/campaign-website/useCampaignContact'
 import 'styles/campaign-website.css'
@@ -146,7 +152,7 @@ const CampaignWebsite = () => {
 					<section className='pb-20 pt-10'>
 						<div className='campaign-website-container'>
 							<h2 className='text-center text-4xl font-black text-neutral-900'>
-								Posts
+								Products
 							</h2>
 							<ul className='grid grid-cols-fluid gap-6 pt-12'>
 								{campaign?.social_posts.map((post, index) => (
@@ -154,11 +160,22 @@ const CampaignWebsite = () => {
 										className='max-w-[400px] justify-self-center'
 										key={index}
 									>
-										<img
-											src={post.image_url}
-											alt='post picture'
-											className='h-96 w-full rounded-lg object-cover'
-										/>
+										<Swiper
+											modules={[Navigation, Pagination]}
+											navigation
+											pagination={{ clickable: true }}
+										>
+											{post.image_url.map((img: any) => (
+												<SwiperSlide key={img.image_url}>
+													<img
+														src={img.image_url}
+														alt='post picture'
+														className='h-96 w-full rounded-lg object-cover'
+													/>
+												</SwiperSlide>
+											))}
+										</Swiper>
+
 										<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
 											<p>{post.title}</p>
 											{post.post_url ? (

@@ -42,8 +42,8 @@ const schema = z.object({
 			required_error: 'Body description is required',
 		})
 		.min(1, { message: 'Body description is required' })
-		.max(250, {
-			message: 'Body description cannot be greater than 250 characters',
+		.max(300, {
+			message: 'Body description cannot be greater than 300 characters',
 		})
 		.trim(),
 	social_posts: z.array(
@@ -63,7 +63,7 @@ const schema = z.object({
 					if (val.length === 0) {
 						ctx.addIssue({
 							code: z.ZodIssueCode.custom,
-							message: 'Please select an image file not more than 1.5mb',
+							message: 'Please select at least one image',
 						})
 					}
 					if (val[0]?.size > 1500000) {
@@ -84,8 +84,8 @@ const schema = z.object({
 							message: `Only jpg, jpeg and png are allowed`,
 						})
 					}
-				})
-				.or(z.string()),
+				}),
+			// .or(z.string()),
 		})
 	),
 })
@@ -97,28 +97,19 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 	// const [isOpen, setIsOpen] = useState(false)
 	const [noPostError, setNoPostError] = useState(false)
 	// const { posts } = useFetchIGPosts()
-	const {
-		register,
-		control,
-		formState: { errors },
-		handleSubmit,
-	} = useForm<StepTwoSchema>({
-		defaultValues: {
-			phone: campaign.phone ?? '',
-			office_address: campaign.office_address ?? '',
-			email: campaign.email ?? '',
-			body_description: campaign.body_description ?? '',
-			body_heading: campaign.body_heading ?? '',
-			social_posts: campaign.social_posts ?? [
-				{
-					title: '',
-					image_url: undefined,
-					// posted_date: '',
-				},
-			],
-		},
-		resolver: zodResolver(schema),
-	})
+	const { register, control, handleSubmit, setValue } = useForm<StepTwoSchema>(
+		{
+			defaultValues: {
+				phone: campaign.phone ?? '',
+				office_address: campaign.office_address ?? '',
+				email: campaign.email ?? '',
+				body_description: campaign.body_description ?? '',
+				body_heading: campaign.body_heading ?? '',
+				social_posts: campaign.social_posts ?? [],
+			},
+			resolver: zodResolver(schema),
+		}
+	)
 
 	const [searchParams] = useSearchParams()
 	const type = searchParams.get('type')
@@ -231,7 +222,11 @@ export const NewCampaignStepTwo = ({ nextStep, prevStep }: CampaignProps) => {
 					) : null}
 
 					{type === 'manual' ? (
-						<ManualUploadForm register={register} control={control} />
+						<ManualUploadForm
+							register={register}
+							control={control}
+							setValue={setValue}
+						/>
 					) : null}
 				</div>
 

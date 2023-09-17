@@ -1,4 +1,5 @@
 import { ReactComponent as CircleArrowIcon } from 'assets/icons/arrowcircle.svg'
+import { NewCampaignStepFive } from 'components/NewCampaignStepFive'
 import { NewCampaignStepFour } from 'components/NewCampaignStepFour'
 import { NewCampaignStepOne } from 'components/NewCampaignStepOne'
 import { NewCampaignStepThree } from 'components/NewCampaignStepThree'
@@ -6,12 +7,20 @@ import { NewCampaignStepTwo } from 'components/NewCampaignStepTwo'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const steps = [1, 2, 3, 4]
+const steps = [1, 2, 3, 4, 5]
+
+const width = {
+	1: 'after:w-1/5',
+	2: 'after:w-[40%]',
+	3: 'after:w-[60%]',
+	4: 'after:w-[80%]',
+	5: 'after:w-full',
+}
 
 const NewCampaign = () => {
 	const [step, setStep] = useState(1)
 	const nextStep = () => {
-		if (step >= 4) return
+		if (step >= 5) return
 		setStep(step + 1)
 	}
 	const prevStep = () => {
@@ -32,7 +41,11 @@ const NewCampaign = () => {
 					<NewCampaignStepThree prevStep={prevStep} nextStep={nextStep} />
 				)
 			case 4:
-				return <NewCampaignStepFour prevStep={prevStep} />
+				return (
+					<NewCampaignStepFour prevStep={prevStep} nextStep={nextStep} />
+				)
+			case 5:
+				return <NewCampaignStepFive prevStep={prevStep} />
 			default:
 		}
 	}
@@ -65,15 +78,7 @@ const NewCampaign = () => {
 			</div>
 			<div
 				className={`relative mt-1 h-3 w-full rounded-sm bg-white after:absolute after:top-0 after:left-0 after:h-full after:bg-wustomers-blue ${
-					step === 1
-						? 'after:w-1/4'
-						: step === 2
-						? 'after:w-1/2'
-						: step === 3
-						? 'after:w-3/4'
-						: step === 4
-						? 'after:w-full'
-						: ''
+					width[step as keyof typeof width]
 				}`}
 			/>
 

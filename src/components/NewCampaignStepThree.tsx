@@ -23,9 +23,9 @@ const schema = z.object({
 					.min(5, {
 						message: 'Customer comment cannot be less than 5 characters',
 					})
-					.max(250, {
+					.max(300, {
 						message:
-							'Customer comment cannot be greater than 250 characters',
+							'Customer comment cannot be greater than 300 characters',
 					})
 					.trim(),
 				name: z
@@ -69,7 +69,7 @@ export const NewCampaignStepThree = ({ nextStep, prevStep }: CampaignProps) => {
 		control,
 	} = useForm<StepThreeSchema>({
 		defaultValues: {
-			is_testimonial: campaign.testimonials?.length > 0 ? '1' : undefined,
+			is_testimonial: campaign.is_testimonial ?? '',
 			testimonials: campaign.testimonials ?? [
 				{ comment: '', designation: '', name: '' },
 			],

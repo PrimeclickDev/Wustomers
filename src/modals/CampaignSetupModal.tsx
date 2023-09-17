@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useSetupCampaign } from 'api/hooks/campaigns/useSetupCampaign'
-import { useFetchBudgets } from 'api/hooks/globals/useFetchBudgets'
 import { ReactComponent as CloseIcon } from 'assets/icons/close-square.svg'
 import { Button } from 'components/Button'
+import { Combobox } from 'components/Combobox'
 import { ErrorMessage } from 'components/ErrorMessage'
-import { Select, SelectItem } from 'components/Select'
 import { Spinner } from 'components/Spinner'
-import { states } from 'constants/state'
 import { useAtom } from 'jotai'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { paymentModalType } from 'store/atoms'
+import { budgets, durations } from 'utils/constants'
 import { formatCurrency } from 'utils/formatCurrency'
 import { z } from 'zod'
 import { Modal } from '../components/Modal'
@@ -25,10 +24,15 @@ type CampaignSetupModalProps = {
 const schema = z.object({
 	duration: z
 		.string({ required_error: 'Please select a duration' })
-		.min(1, { message: 'Campaign duration is required' }),
-	location: z
-		.string({ required_error: 'Please select a location' })
-		.min(1, { message: 'Location is required' }),
+		.min(1, { message: 'Campaign duration is required' })
+		.trim(),
+	budget: z
+		.string({ required_error: 'Please select a budget' })
+		.min(1, { message: 'Campaign budget is required' })
+		.trim()
+		.refine(val => parseInt(val) >= 2000, {
+			message: 'The minimum budget is N2000',
+		}),
 	acceptTerms: z.literal(true, {
 		errorMap: () => ({
 			message: 'You must accept the terms and conditions',
@@ -47,29 +51,21 @@ export const CampaignSetupModal = ({
 	const navigate = useNavigate()
 	const {
 		control,
-		register,
 		handleSubmit,
+		register,
 		formState: { errors },
-		watch,
 	} = useForm<CampaignSetupSchema>({
 		resolver: zodResolver(schema),
 		defaultValues: {
 			acceptTerms: undefined,
 			duration: '',
-			location: '',
+			budget: '',
 		},
 	})
-	const durationValue = watch('duration')
 
 	const setupCampaign = useSetupCampaign()
-	const { data: budgets } = useFetchBudgets()
-
 	const onSubmit: SubmitHandler<CampaignSetupSchema> = data => {
-		const payload = {
-			duration: budgets!.find(item => item.duration === data.duration)!.id,
-			budget: budgets!.find(item => item.duration === data.duration)!.id,
-			location: states.find(item => item.name === data.location)!.id,
-		}
+		const payload = { duration: +data.duration, amount: +data.budget }
 		setupCampaign.mutate(
 			{
 				id: campaignId,
@@ -81,11 +77,7 @@ export const CampaignSetupModal = ({
 				},
 			}
 		)
-	}
-
-	const closeCampaignModal = () => {
-		setModalType('setup')
-		closeModal()
+		// console.log('data', data)
 	}
 
 	return (
@@ -93,16 +85,14 @@ export const CampaignSetupModal = ({
 			<Modal
 				modalOpen={openModal}
 				closeModal={closeModal}
-				className='!max-w-lg p-0'
+				className='!max-w-md p-0'
 			>
 				<header className='flex items-center justify-between gap-2 bg-[#EAEAEA] px-6 py-3'>
-					<h3 className='text-2xl font-black'>
-						{modalType === 'setup' ? 'Campaign Setup' : 'Checkout'}
-					</h3>
+					<h3 className='text-xl font-black'>Campaign Setup</h3>
 					<button
 						aria-label='close modal'
 						className='transition-opacity hover:opacity-70'
-						onClick={closeCampaignModal}
+						onClick={closeModal}
 					>
 						<CloseIcon />
 					</button>
@@ -110,94 +100,44 @@ export const CampaignSetupModal = ({
 
 				{modalType === 'setup' ? (
 					<form className='flex flex-col gap-6 p-6'>
-						<div className='flex flex-col items-center gap-1 sm:grid sm:grid-cols-3 md:gap-5'>
-							<label htmlFor='campaignDuration' className='col-span-1'>
-								Campaign duration:
-							</label>
-							<Controller
-								name='duration'
+						<div className='flex flex-col gap-2'>
+							<div className='flex flex-col'>
+								<label>Your daily budget:</label>
+								<span className='text-xs text-neutral-500'>
+									You can select from the list or enter a custom value.
+								</span>
+							</div>
+							<Combobox
 								control={control}
-								render={({
-									field: { onChange, value },
-									fieldState: { error },
-								}) => (
-									<div className='col-span-2 flex flex-col gap-1'>
-										<Select
-											className={`${
-												error
-													? 'ring-red-600'
-													: 'ring-wustomers-primary-light'
-											}`}
-											placeholder='Select campaign duration....'
-											onChange={onChange}
-											value={value}
-										>
-											{budgets?.map(option => (
-												<SelectItem
-													value={option.duration}
-													key={option.id}
-												>
-													{option.duration} (
-													{formatCurrency(option.amount)})
-												</SelectItem>
-											))}
-										</Select>
-										{errors.duration ? (
-											<ErrorMessage
-												message={errors.duration.message}
-											/>
-										) : null}
-									</div>
-								)}
+								name='budget'
+								options={budgets}
+								placeholder='Select your preferred budget....'
+							/>
+						</div>
+						<div className='flex flex-col gap-2'>
+							<div className='flex flex-col'>
+								<label className='leading-0'>
+									How long do you want your campaign to run for?:
+								</label>
+								<span className='text-xs text-neutral-500'>
+									You can select from the list or enter a custom value.
+									Value should be in days.
+								</span>
+							</div>
+							<Combobox
+								control={control}
+								name='duration'
+								options={durations}
+								placeholder='Select your preferred duration....'
 							/>
 						</div>
 
-						<div className='flex flex-col items-center gap-1 sm:grid sm:grid-cols-3 md:gap-5'>
-							<label htmlFor='locations' className='col-span-1'>
-								Location:
-							</label>
-							<Controller
-								name='location'
-								control={control}
-								render={({
-									field: { onChange, value },
-									fieldState: { error },
-								}) => (
-									<div className='col-span-2 flex flex-col gap-1'>
-										<Select
-											className={`${
-												error
-													? 'ring-red-600'
-													: 'ring-wustomers-primary-light'
-											}`}
-											placeholder='Select location....'
-											onChange={onChange}
-											value={value}
-										>
-											{states?.map(option => (
-												<SelectItem
-													value={option.name}
-													key={option.id}
-												>
-													{option.name}
-												</SelectItem>
-											))}
-										</Select>
-										{errors.location ? (
-											<ErrorMessage
-												message={errors.location.message}
-											/>
-										) : null}
-									</div>
-								)}
-							/>
-						</div>
 						<div>
 							<label className='flex flex-col items-center gap-2 text-center leading-none md:flex-row md:items-start md:gap-4 md:text-left'>
 								<input
 									type='checkbox'
 									id='acceptTerms'
-									className='h-5 w-5 accent-wustomers-blue'
+									className='h-8 w-8 accent-wustomers-blue'
 									{...register('acceptTerms')}
 								/>
 								<span className='text-sm md:text-base md:leading-none'>
@@ -211,7 +151,7 @@ export const CampaignSetupModal = ({
 							) : null}
 						</div>
 
-						<div className='mx-auto mt-6 flex w-36 items-center justify-evenly gap-2 md:gap-5'>
+						<div className='mt-4 flex items-center justify-evenly gap-2 md:gap-5'>
 							<Button
 								variant='outline'
 								text='Cancel'
@@ -243,7 +183,23 @@ export const CampaignSetupModal = ({
 							</div>
 							<div className='flex items-center justify-between gap-2'>
 								<p className='font-semibold'>Campaign duration:</p>
-								<p className='text-right'>{durationValue}</p>
+								<p className='text-right'>
+									{
+										setupCampaign.data?.data?.data?.campaign?.budget
+											.duration
+									}
+									days
+								</p>
+							</div>
+							<div className='flex items-center justify-between gap-2'>
+								<p className='font-semibold'>Campaign budget:</p>
+								<p className='text-right'>
+									{formatCurrency(
+										setupCampaign.data?.data?.data
+											?.custom_budget_amount
+									)}{' '}
+									per day
+								</p>
 							</div>
 						</div>
 						<div className='flex flex-col gap-3 border-b-[1.5px] border-b-wustomers-neutral-lighter pb-3'>
@@ -290,16 +246,16 @@ export const CampaignSetupModal = ({
 								variant='fill'
 								text='Make payment'
 								className='normal-case'
-								onClick={() => {
-									window.location.href =
-										setupCampaign.data?.data?.data?.redirecturl
-								}}
+								// onClick={() => {
+								// 	window.location.href =
+								// 		setupCampaign.data?.data?.data?.redirecturl
+								// }}
 							/>
 							<Button
 								variant='outline'
-								text='Cancel'
+								text='Go back'
 								className='normal-case'
-								onClick={closeCampaignModal}
+								onClick={() => setModalType('setup')}
 							/>
 						</div>
 					</div>

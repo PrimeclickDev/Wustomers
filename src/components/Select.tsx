@@ -35,12 +35,15 @@ export const Select = ({
 					<RadixSelect.Value placeholder={placeholder} />
 				</RadixSelect.Group>
 				<RadixSelect.Icon>
-					<ChevronDownIcon />
+					<ChevronDownIcon className='text-[#9CAAE9]' />
 				</RadixSelect.Icon>
 			</RadixSelect.Trigger>
 			<RadixSelect.Portal>
-				<RadixSelect.Content className='z-50 overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'>
-					<RadixSelect.Viewport className='p-[5px]'>
+				<RadixSelect.Content
+					className='z-50 overflow-hidden rounded bg-white shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)]'
+					position='popper'
+				>
+					<RadixSelect.Viewport className='min-w-[var(--radix-select-trigger-width)] p-[5px]'>
 						<RadixSelect.Group>{children}</RadixSelect.Group>
 					</RadixSelect.Viewport>
 				</RadixSelect.Content>

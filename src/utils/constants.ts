@@ -162,3 +162,48 @@ export const posts = {
 		},
 	],
 }
+
+export const sexes = [
+	{ value: 'M', label: 'Male' },
+	{ value: 'F', label: 'Female' },
+]
+
+export const ageRanges = [
+	{
+		value: 'Less than 18',
+		label: 'Less than 18',
+	},
+	{
+		value: '18-25',
+		label: '18-25',
+	},
+	{
+		value: '26-39',
+		label: '26-39',
+	},
+	{
+		value: '40-64',
+		label: '40-64',
+	},
+	{
+		value: '',
+		label: '65 and above',
+	},
+]
+
+export const budgets = [
+	{ value: '2000', label: '2,000' },
+	{ value: '3000', label: '3,000' },
+	{ value: '4000', label: '4,000' },
+	{ value: '5000', label: '5,000' },
+	{ value: '6000', label: '6,000' },
+]
+
+export const durations = [
+	{ value: '14', label: '14 days' },
+	{ value: '21', label: '21 days' },
+	{ value: '30', label: '30 days' },
+	{ value: '60', label: '60 days' },
+]
+
+export const countries = [{ value: '160', label: 'Nigeria' }]

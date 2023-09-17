@@ -1,4 +1,5 @@
 import { NewCampaignSchema } from 'components/NewCampaignModal'
+import { StepFourSchema } from 'components/NewCampaignStepFour'
 import { StepOneSchema } from 'components/NewCampaignStepOne'
 import { StepThreeSchema } from 'components/NewCampaignStepThree'
 import { StepTwoSchema } from 'components/NewCampaignStepTwo'
@@ -6,7 +7,7 @@ import { ResponseType } from './shared'
 
 export type Social = {
 	title: string
-	image_url: string | FileList
+	image_url: any | FileList
 	posted_date: string | null
 	post_url?: string
 }
@@ -15,7 +16,8 @@ export interface CampaignFormData
 	extends NewCampaignSchema,
 		StepOneSchema,
 		StepTwoSchema,
-		StepThreeSchema {
+		StepThreeSchema,
+		StepFourSchema {
 	social_posts: Social[]
 	contact_option_medium?: string
 	id?: number

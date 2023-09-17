@@ -3,7 +3,13 @@
 import { CampaignFormData } from 'models/campaigns'
 import { forwardRef, useState } from 'react'
 import 'styles/campaign-website.css'
+import { Navigation, Pagination } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { Modal } from './Modal'
+
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 type PreviewProps = {
 	activeView: string
@@ -131,7 +137,7 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 						<section className='pb-20 pt-10'>
 							<div className='campaign-website-container'>
 								<h2 className='text-center text-4xl font-black text-neutral-900'>
-									Posts
+									Products
 								</h2>
 								<ul className='grid grid-cols-fluid gap-6 pt-12'>
 									{campaign?.social_posts.map((post, index) => (
@@ -139,17 +145,37 @@ export const Preview = forwardRef<Ref, PreviewProps>(
 											className='max-w-[400px] justify-self-center'
 											key={index}
 										>
-											<img
-												src={
-													typeof post.image_url === 'string'
-														? post.image_url
-														: URL.createObjectURL(
-																post.image_url[0]
-														  )
-												}
-												alt='post picture'
-												className='h-96 w-full rounded-lg object-cover'
-											/>
+											<Swiper
+												modules={[Navigation, Pagination]}
+												navigation
+												pagination={{ clickable: true }}
+											>
+												{/* check if image_url is a FileList instance */}
+												{post.image_url instanceof FileList
+													? Object.values(post.image_url).map(
+															(img, index) => (
+																<SwiperSlide key={index}>
+																	<img
+																		src={URL.createObjectURL(
+																			img as File
+																		)}
+																		alt='post picture'
+																		className='h-96 w-full rounded-lg object-cover'
+																	/>
+																</SwiperSlide>
+															)
+													  )
+													: post.image_url.map((img: any) => (
+															<SwiperSlide key={img.image_url}>
+																<img
+																	src={img.image_url}
+																	alt='post picture'
+																	className='h-96 w-full rounded-lg object-cover'
+																/>
+															</SwiperSlide>
+													  ))}
+											</Swiper>
+
 											<div className='mt-2 rounded-lg bg-neutral-200 px-4 py-3'>
 												<p>{post.title}</p>
 												{post.post_url ? (

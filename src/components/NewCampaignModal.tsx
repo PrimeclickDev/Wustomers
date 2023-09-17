@@ -61,7 +61,7 @@ const NewCampaignModal = ({ setIsOpen, isOpen }: NewCampaignModalProps) => {
 			<form onSubmit={handleSubmit(onSubmit)}>
 				<header>
 					<h3 className='text-lg font-medium'>
-						How would you like to upload your campaign?
+						How would you like to create your campaign?
 					</h3>
 					<p className='text-sm italic'>NB: Pls select one</p>
 				</header>

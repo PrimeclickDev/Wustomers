@@ -37,8 +37,10 @@
 		"react-hook-form": "^7.42.1",
 		"react-image-crop": "^10.0.9",
 		"react-router-dom": "^6.7.0",
+		"react-select": "^5.7.4",
 		"react-toastify": "^9.1.1",
 		"recharts": "^2.4.3",
+		"swiper": "^10.2.0",
 		"vite-plugin-svgr": "^2.4.0",
 		"vite-tsconfig-paths": "^4.0.5",
 		"zod": "^3.20.2"

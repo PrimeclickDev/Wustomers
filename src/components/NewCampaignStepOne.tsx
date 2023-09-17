@@ -325,7 +325,7 @@ export const NewCampaignStepOne = ({ nextStep }: CampaignProps) => {
 				<Button
 					text='Cancel'
 					variant='outline'
-					onClick={() => navigate(-1)}
+					onClick={() => navigate('/campaigns')}
 					className='!bg-white px-11 !font-normal capitalize'
 				/>
 				<Button

@@ -70,7 +70,7 @@ input[type='number'] {
 }
 
 .custom-select {
-	@apply mt-2 h-[46px] w-full appearance-none rounded-sm border-0 bg-wustomers-primary px-4 text-base text-wustomers-main ring-[1.5px] data-[placeholder]:!text-gray-400;
+	@apply h-[46px] w-full appearance-none rounded-sm border-0 bg-wustomers-primary px-4 text-base text-wustomers-main ring-[1.5px] data-[placeholder]:!text-gray-400;
 }
 
 .campaign-badge-bg {
@@ -102,4 +102,30 @@ input[type='checkbox'] {
 }
 .vite-plugin-react-markdown a {
 	@apply text-wustomers-blue underline;
+}
+
+/* swipper js styles */
+.swiper-button-next {
+  background-image: url(/chevron-left.svg);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+.swiper-button-next::after {
+  display: none;
+}
+.swiper-button-prev {
+  background-image: url(/chevron-right.svg);
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+.swiper-button-prev::after {
+  display: none;
+}
+
+.swiper-pagination-bullet-active {
+     background-color: #fff !important;
 }
